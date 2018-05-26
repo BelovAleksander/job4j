@@ -14,7 +14,6 @@ public class Max {
 	*/
 	public int max(int first, int second) {
 		int rsl;
-		first > second ? rsl = first : rsl = second;
-		return rsl;
+		return first > second ? first : second;
 	}
 }
