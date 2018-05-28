@@ -18,7 +18,7 @@ public class SquareTest {
         int bound = 5;
         Square square = new Square();
         int[] rst = square.calculate(5);
-        int[] expected = new int[] {1,4,9,16,25};
+        int[] expected = new int[] {1, 4, 9, 16, 25};
         assertThat(rst, is(expected));
     }
     @Test
@@ -26,7 +26,7 @@ public class SquareTest {
         int bound = 2;
         Square square = new Square();
         int[] rst = square.calculate(2);
-        int[] expected = new int[] {1,4};
+        int[] expected = new int[] {1, 4};
         assertThat(rst, is(expected));
     }
 }

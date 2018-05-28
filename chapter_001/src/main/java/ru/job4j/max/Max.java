@@ -13,12 +13,10 @@ public class Max {
 	* @return максимальное значение
 	*/
 	public int max(int first, int second) {
-		int rsl;
 		return first > second ? first : second;
 	}
 
 	public int max(int first, int second, int third) {
-		int temp = this.max((this.max(first,second)), third);
-		return temp;
+		return this.max((this.max(first,second)), third);
 	}
 }
