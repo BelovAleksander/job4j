@@ -14,7 +14,7 @@ public class Board {
 	 * @param height высота доски.
 	 * @return доска в строковом представлении.
 	 */
-	public String paint(int width, int height) {
+	public final String paint(final int width, final int height) {
 		StringBuilder screen = new StringBuilder();
 		String ln = System.lineSeparator();
 		for (int i = 0; i < height; i++) {

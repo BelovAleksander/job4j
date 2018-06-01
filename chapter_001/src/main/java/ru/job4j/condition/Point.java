@@ -9,18 +9,23 @@ public class Point {
     private int x;
     private int y;
 
-    public Point(int x, int y) {
+    public Point(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
 
-    public double distanceTo(Point that) {
+    /**
+     * Измеряет дистанцию.
+     * @param that точка.
+     * @return дистанция.
+     */
+    public final double distanceTo(final Point that) {
         return Math.sqrt(
                 Math.pow(this.x - that.x, 2) + Math.pow(this.y - that.y, 2)
         );
     }
 
-    public static void main(String[] args) {
+    public final static void main(final String[] args) {
         Point a = new Point(0, 1);
         Point b = new Point(2, 5);
         // сделаем вызов метода

@@ -12,7 +12,7 @@ public class Counter {
      * @param finish конец диапазона.
      * @return сумма четных чисел заданного диапазона.
      */
-    public int add(int start, int finish) {
+    public final int add(final int start, final int finish) {
         int rsl = 0;
         for (int i = start; i <= finish; i++) {
             if (i % 2 == 0) {

@@ -13,9 +13,9 @@ public class Factorial {
      * @return факториал n.
      */
 
-    public int calc(int n) {
+    public final int calc(final int n) {
         int rsl = 1;
-        for (int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
                 rsl *= i;
         }
         return rsl;
