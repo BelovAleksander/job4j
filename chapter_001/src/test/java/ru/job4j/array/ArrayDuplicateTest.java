@@ -25,7 +25,7 @@ public class ArrayDuplicateTest {
     @Test
     public void whenNoDuplicatesThenArrayWithoutDuplicate25() {
         ArrayDuplicate duplicate = new ArrayDuplicate();
-        String[] input = new String[] { "Супер", "Супер", "Супер"};
+        String[] input = new String[] {"Супер", "Супер", "Супер"};
         String[] result = duplicate.remove(input);
         String[] expected = new String[] {"Супер"};
         assertThat(result, is(expected));

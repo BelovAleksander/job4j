@@ -16,7 +16,7 @@ public class CalculatorTest {
 	@Test
 	public void whenAddOnePlusOneThenTwo() {
 		final Calculator calc = new Calculator();
-		calc.add(1D,1D);
+		calc.add(1D, 1D);
 		final double result = calc.getResult();
 		double expected = 2D;
 		assertThat(result, is(expected));
@@ -24,7 +24,7 @@ public class CalculatorTest {
 	@Test
 	public void whenSubtractOneMinusOneThenZero() {
 		final Calculator calc = new Calculator();
-		calc.subtract(1D,1D);
+		calc.subtract(1D, 1D);
 		final double result = calc.getResult();
 		double expected = 0D;
 		assertThat(result, is(expected));
@@ -32,7 +32,7 @@ public class CalculatorTest {
 	@Test
 	public void whenMultipleTwoAndTwoThenFour() {
 		final Calculator calc = new Calculator();
-		calc.multiple(2D,2D);
+		calc.multiple(2D, 2D);
 		final double result = calc.getResult();
 		double expected = 4D;
 		assertThat(result, is(expected));
@@ -40,7 +40,7 @@ public class CalculatorTest {
 	@Test
 	public void whenDivTwoAndTwoThenOne() {
 		final Calculator calc = new Calculator();
-		calc.div(2D,2D);
+		calc.div(2D, 2D);
 		final double result = calc.getResult();
 		double expected = 1D;
 		assertThat(result, is(expected));
