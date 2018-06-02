@@ -4,13 +4,7 @@ package ru.job4j.converter;
  * Конвертер валюты.
  */
 public class Converter {
-    /**
-     * курс евро.
-     */
     static final int EURO_COURSE = 70;
-    /**
-     * курс доллара.
-     */
     static final int DOLLAR_COURSE = 60;
 
     /**

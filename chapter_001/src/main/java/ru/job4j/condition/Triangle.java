@@ -7,17 +7,8 @@ package ru.job4j.condition;
  */
 
 public class Triangle {
-    /**
-     * a.
-     */
     private Point a;
-    /**
-     * b.
-     */
     private Point b;
-    /**
-     * c.
-     */
     private Point c;
 
     /**
