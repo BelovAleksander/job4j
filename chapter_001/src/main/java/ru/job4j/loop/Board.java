@@ -8,28 +8,28 @@ package ru.job4j.loop;
 
 public class Board {
 
-	/**
-	 * Создает шахматную доску с заданными параметрами.
-	 * @param width ширина доски.
-	 * @param height высота доски.
-	 * @return доска в строковом представлении.
-	 */
-	public final String paint(final int width, final int height) {
-		StringBuilder screen = new StringBuilder();
-		String ln = System.lineSeparator();
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				// условие проверки, что писать пробел или X.
-				if ((i + j) % 2 == 0) {
-					screen.append("X");
-				}
-				else {
-					screen.append(" ");
-				}
-			}
-			// добавляем перевод на новую строку.
-			screen.append(ln);
-		}
-		return screen.toString();
-	}
+    /**
+     * Создает шахматную доску с заданными параметрами.
+     *
+     * @param width  ширина доски.
+     * @param height высота доски.
+     * @return доска в строковом представлении.
+     */
+    public final String paint(final int width, final int height) {
+        StringBuilder screen = new StringBuilder();
+        String ln = System.lineSeparator();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                // условие проверки, что писать пробел или X.
+                if ((i + j) % 2 == 0) {
+                    screen.append("X");
+                } else {
+                    screen.append(" ");
+                }
+            }
+            // добавляем перевод на новую строку.
+            screen.append(ln);
+        }
+        return screen.toString();
+    }
 }

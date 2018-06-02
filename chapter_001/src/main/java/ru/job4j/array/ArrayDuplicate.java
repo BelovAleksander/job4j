@@ -19,9 +19,9 @@ public class ArrayDuplicate {
         int flag = 0;
         // end - конечный индекс массива
         int end = array.length - 1;
-        for (int i = 0; i < array.length - flag; i ++) {
+        for (int i = 0; i < array.length - flag; i++) {
             System.out.println("i: " + array[i]);
-            for (int j = i + 1; j < array.length - flag; j ++) {
+            for (int j = i + 1; j < array.length - flag; j++) {
                 // подскажите, как изящнее ибавиться от вложенных if? Или норм?
                 if (array[i].equals(array[j])) {
                     if (array[i].equals(array[end - flag])) {

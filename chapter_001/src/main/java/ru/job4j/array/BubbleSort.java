@@ -12,7 +12,7 @@ public class BubbleSort {
      * @param array входящий массив.
      * @return отсортированный масив.
      */
-    public int[] sort(int[] array) {
+    public final int[] sort(final int[] array) {
         for (int i = 1; i < array.length; i++) {
             int variable;
             int flag = 0;
@@ -24,7 +24,9 @@ public class BubbleSort {
                     flag = 1;
                 }
             }
-            if (flag == 0) break;
+            if (flag == 0) {
+                break;
+                }
             }
         return array;
     }

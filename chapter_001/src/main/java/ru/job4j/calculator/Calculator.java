@@ -1,36 +1,65 @@
 package ru.job4j.calculator;
 
 /**
-* Class Calculator
-* @author Alexander Belov (whiterabbit.nsk@gmail.com)
-* @version 0.1
-* @since 24.05.2018
-*/
+ * Class Calculator.
+ *
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @version 0.1
+ * @since 24.05.2018
+ */
 
 class Calculator {
-	private double result;
+    /**
+     * Результат.
+     */
+    private double result;
 
-	public void add(double first, double second) {
-		this.result = first + second;
-	}
+    /**
+     * Сложение.
+     *
+     * @param first  первый аргумент.
+     * @param second второй аргумент.
+     */
+    public final void add(final double first, final double second) {
+        this.result = first + second;
+    }
 
-	public void subtract(double first, double second) {
-		this.result = first - second;
-	}
+    /**
+     * Вычитание.
+     *
+     * @param first  первый аргумент.
+     * @param second второй аргумент.
+     */
+    public final void subtract(final double first, final double second) {
+        this.result = first - second;
+    }
 
-	public void multiple(double first, double second) {
-		this.result = first * second;
-	}
+    /**
+     * Умножение.
+     *
+     * @param first  первый аргумент.
+     * @param second второй аргумент.
+     */
+    public final void multiple(final double first, final double second) {
+        this.result = first * second;
+    }
 
-	public void div(double first, double second) {
-		this.result = first / second;
-	}
+    /**
+     * Деление.
+     *
+     * @param first  первый аргумент.
+     * @param second второй аргумент.
+     */
+    public final void div(final double first, final double second) {
+        this.result = first / second;
+    }
 
-	public double getResult() {
-		return this.result;
-	}
+    /**
+     * Возвращает результат.
+     *
+     * @return результат.
+     */
+    public final double getResult() {
+        return this.result;
+    }
 }
-	
-	
-	
-

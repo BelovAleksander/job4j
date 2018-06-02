@@ -6,14 +6,23 @@ package ru.job4j.condition;
  * @since 0.1
  */
 public class Point {
+    /**
+     * координаты по оси х.
+     */
     private int x;
+    /**
+     * координаты по оси у.
+     */
     private int y;
-
-    public Point(final int x, final int y) {
-        this.x = x;
-        this.y = y;
+    /**
+     * Конструктор.
+     * @param a ось х.
+     * @param b ось у.
+     */
+    public Point(final int a, final int b) {
+        this.x = a;
+        this.y = b;
     }
-
     /**
      * Измеряет дистанцию.
      * @param that точка.
@@ -25,9 +34,13 @@ public class Point {
         );
     }
 
-    public final static void main(final String[] args) {
+    /**
+     * Main.
+     * @param args user in.
+     */
+    public static void main(final String[] args) {
         Point a = new Point(0, 1);
-        Point b = new Point(2, 5);
+        Point b = new Point(2, 1);
         // сделаем вызов метода
         System.out.println("x1 = " + a.x);
         System.out.println("y1 = " + a.y);

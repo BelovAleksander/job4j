@@ -7,7 +7,8 @@ package ru.job4j.array;
  */
 public class ArrayAddition {
     /**
-     * Метод складывает элементы двух массивов сохраняя сортировку по возрастанию.
+     * Метод складывает элементы двух массивов сохраняя
+     * сортировку по возрастанию.
      * @param first сортированный целочисленный массив.
      * @param second сортированный целочисленный массив.
      * @return результат сложения двух массивов.
@@ -21,16 +22,13 @@ public class ArrayAddition {
             if (i == first.length) {
                 result[index] = second[j];
                 j++;
-            }
-            else if (j == second.length) {
+            } else if (j == second.length) {
                 result[index] = first[i];
                 i++;
-            }
-            else if (first[i] < second[j]) {
+            } else if (first[i] < second[j]) {
                 result[index] = first[i];
                 i++;
-            }
-            else if (second[j] < first[i]) {
+            } else if (second[j] < first[i]) {
                 result[index] = second[j];
                 j++;
             }

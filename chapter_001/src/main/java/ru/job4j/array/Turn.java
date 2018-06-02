@@ -11,9 +11,10 @@ public class Turn  {
      * @param array массив.
      * @return перевернутый массив.
      */
-    public int[] turn(int[] array) {
+    public final int[] turn(final int[] array) {
         int variable;
-        for (int start = 0, end = (array.length - 1); start < array.length / 2; start++, end--) {
+        for (int start = 0, end = (array.length - 1);
+             start < array.length / 2; start++, end--) {
             variable = array[start];
             array[start] = array[end];
             array[end] = variable;
