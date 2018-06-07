@@ -75,10 +75,9 @@ public class Tracker {
      * @return массив без null.
      */
     public final Item[] findAll() {
-        int flag = this.items.length;
-        for (int index = 0; index != this.items.length; index++) {
+        int flag = 0;
+        for (int index = 0; index != this.items.length; index++, flag++) {
             if (this.items[index] == null) {
-                flag = index;
                 break;
             }
         }
