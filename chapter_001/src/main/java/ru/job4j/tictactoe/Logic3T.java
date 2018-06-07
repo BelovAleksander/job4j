@@ -35,23 +35,23 @@ public class Logic3T {
     }
 
     public boolean hasCombination(Figure3T figure) {
-        boolean result1 = true;
-        boolean result2 = true;
-        boolean result3 = false;
-        boolean result4 = false;
+        boolean diagonal1 = true;
+        boolean diagonal2 = true;
+        boolean horizontal = false;
+        boolean vertical = false;
         for (int i = 0; i != table.length; i++) {
             // проверка диагоналей
             if (table[i][i] != figure) {
-                result1 = false;
+                diagonal1 = false;
             } else if (table[i][table.length - 1 - i] != figure) {
-                result2 = false;
+                diagonal2 = false;
             }
             for (int j = 0; j != table[i].length; j++) {
                 // проверка горизонталей
                 if (table[i][j] != figure) {
                     break;
                 } else if (table[i].length - j == 1) {
-                    result3 = true;
+                    horizontal = true;
                 }
             }
             for (int k = 0; k != table[i].length; k++) {
@@ -59,10 +59,10 @@ public class Logic3T {
                 if (table[k][i] != figure) {
                     break;
                 } else if (table[i].length - k == 1) {
-                    result4 = true;
+                    vertical = true;
                 }
             }
         }
-        return result1 || result2 || result3 || result4;
+        return diagonal1 || diagonal2 || horizontal || vertical;
     }
 }

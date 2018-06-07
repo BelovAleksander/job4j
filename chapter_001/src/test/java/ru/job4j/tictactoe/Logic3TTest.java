@@ -29,7 +29,7 @@ public class Logic3TTest {
     }
 
     @Test
-    public void whenHasXWinner3() {
+    public void whenHasXWinnerVertical() {
         Figure3T[][] table = {
                 {new Figure3T(), new Figure3T(true), new Figure3T()},
                 {new Figure3T(), new Figure3T(true), new Figure3T()},
@@ -40,7 +40,7 @@ public class Logic3TTest {
     }
 
     @Test
-    public void whenHasOWinner1() {
+    public void whenHasOWinnerVertical() {
         Figure3T[][] table = {
                 {new Figure3T(false), new Figure3T(), new Figure3T()},
                 {new Figure3T(false), new Figure3T(true), new Figure3T()},
@@ -51,7 +51,7 @@ public class Logic3TTest {
     }
 
     @Test
-    public void whenHasOWinner2() {
+    public void whenHasOWinnerHorizontal() {
         Figure3T[][] table = {
                 {new Figure3T(false), new Figure3T(false), new Figure3T(false)},
                 {new Figure3T(), new Figure3T(true), new Figure3T()},
@@ -62,7 +62,7 @@ public class Logic3TTest {
     }
 
     @Test
-    public void whenHasOWinner3() {
+    public void whenHasOWinnerDiagonal() {
         Figure3T[][] table = {
                 {new Figure3T(), new Figure3T(), new Figure3T(false)},
                 {new Figure3T(), new Figure3T(false), new Figure3T()},
@@ -73,7 +73,7 @@ public class Logic3TTest {
     }
 
     @Test
-    public void whenHasGas() {
+    public void whenHasGap() {
         Figure3T[][] table = {
                 {new Figure3T(true), new Figure3T(), new Figure3T()},
                 {new Figure3T(), new Figure3T(true), new Figure3T()},
