@@ -31,7 +31,7 @@ public class Tracker {
      */
     public final Item add(final Item item) {
         item.setId(this.generateId());
-        this.items[position++] = item;
+        this.items[this.position++] = item;
         return item;
     }
 
@@ -58,15 +58,17 @@ public class Tracker {
      * @param id индекс удаляемого значения.
      */
     public final void delete(final String id) {
-        int position = 0;
-        for (int index = 0; index != this.items.length; index++, position++) {
+        for (int index = 0; index != this.items.length; index++) {
             if (this.items[index].getId().equals(id)) {
                 this.items[index] = null;
+                System.arraycopy(this.items, index + 1, this.items,
+                        index, this.items.length - index - 1);
+                this.position --;
+                System.out.println(this.position);
                 break;
             }
         }
-        System.arraycopy(this.items, position + 1, this.items,
-                position, this.items.length - position - 1);
+
     }
 
     /**
@@ -75,13 +77,14 @@ public class Tracker {
      * @return массив без null.
      */
     public final Item[] findAll() {
-        int flag = 0;
-        for (int index = 0; index != this.items.length; index++, flag++) {
-            if (this.items[index] == null) {
+        Item[] result = null;
+        for (int index = 0; index != this.position; index++) {
+            if (this.position - index == 1) {
+                result = Arrays.copyOf(this.items, index + 1);
                 break;
             }
         }
-        return Arrays.copyOf(this.items, flag);
+        return result;
     }
 
     /**
@@ -92,13 +95,11 @@ public class Tracker {
      * @return массив с подходящими значениями.
      */
     public final Item[] findByName(final String key) {
-        Item[] data = new Item[this.items.length];
         int flag = 0;
-        for (Item item : this.items) {
-            if (item == null) {
-                break;
-            } else if (item.getName().equals(key)) {
-                data[flag++] = item;
+        Item[] data = new Item[this.position];
+        for (int index = 0; index != this.position; index++) {
+            if (this.items[index].getName().equals(key)) {
+                data[flag++] = this.items[index];
                 break;
             }
         }
