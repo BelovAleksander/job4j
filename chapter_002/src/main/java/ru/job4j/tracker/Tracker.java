@@ -24,6 +24,19 @@ public class Tracker {
     private static final Random RN = new Random();
 
     /**
+     * Результат работы метода указывает на то, что массив заявок пуст.
+     * @return пустой или нет
+     */
+    public boolean dataEmpty() {
+        boolean result = false;
+        if (this.position == 0) {
+            System.out.println("Empty data");
+            result = true;
+        }
+        return result;
+    }
+
+    /**
      * Метод, реализующий добавление заявок в хранилище.
      *
      * @param item новая заявка.
@@ -106,7 +119,7 @@ public class Tracker {
      */
     public final Item findById(final String id) {
         Item result = null;
-        for (Item item : this.items) {
+        for (Item item : findAll()) {
             if (item.getId().equals(id)) {
                 result = item;
                 break;

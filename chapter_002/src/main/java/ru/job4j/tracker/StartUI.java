@@ -70,7 +70,7 @@ public class StartUI {
      *
      * @return выбранное действие.
      */
-    public final String mainMenuChoice() {
+    public final void mainMenu() {
         System.out.println("0. Add new item");
         System.out.println("1. Show all items");
         System.out.println("2. Edit item");
@@ -78,8 +78,6 @@ public class StartUI {
         System.out.println("4. Find item by id");
         System.out.println("5. Find items by name");
         System.out.println("6. Exit program");
-        String answer = this.input.ask("Select action: ");
-        return answer;
     }
 
     /**
@@ -98,10 +96,15 @@ public class StartUI {
      */
     public final void showAllItems() {
         Item[] data = this.tracker.findAll();
-        for (Item item : data) {
-            System.out.println("name: " + item.getName() + "   "
-                    + "description: " + item.getDescription());
-            System.out.println("---------------------");
+        if (data.length == 0) {
+            System.out.println("Empty data");
+        }
+        else {
+            for (Item item : data) {
+                System.out.println("name: " + item.getName() + "   "
+                        + "description: " + item.getDescription());
+                System.out.println("---------------------");
+            }
         }
     }
 
@@ -109,26 +112,32 @@ public class StartUI {
      * Позволяет редактировать выбранную заметку.
      */
     public final void editItem() {
-        showAllItems();
-        String answer = this.input.ask(
-                "Index of item that you want to edit: ");
-        Item previous = this.tracker.findAll()[parseInt(answer)];
-        String name = this.input.ask("New item's name: ");
-        String description = this.input.ask("New item's description: ");
-        Item fresh = new Item(name, description, date.getTime());
-        this.tracker.replace(previous.getId(), fresh);
+        String answer = this.input.ask("Item's id: ");
+        Item previous = this.tracker.findById(answer);
+        if (previous == null) {
+            System.out.println("Item with this id does't exist");
+        }
+        else {
+            String name = this.input.ask("New item's name: ");
+            String description = this.input.ask("New item's description: ");
+            Item fresh = new Item(name, description, date.getTime());
+            this.tracker.replace(previous.getId(), fresh);
+        }
     }
 
     /**
      * Позволяет удалить выбранную заявку.
      */
     public final void deleteItem() {
-        showAllItems();
         String answer = this.input.ask(
-                "Index of item that you want to delete: ");
-        Item previous = this.tracker.findAll()[parseInt(answer)];
-        this.tracker.delete(previous.getId());
-        System.out.println("Item deleted.");
+                "Item's id: ");
+        Item previous = this.tracker.findById(answer);
+        if (previous == null) {
+            System.out.println("Item with this id does't exist");
+        } else {
+            this.tracker.delete(previous.getId());
+            System.out.println("Item deleted.");
+        }
     }
 
     /**
@@ -137,8 +146,12 @@ public class StartUI {
     public final void findItemById() {
         String id = this.input.ask("Item's id: ");
         Item result = this.tracker.findById(id);
-        System.out.println("name: " + result.getName() + "   "
-                + "description: " + result.getDescription());
+        if (result == null) {
+            System.out.println("Item with this id does't exist");
+        } else {
+            System.out.println("name: " + result.getName() + "   "
+                    + "description: " + result.getDescription());
+        }
     }
 
     /**
@@ -147,6 +160,9 @@ public class StartUI {
     public final void findItemsByName() {
         String answer = this.input.ask("Item's name: ");
         Item[] data = this.tracker.findByName(answer);
+        if (data.length == 0) {
+            System.out.println("Item with this name doesn't exist");
+        }
         for (Item item : data) {
             System.out.println("name: " + item.getName() + "   "
                     + "description: " + item.getDescription());
@@ -160,30 +176,22 @@ public class StartUI {
     public final void init() {
         boolean exit = false;
         while (!exit) {
-            switch (mainMenuChoice()) {
-                case ADD:
-                    createNewItem();
-                    break;
-                case SHOW:
-                    showAllItems();
-                    break;
-                case EDIT:
-                    editItem();
-                    break;
-                case DELETE:
-                    deleteItem();
-                    break;
-                case FIND_ID:
-                    findItemById();
-                    break;
-                case FIND_NAME:
-                    findItemsByName();
-                    break;
-                case EXIT:
-                    exit = true;
-                    break;
-                default:
-
+            mainMenu();
+            String answer = input.ask("Select action: ");
+            if (answer.equals(ADD)) {
+                createNewItem();
+            } else if ((answer.equals(SHOW)) && (!tracker.dataEmpty())) {
+                showAllItems();
+            } else if ((answer.equals(EDIT)) && (!tracker.dataEmpty())) {
+                editItem();
+            } else if ((answer.equals(DELETE)) && (!tracker.dataEmpty())) {
+                deleteItem();
+            } else if ((answer.equals(FIND_ID)) && (!tracker.dataEmpty())) {
+                findItemById();
+            } else if ((answer.equals(FIND_NAME)) && (!tracker.dataEmpty())) {
+                findItemsByName();
+            } else if (answer.equals(EXIT)) {
+                exit = true;
             }
         }
     }
