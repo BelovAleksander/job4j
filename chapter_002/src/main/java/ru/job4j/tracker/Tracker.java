@@ -76,14 +76,7 @@ public class Tracker {
      * @return массив без null.
      */
     public final Item[] findAll() {
-        Item[] result = null;
-        for (int index = 0; index != this.position; index++) {
-            if (this.position - index == 1) {
-                result = Arrays.copyOf(this.items, index + 1);
-                break;
-            }
-        }
-        return result;
+            return Arrays.copyOf(this.items, position);
     }
 
     /**

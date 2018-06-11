@@ -1,11 +1,13 @@
 package ru.job4j.tracker;
 
 import java.util.Date;
+
 import static java.lang.Integer.parseInt;
 
 /**
  * Является главным классом программы.
- * Содержит main метод.
+ * Содержит main метод  .
+ *
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 11.06.2018
  */
