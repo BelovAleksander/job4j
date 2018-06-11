@@ -30,7 +30,6 @@ public class Tracker {
     public boolean dataEmpty() {
         boolean result = false;
         if (this.position == 0) {
-            System.out.println("Empty data");
             result = true;
         }
         return result;
