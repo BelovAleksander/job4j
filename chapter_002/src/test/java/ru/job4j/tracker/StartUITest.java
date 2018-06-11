@@ -47,9 +47,9 @@ public class StartUITest {
 
     @After
     public void backOutputAndCleanTracker() {
-        System.out.println("execute after method");
         System.setOut(stdOut);
         this.tracker = null;
+        System.out.println("execute after method");
     }
 
     @Test
