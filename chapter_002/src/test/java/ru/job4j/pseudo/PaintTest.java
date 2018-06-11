@@ -1,8 +1,11 @@
 package ru.job4j.pseudo;
 
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -11,15 +14,25 @@ import static org.junit.Assert.assertThat;
  * @since 11.06.2018
  */
 public class PaintTest {
+    // поле содержит дефолтный вывод в консоль.
+    private PrintStream stdout = System.out;
+    // буфер для результата
+    private ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    @Before
+    public void loadOutput() {
+        System.out.println("execute before method");
+        System.setOut(new PrintStream(out));
+    }
+
+    @After
+    public void backOutput() {
+        System.setOut(stdout);
+        System.out.println("execute after method");
+    }
+
     @Test
     public void whenDrawSquare() {
-        // получаем ссылку на стандартный вывод в консоль.
-        PrintStream stdout = System.out;
-        // Создаем буфер для хранения вывода.
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        //Заменяем стандартный вывод на вывод в пямять для тестирования.
-        System.setOut(new PrintStream(out));
-        // выполняем действия пишущие в консоль.
         new Paint().draw(new Square());
         // проверяем результат вычисления
         assertThat(
@@ -34,15 +47,10 @@ public class PaintTest {
                                 .toString()
                 )
         );
-        // возвращаем обратно стандартный вывод в консоль.
-        System.setOut(stdout);
     }
 
     @Test
     public void whenDrawTriangle() {
-        PrintStream stdout = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
         new Paint().draw(new Triangle());
         assertThat(new String(out.toByteArray()),
                 is(
@@ -55,6 +63,5 @@ public class PaintTest {
                                 .toString()
                 )
         );
-        System.setOut(stdout);
     }
 }
