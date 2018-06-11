@@ -98,8 +98,7 @@ public class StartUI {
         Item[] data = this.tracker.findAll();
         if (data.length == 0) {
             System.out.println("Empty data");
-        }
-        else {
+        } else {
             for (Item item : data) {
                 System.out.println("name: " + item.getName() + "   "
                         + "description: " + item.getDescription());
@@ -116,8 +115,7 @@ public class StartUI {
         Item previous = this.tracker.findById(answer);
         if (previous == null) {
             System.out.println("Item with this id does't exist");
-        }
-        else {
+        } else {
             String name = this.input.ask("New item's name: ");
             String description = this.input.ask("New item's description: ");
             Item fresh = new Item(name, description, date.getTime());

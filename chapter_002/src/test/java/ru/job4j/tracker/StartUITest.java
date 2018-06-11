@@ -19,15 +19,25 @@ public class StartUITest {
     private final PrintStream stdOut = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private final String menu = new StringBuilder()
-            .append("0. Add new item\\r\\n")
-            .append("1. Show all items\\r\\n")
-            .append("2. Edit item\\r\\n")
-            .append("3. Delete item\\r\\n")
-            .append("4. Find item by id\\r\\n")
-            .append("5. Find items by name\\r\\n")
-            .append("6. Exit program\\r\\n")
+            .append("0. Add new item")
+            .append(System.lineSeparator())
+            .append("1. Show all items")
+            .append(System.lineSeparator())
+            .append("2. Edit item")
+            .append(System.lineSeparator())
+            .append("3. Delete item")
+            .append(System.lineSeparator())
+            .append("4. Find item by id")
+            .append(System.lineSeparator())
+            .append("5. Find items by name")
+            .append(System.lineSeparator())
+            .append("6. Exit program")
+            .append(System.lineSeparator())
             .toString();
-    private final String separator = "---------------------\\r\\n";
+    private final String separator = new StringBuilder()
+            .append("---------------------")
+            .append(System.lineSeparator())
+            .toString();
 
     @Before
     public void loadOutput() {
@@ -59,9 +69,11 @@ public class StartUITest {
                 is(
                         new StringBuilder()
                                 .append(menu)
-                                .append("name: test1   description: desc1\\r\\n")
+                                .append("name: test1   description: desc1")
+                                .append(System.lineSeparator())
                                 .append(separator)
-                                .append("name: test2   description: desc2\\r\\n")
+                                .append("name: test2   description: desc2")
+                                .append(System.lineSeparator())
                                 .append(separator)
                                 .append(menu)
                                 .toString()
@@ -78,7 +90,8 @@ public class StartUITest {
                 is(
                         new StringBuilder()
                                 .append(menu)
-                                .append("name: test   description: desc\\r\\n")
+                                .append("name: test   description: desc")
+                                .append(System.lineSeparator())
                                 .append(menu)
                                 .toString()
                 )
@@ -101,7 +114,7 @@ public class StartUITest {
     public void whenEditItem2ThenDescriptionChanged() {
         Item item1 = this.tracker.add(new Item("test1", "description1", 123L));
         Item item2 = this.tracker.add(new Item("test2", "description2", 1234L));
-        Input input = new StubInput(new String[]{"2", "1", "test2", "changed description", "6"});
+        Input input = new StubInput(new String[]{"2", item2.getId(), "test2", "changed description", "6"});
         new StartUI(input, this.tracker).init();
         assertThat(this.tracker.findById(item2.getId()).getDescription(), is("changed description"));
     }
@@ -110,8 +123,24 @@ public class StartUITest {
     public void whenDeleteItem2ThenFindAllLengthEquals1() {
         Item item1 = this.tracker.add(new Item("test1", "description1", 123L));
         Item item2 = this.tracker.add(new Item("test2", "description2", 1234L));
-        Input input = new StubInput(new String[]{"3", "1", "6"});
+        Input input = new StubInput(new String[]{"3", item2.getId(), "6"});
         new StartUI(input, this.tracker).init();
         assertThat(this.tracker.findAll().length, is(1));
+    }
+
+    @Test
+    public void whenPutIncorrectValueThenPrintEmptyData() {
+        Input input = new StubInput(new String[]{"2", "6"});
+        new StartUI(input, this.tracker).init();
+        assertThat(new String(out.toByteArray()),
+                is(
+                        new StringBuilder()
+                        .append(menu)
+                        .append("Empty data")
+                        .append(System.lineSeparator())
+                        .append(menu)
+                        .toString()
+                )
+        );
     }
 }
