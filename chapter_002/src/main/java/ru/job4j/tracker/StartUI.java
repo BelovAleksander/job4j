@@ -5,8 +5,17 @@ import java.util.Date;
 import static java.lang.Integer.parseInt;
 
 public class StartUI {
-    private final ConsoleInput input;
+    /**
+     * Ввод данных.
+     */
+    private final Input input;
+    /**
+     * Хранилище заявок.
+     */
     private final Tracker tracker;
+    /**
+     * Текущая дата.
+     */
     private final Date date = new Date();
     /**
      * Константа для добавления заявки.
@@ -44,7 +53,7 @@ public class StartUI {
      * @param input   ввод данных.
      * @param tracker хранилище завок.
      */
-    public StartUI(final ConsoleInput input, final Tracker tracker) {
+    public StartUI(final Input input, final Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }
