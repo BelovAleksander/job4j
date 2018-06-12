@@ -135,6 +135,6 @@ public class Tracker {
      * @return Уникальный ключ.
      */
     public final String generateId() {
-        return String.valueOf(System.currentTimeMillis() + RN.nextInt());
+        return String.valueOf(RN.nextInt(10000));
     }
 }

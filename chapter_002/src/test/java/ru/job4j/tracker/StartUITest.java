@@ -62,8 +62,8 @@ public class StartUITest {
     @Test
     public void whenShowAllItems() {
         Tracker tracker = new Tracker();
-        Item item1 = tracker.add(new Item("test1", "desc1", 123L));
-        Item item2 = tracker.add(new Item("test2", "desc2", 1234L));
+        Item item1 = tracker.add(new Item("test1", "desc1"));
+        Item item2 = tracker.add(new Item("test2", "desc2"));
         Input input = new StubInput(new String[]{"1", "6"});
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()),
@@ -85,7 +85,7 @@ public class StartUITest {
     @Test
     public void whenTryFindByIdItem2ThenFind() {
         Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item("test", "desc", 123L));
+        Item item = tracker.add(new Item("test", "desc"));
         Input input = new StubInput(new String[]{"4", item.getId(), "6"});
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()),
@@ -104,9 +104,9 @@ public class StartUITest {
     public void whenUpdateThenTrackerHasUpdatedValue() {
         Tracker tracker = new Tracker();
         //Напрямую добавляем заявку
-        Item item = tracker.add(new Item("test name", "desc", 123L));
+        Item item = tracker.add(new Item("test name", "desc"));
         //создаём StubInput с последовательностью действий
-        Input input = new StubInput(new String[]{"1", item.getId(), "test name", "desc", "6"});
+        Input input = new StubInput(new String[]{"2", item.getId(), "test name", "desc", "6"});
         // создаём StartUI и вызываем метод init()
         new StartUI(input, tracker).init();
         // проверяем, что нулевой элемент массива в трекере содержит имя, введённое при эмуляции.
@@ -116,8 +116,8 @@ public class StartUITest {
     @Test
     public void whenEditItem2ThenDescriptionChanged() {
         Tracker tracker = new Tracker();
-        Item item1 = tracker.add(new Item("test1", "description1", 123L));
-        Item item2 = tracker.add(new Item("test2", "description2", 1234L));
+        Item item1 = tracker.add(new Item("test1", "description1"));
+        Item item2 = tracker.add(new Item("test2", "description2"));
         Input input = new StubInput(new String[]{"2", item2.getId(), "test2", "changed description", "6"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item2.getId()).getDescription(), is("changed description"));
@@ -126,8 +126,8 @@ public class StartUITest {
     @Test
     public void whenDeleteItem2ThenFindAllLengthEquals1() {
         Tracker tracker = new Tracker();
-        Item item1 = tracker.add(new Item("test1", "description1", 123L));
-        Item item2 = tracker.add(new Item("test2", "description2", 1234L));
+        Item item1 = tracker.add(new Item("test1", "description1"));
+        Item item2 = tracker.add(new Item("test2", "description2"));
         Input input = new StubInput(new String[]{"3", item2.getId(), "6"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().length, is(1));

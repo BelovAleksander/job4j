@@ -13,7 +13,7 @@ public class TrackerTest {
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
         Tracker tracker = new Tracker();
-        Item item = new Item("test1", "testDescription", 123L);
+        Item item = new Item("test1", "testDescription");
         tracker.add(item);
         assertThat(tracker.findAll()[0], is(item));
     }
@@ -21,11 +21,11 @@ public class TrackerTest {
     @Test
     public void whenReplaceNameThenReturnNewName() {
         Tracker tracker = new Tracker();
-        Item previous = new Item("test1", "testDescription", 123L);
+        Item previous = new Item("test1", "testDescription");
         // Добавляем заявку в трекер. Теперь в объект проинициализирован id.
         tracker.add(previous);
         // Создаем новую заявку.
-        Item next = new Item("test2", "testDescription2", 1234L);
+        Item next = new Item("test2", "testDescription2");
         // Обновляем заявку в трекере.
         tracker.replace(previous.getId(), next);
         // Проверяем, что заявка с таким id имеет новые имя test2.
@@ -35,9 +35,9 @@ public class TrackerTest {
     @Test
     public void whenFindByNameThenFindItem2() {
         Tracker tracker = new Tracker();
-        Item item1 = new Item("test1", "testDescription", 123L);
+        Item item1 = new Item("test1", "testDescription");
         tracker.add(item1);
-        Item item2 = new Item("test2", "testDescription2", 1234L);
+        Item item2 = new Item("test2", "testDescription2");
         tracker.add(item2);
         Item[] data = tracker.findByName("test2");
         Item result = data[0];
@@ -47,9 +47,9 @@ public class TrackerTest {
     @Test
     public void whenFindByIdThenFindItem2() {
         Tracker tracker = new Tracker();
-        Item item1 = new Item("test1", "testDescription", 123L);
+        Item item1 = new Item("test1", "testDescription");
         tracker.add(item1);
-        Item item2 = new Item("test2", "testDescription2", 1234L);
+        Item item2 = new Item("test2", "testDescription2");
         tracker.add(item2);
         Item result = tracker.findById(item2.getId());
         assertThat(result, is(item2));
@@ -58,9 +58,9 @@ public class TrackerTest {
     @Test
     public void whenDeleteItem2ThenDataLengthIs0() {
         Tracker tracker = new Tracker();
-        Item item1 = new Item("test1", "testDescription", 123L);
+        Item item1 = new Item("test1", "testDescription");
         tracker.add(item1);
-        Item item2 = new Item("test2", "testDescription2", 1234L);
+        Item item2 = new Item("test2", "testDescription2");
         tracker.add(item2);
         Item[] data = tracker.findByName("test2");
         Item result = data[0];
@@ -71,9 +71,9 @@ public class TrackerTest {
     @Test
     public void whenFindAllThenWithoutNull() {
         Tracker tracker = new Tracker();
-        Item item1 = new Item("test1", "testDescription", 123L);
+        Item item1 = new Item("test1", "testDescription");
         tracker.add(item1);
-        Item item2 = new Item("test2", "testDescription2", 1234L);
+        Item item2 = new Item("test2", "testDescription2");
         tracker.add(item2);
         for (Item i : tracker.findAll()) {
             System.out.println(i);

@@ -1,9 +1,5 @@
 package ru.job4j.tracker;
 
-import java.util.Date;
-
-import static java.lang.Integer.parseInt;
-
 /**
  * Является пусковым классом программы.
  * Содержит main метод  .
@@ -21,11 +17,9 @@ public class StartUI {
      */
     private final Tracker tracker;
     /**
-     * Текущая дата.
+     * Флаг выхода из цикла.
      */
-    private final Date date = new Date();
-
-    public static boolean exit = false;
+    private boolean exit = false;
     /**
      * Конструктор класса.
      *
@@ -36,12 +30,19 @@ public class StartUI {
         this.input = input;
         this.tracker = tracker;
     }
+
+    /**
+     * Остановка основного цикла программы.
+     */
+    public void stop() {
+        this.exit = true;
+    }
     /**
      * Основной цикл программы.
      */
     public final void init() {
         MenuTracker menu = new MenuTracker(this.tracker, this.input);
-        menu.fillActions();
+        menu.fillActions(this);
         while (!this.exit) {
             menu.show();
             int key = Integer.parseInt(this.input.ask("Select action: "));
