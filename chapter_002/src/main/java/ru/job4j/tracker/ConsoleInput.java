@@ -7,9 +7,17 @@ import java.util.Scanner;
  * @since 10.06.2018
  */
 public class ConsoleInput implements Input {
-    private Scanner scanner = new Scanner(System.in);
+    /**
+     * Сканирование введенных данных.
+     */
+    private final Scanner scanner = new Scanner(System.in);
 
-    public String ask(final String question) {
+    /**
+     * Метод, осуществляющий диалог программы с пользователем.
+     * @param question вопрос программы.
+     * @return ответ пользователя.
+     */
+    public final String ask(final String question) {
         System.out.println(question);
         return scanner.nextLine();
     }

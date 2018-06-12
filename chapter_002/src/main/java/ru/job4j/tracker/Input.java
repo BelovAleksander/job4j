@@ -5,5 +5,10 @@ package ru.job4j.tracker;
  * @since 11.06.2018
  */
 public interface Input {
+    /**
+     * Метод, осуществляющий диалог программы с пользователем.
+     * @param question вопрос программы.
+     * @return ответ пользователя.
+     */
     String ask(String question);
 }

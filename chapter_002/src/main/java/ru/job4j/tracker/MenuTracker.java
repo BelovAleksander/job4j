@@ -7,6 +7,7 @@ package ru.job4j.tracker;
  * @since 12.06.18
  */
 public class MenuTracker {
+    private final static int ACTIONS = 7;
     /**
      * хранилище заявок.
      */
@@ -18,14 +19,14 @@ public class MenuTracker {
     /**
      * массив доступных действий.
      */
-    private UserAction[] actions = new UserAction[7];
+    private UserAction[] actions = new UserAction[ACTIONS];
 
     /**
      * Конструктор класса.
      * @param tracker хранилище заявок.
      * @param input ввод данных.
      */
-    public MenuTracker(Tracker tracker, Input input) {
+    public MenuTracker(final Tracker tracker, final Input input) {
         this.tracker = tracker;
         this.input = input;
     }
@@ -295,10 +296,10 @@ class ExitProgram implements UserAction {
     private final StartUI ui;
 
     /**
-     * Конструктор класса
+     * Конструктор класса.
      * @param ui ссылка на основной цикл.
      */
-    public ExitProgram(final StartUI ui) {
+    ExitProgram(final StartUI ui) {
         this.ui = ui;
     }
 
