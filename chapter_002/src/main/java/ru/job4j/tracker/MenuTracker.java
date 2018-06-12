@@ -17,6 +17,10 @@ public class MenuTracker {
      */
     private Input input;
     /**
+     * счетчик
+     */
+    private int position = 0;
+    /**
      * массив доступных действий.
      */
     private UserAction[] actions = new UserAction[ACTIONS];
@@ -36,13 +40,13 @@ public class MenuTracker {
      *           чтобы его прервать.
      */
     public final void fillActions(final StartUI ui) {
-        this.actions[0] = this.new AddItem();
-        this.actions[1] = new MenuTracker.ShowItems();
-        this.actions[2] = this.new EditItem();
-        this.actions[3] = this.new DeleteItem();
-        this.actions[4] = this.new FindItemById();
-        this.actions[5] = new FindItemsByName();
-        this.actions[6] = new ExitProgram(ui);
+        this.actions[position++] = this.new AddItem();
+        this.actions[position++] = new MenuTracker.ShowItems();
+        this.actions[position++] = this.new EditItem();
+        this.actions[position++] = this.new DeleteItem();
+        this.actions[position++] = this.new FindItemById();
+        this.actions[position++] = new FindItemsByName();
+        this.actions[position++] = new ExitProgram(ui);
     }
     /**
      * вывод элементов меню.
@@ -58,9 +62,10 @@ public class MenuTracker {
      */
     public final void select(final int key) {
         if ((key > 0) && (key < 6) && (this.tracker.dataEmpty())) {
-            throw new EmptyDataException("Empty Data");
+            System.out.println("Empty data");
+        } else {
+            this.actions[key].execute(this.tracker, this.input);
         }
-        this.actions[key].execute(this.tracker, this.input);
 
     }
     /**
@@ -151,14 +156,14 @@ public class MenuTracker {
             String answer = input.ask("Item's id: ");
             Item previous = tracker.findById(answer);
             if (previous == null) {
-                throw new ItemDoesntExistException("Required item doesn't exist.");
+                System.out.println("Item with this id does't exist");
+            } else {
+                String name = input.ask("New item's name: ");
+                String description = input.ask("New item's description: ");
+                Item fresh = new Item(name, description);
+                tracker.replace(previous.getId(), fresh);
             }
-            String name = input.ask("New item's name: ");
-            String description = input.ask("New item's description: ");
-            Item fresh = new Item(name, description);
-            tracker.replace(previous.getId(), fresh);
         }
-
         /**
          * Подзаголовок в главном меню.
          * @return строка.
@@ -190,12 +195,12 @@ public class MenuTracker {
                     "Item's id: ");
             Item previous = tracker.findById(answer);
             if (previous == null) {
-                throw new ItemDoesntExistException("Required item doesn't exist.");
+                System.out.println("Item with this id does't exist");
+            } else {
+                tracker.delete(previous.getId());
+                System.out.println("Item deleted.");
             }
-            tracker.delete(previous.getId());
-            System.out.println("Item deleted.");
         }
-
         /**
          * Подзаголовок в главном меню.
          * @return строка.
@@ -226,12 +231,12 @@ public class MenuTracker {
             String id = input.ask("Item's id: ");
             Item result = tracker.findById(id);
             if (result == null) {
-                throw new ItemDoesntExistException("Required item doesn't exist.");
-            }
-            System.out.println("name: " + result.getName() + "   "
+                System.out.println("Item with this id does't exist");
+            } else {
+                System.out.println("name: " + result.getName() + "   "
                         + "description: " + result.getDescription());
+            }
         }
-
         /**
          * Подзаголовок в главном меню.
          * @return строка.
@@ -263,7 +268,7 @@ class FindItemsByName implements UserAction {
         String answer = input.ask("Item's name: ");
         Item[] data = tracker.findByName(answer);
         if (data.length == 0) {
-            throw new ItemDoesntExistException("Required item doesn't exist.");
+            System.out.println("Item with this name doesn't exist");
         }
         for (Item item : data) {
             System.out.println("name: " + item.getName() + "   "

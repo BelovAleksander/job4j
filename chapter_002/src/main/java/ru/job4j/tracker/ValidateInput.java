@@ -39,10 +39,6 @@ public class ValidateInput implements Input {
             try {
                 value = this.input.ask(question, range);
                 correct = true;
-            } catch (ItemDoesntExistException idee) {
-                System.out.println("Required item doesn't exist.");
-            } catch (EmptyDataException ede) {
-                System.out.println("Empty Data");
             } catch (MenuOutException moe) {
                 System.out.println("Please select key from menu: ");
             } catch (NumberFormatException nfe) {
