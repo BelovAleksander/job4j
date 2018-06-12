@@ -59,9 +59,9 @@ public class MenuTracker {
     public final void select(final int key) {
         if ((key > 0) && (key < 6) && (this.tracker.dataEmpty())) {
             throw new EmptyDataException("Empty Data");
-        } else {
-            this.actions[key].execute(this.tracker, this.input);
         }
+        this.actions[key].execute(this.tracker, this.input);
+
     }
     /**
      * Класс, обрабатывающий добавление заявки.
@@ -152,12 +152,11 @@ public class MenuTracker {
             Item previous = tracker.findById(answer);
             if (previous == null) {
                 throw new ItemDoesntExistException("Required item doesn't exist.");
-            } else {
-                String name = input.ask("New item's name: ");
-                String description = input.ask("New item's description: ");
-                Item fresh = new Item(name, description);
-                tracker.replace(previous.getId(), fresh);
             }
+            String name = input.ask("New item's name: ");
+            String description = input.ask("New item's description: ");
+            Item fresh = new Item(name, description);
+            tracker.replace(previous.getId(), fresh);
         }
 
         /**
@@ -192,10 +191,9 @@ public class MenuTracker {
             Item previous = tracker.findById(answer);
             if (previous == null) {
                 throw new ItemDoesntExistException("Required item doesn't exist.");
-            } else {
-                tracker.delete(previous.getId());
-                System.out.println("Item deleted.");
             }
+            tracker.delete(previous.getId());
+            System.out.println("Item deleted.");
         }
 
         /**
@@ -229,10 +227,9 @@ public class MenuTracker {
             Item result = tracker.findById(id);
             if (result == null) {
                 throw new ItemDoesntExistException("Required item doesn't exist.");
-            } else {
-                System.out.println("name: " + result.getName() + "   "
-                        + "description: " + result.getDescription());
             }
+            System.out.println("name: " + result.getName() + "   "
+                        + "description: " + result.getDescription());
         }
 
         /**
