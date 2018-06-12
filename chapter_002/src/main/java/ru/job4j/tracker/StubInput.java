@@ -12,7 +12,7 @@ public class StubInput implements Input {
      * 0 - выбор пункта меня "добавить новую заявку".
      * name - имя заявки
      * desc - описание заявки
-     * y - выйти из трекера.
+     * 6 - выйти из трекера.
      */
     private final String[] value;
 
@@ -37,5 +37,21 @@ public class StubInput implements Input {
     @Override
     public String ask(String question) {
         return this.value[this.position++];
+    }
+
+    public int ask(String question, int[] range) {
+        boolean correct = false;
+        int key = Integer.parseInt(this.ask(question));
+        for (int value : range) {
+            if (value == key) {
+                correct = true;
+                break;
+            }
+        }
+        if (correct) {
+            return key;
+        } else {
+            throw new MenuOutException("Out of menu range");
+        }
     }
 }

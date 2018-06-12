@@ -58,7 +58,7 @@ public class MenuTracker {
      */
     public final void select(final int key) {
         if ((key > 0) && (key < 6) && (this.tracker.dataEmpty())) {
-            System.out.println("Empty data");
+            throw new EmptyDataException("Empty Data");
         } else {
             this.actions[key].execute(this.tracker, this.input);
         }
@@ -115,16 +115,13 @@ public class MenuTracker {
          */
         public final void execute(final Tracker tracker, final Input input) {
             Item[] data = tracker.findAll();
-            if (data.length == 0) {
-                System.out.println("Empty data");
-            } else {
-                for (Item item : data) {
-                    System.out.println("name: " + item.getName() + "   "
-                            + "description: " + item.getDescription());
-                    System.out.println("---------------------");
-                }
+            for (Item item : data) {
+                System.out.println("name: " + item.getName() + "   "
+                        + "description: " + item.getDescription());
+                System.out.println("---------------------");
             }
         }
+
         /**
          * Подзаголовок в главном меню.
          * @return строка.
@@ -154,7 +151,7 @@ public class MenuTracker {
             String answer = input.ask("Item's id: ");
             Item previous = tracker.findById(answer);
             if (previous == null) {
-                System.out.println("Item with this id does't exist");
+                throw new ItemDoesntExistException("Required item doesn't exist.");
             } else {
                 String name = input.ask("New item's name: ");
                 String description = input.ask("New item's description: ");
@@ -194,7 +191,7 @@ public class MenuTracker {
                     "Item's id: ");
             Item previous = tracker.findById(answer);
             if (previous == null) {
-                System.out.println("Item with this id does't exist");
+                throw new ItemDoesntExistException("Required item doesn't exist.");
             } else {
                 tracker.delete(previous.getId());
                 System.out.println("Item deleted.");
@@ -231,7 +228,7 @@ public class MenuTracker {
             String id = input.ask("Item's id: ");
             Item result = tracker.findById(id);
             if (result == null) {
-                System.out.println("Item with this id does't exist");
+                throw new ItemDoesntExistException("Required item doesn't exist.");
             } else {
                 System.out.println("name: " + result.getName() + "   "
                         + "description: " + result.getDescription());
@@ -269,7 +266,7 @@ class FindItemsByName implements UserAction {
         String answer = input.ask("Item's name: ");
         Item[] data = tracker.findByName(answer);
         if (data.length == 0) {
-            System.out.println("Item with this name doesn't exist");
+            throw new ItemDoesntExistException("Required item doesn't exist.");
         }
         for (Item item : data) {
             System.out.println("name: " + item.getName() + "   "

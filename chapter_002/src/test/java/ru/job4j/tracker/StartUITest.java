@@ -133,20 +133,24 @@ public class StartUITest {
         assertThat(tracker.findAll().length, is(1));
     }
 
-    @Test
-    public void whenPutIncorrectValueThenPrintEmptyData() {
+    @Test(expected = EmptyDataException.class)
+    public void whenPutIncorrectValueThenEmptyDataException() {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"2", "6"});
         new StartUI(input, tracker).init();
-        assertThat(new String(out.toByteArray()),
-                is(
-                        new StringBuilder()
-                        .append(menu)
-                        .append("Empty data")
-                        .append(System.lineSeparator())
-                        .append(menu)
-                        .toString()
-                )
-        );
+    }
+
+    @Test(expected = ItemDoesntExistException.class)
+    public void whenPutIncorrectIdThenItemDoesntExistException() {
+        Tracker tracker = new Tracker();
+        Input input = new StubInput(new String[]{"0", "test", "desc", "4", "456", "6"});
+        new StartUI(input, tracker).init();
+    }
+
+    @Test(expected = MenuOutException.class)
+    public void whenPutIncorrectKeyThenMenuOutException() {
+        Tracker tracker = new Tracker();
+        Input input = new StubInput(new String[]{"9"});
+        new StartUI(input, tracker).init();
     }
 }

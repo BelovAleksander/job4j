@@ -17,6 +17,10 @@ public class StartUI {
      */
     private final Tracker tracker;
     /**
+     * Последовательность допустимых значений в меню.
+     */
+    private int[] range = new int[]{0, 1, 2, 3, 4, 5, 6};
+    /**
      * Флаг выхода из цикла.
      */
     private boolean exit = false;
@@ -45,12 +49,11 @@ public class StartUI {
         menu.fillActions(this);
         while (!this.exit) {
             menu.show();
-            int key = Integer.parseInt(this.input.ask("Select action: "));
-            menu.select(key);
+            menu.select(input.ask("Select action: ", range));
         }
     }
 
     public static void main(String[] args) {
-        new StartUI(new ConsoleInput(), new Tracker()).init();
+        new StartUI(new ValidateInput(), new Tracker()).init();
     }
 }
