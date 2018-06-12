@@ -1,16 +1,33 @@
 package ru.job4j.tracker;
 
 /**
- * Класс-наследник ConsoleInput. Предназначен для перехвата
- * исключений родительского класса.
+ * Класс-декоратор, расширяющий поведение
+ * декорируемого класса.
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 12.06.18
  */
-public class ValidateInput extends ConsoleInput {
+public class ValidateInput implements Input {
     /**
-     * Переопределенный метод родительского класса.
-     * Отправляет параметры методу родителя, перехватывает
-     * возможные исключения.
+     * переменная для декорируемого класса.
+     */
+    private Input input;
+
+    /**
+     * Конструктор.
+     * @param input декорируемый класс
+     */
+    public ValidateInput(Input input) {
+        this.input = input;
+    }
+
+    @Override
+    public String ask(String question) {
+        return this.input.ask(question);
+    }
+    /**
+     * Переопределенный метод декорируемого класса.
+     * Отправляет параметры методу декорируемого класса,
+     * перехватывает возможные исключения.
      * @param question Запрос программы.
      * @param range Последовательность допустимых значений.
      * @return результат работы super метода.
@@ -20,7 +37,7 @@ public class ValidateInput extends ConsoleInput {
         int value = -1;
         do {
             try {
-                value = super.ask(question, range);
+                value = this.input.ask(question, range);
                 correct = true;
             } catch (ItemDoesntExistException idee) {
                 System.out.println("Required item doesn't exist.");

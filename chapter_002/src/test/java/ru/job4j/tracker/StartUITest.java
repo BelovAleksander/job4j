@@ -52,6 +52,19 @@ public class StartUITest {
     }
 
     @Test
+    public void whenInputIncorrect() {
+        ValidateInput input = new ValidateInput(
+                new StubInput(new String[]{"incorrect", "1"}));
+        input.ask("Enter", new int[]{1});
+        assertThat(
+                this.out.toString(),
+                is(
+                        String.format("Please, enter validate data: %n")
+                )
+        );
+    }
+
+    @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});   //создаём StubInput с последовательностью действий
