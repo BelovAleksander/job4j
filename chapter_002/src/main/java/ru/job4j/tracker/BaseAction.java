@@ -7,12 +7,10 @@ package ru.job4j.tracker;
 public abstract class BaseAction implements UserAction {
     private final String name;
     private final int key;
-    private final StartUI ui;
 
-    public BaseAction(String name, int key, StartUI ui) {
+    public BaseAction(String name, int key) {
         this.name = name;
         this.key = key;
-        this.ui = ui;
     }
 
     public int key() {
@@ -21,9 +19,5 @@ public abstract class BaseAction implements UserAction {
 
     public String info() {
         return String.format("%s. %s", this.key, this.name);
-    }
-
-    public void stop() {
-        ui.stop();
     }
 }
