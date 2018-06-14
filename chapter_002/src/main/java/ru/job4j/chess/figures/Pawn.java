@@ -3,9 +3,8 @@ package ru.job4j.chess.figures;
 import ru.job4j.chess.Board;
 /**
  *
- * @author Petr Arsentev (parsentev@yandex.ru)
- * @version $Id$
- * @since 0.1
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 13.06.18
  */
 public class Pawn extends Figure {
     private final Cell position;

@@ -3,6 +3,12 @@ package ru.job4j.chess.figures;
 import ru.job4j.chess.Board;
 import ru.job4j.chess.ImpossibleMoveException;
 
+
+/**
+ *
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 13.06.18
+ */
 public abstract class Figure {
     public abstract Cell position();
 

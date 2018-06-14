@@ -7,9 +7,8 @@ import ru.job4j.chess.OccupiedFieldException;
 
 /**
  *
- * @author Petr Arsentev (parsentev@yandex.ru)
- * @version $Id$
- * @since 0.1
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 13.06.18
  */
 public class Bishop extends Figure {
     private Cell position = null;
