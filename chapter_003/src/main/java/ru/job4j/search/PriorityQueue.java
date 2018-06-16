@@ -22,7 +22,7 @@ public class PriorityQueue {
             this.tasks.add(task);
         } else {
             for (int index = 0; index < this.tasks.size(); index++) {
-                if (tasks.get(index).getPriority() > task.getPriority()) {
+                if ((tasks.get(index).getPriority() > task.getPriority()) || (this.tasks.size() - 1 == index)) {
                     tasks.add(index, task);
                     break;
                 }
