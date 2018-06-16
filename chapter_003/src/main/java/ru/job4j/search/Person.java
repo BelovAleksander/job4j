@@ -8,31 +8,43 @@ package ru.job4j.search;
  */
 
 public class Person {
-    private String name;
-    private String surname;
-    private String phone;
-    private String address;
+    /**
+     * имя.
+     */
+    private final String name;
+    /**
+     * фамилия.
+     */
+    private final String surname;
+    /**
+     * телефон.
+     */
+    private final String phone;
+    /**
+     * адрес.
+     */
+    private final String address;
 
-    public Person(String name, String surname, String phone, String address) {
+    public Person(final String name, final String surname, final String phone, final String address) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.address = address;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public String getSurname() {
+    public final String getSurname() {
         return surname;
     }
 
-    public String getPhone() {
+    public final String getPhone() {
         return phone;
     }
 
-    public String getAddress() {
+    public final String getAddress() {
         return address;
     }
 }

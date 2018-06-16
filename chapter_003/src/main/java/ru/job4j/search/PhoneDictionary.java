@@ -11,9 +11,9 @@ import java.util.List;
  */
 
 public class PhoneDictionary {
-    private List<Person> persons = new ArrayList<Person>();
+    private final List<Person> persons = new ArrayList<Person>();
 
-    public void add(Person person) {
+    public final void add(final Person person) {
         this.persons.add(person);
     }
 
@@ -22,7 +22,7 @@ public class PhoneDictionary {
      * @param key Ключ поиска.
      * @return Список подощедщих пользователей.
      */
-    public List<Person> find(String key) {
+    public final List<Person> find(String key) {
         List<Person> result = new ArrayList<>();
         for (Person person : this.persons) {
             if ((person.getName().contains(key))
