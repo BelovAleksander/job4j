@@ -25,6 +25,22 @@ public class ConvertList2ArrayTest {
     }
 
     @Test
+    public void when7ElementsThen8() {
+        ConvertList2Array list = new ConvertList2Array();
+        int[][] result = list.toArray(
+                Arrays.asList(1, 2, 3, 4, 5, 6, 7),
+                4
+        );
+        int[][] expect = {
+                {1, 2},
+                {3, 4},
+                {5, 6},
+                {7, 0}
+        };
+        assertThat(result, is(expect));
+    }
+
+    @Test
     public void whenConvertListOfArrayThenList() {
         ConvertList2Array list = new ConvertList2Array();
         int[] first = {1, 2};

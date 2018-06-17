@@ -22,7 +22,7 @@ public class ConvertList2Array {
         int row = 0;
         int cell = 0;
         for (int el : list) {
-            if (cell == 3) {
+            if (cell == cells) {
                 cell = 0;
                 row++;
             }
