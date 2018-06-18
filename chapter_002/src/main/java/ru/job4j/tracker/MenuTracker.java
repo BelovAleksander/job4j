@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+
 /**
  * Класс отображает меню со всеми досупными в меню действиями
  * качестве внутренних классов.
@@ -114,7 +116,7 @@ public class MenuTracker {
          * @param input ввод данных.
          */
         public final void execute(final Tracker tracker, final Input input) {
-            Item[] data = tracker.findAll();
+            ArrayList<Item> data = tracker.findAll();
             for (Item item : data) {
                 System.out.println("name: " + item.getName() + "   "
                         + "description: " + item.getDescription());
@@ -218,8 +220,8 @@ class FindItemsByName extends BaseAction {
      */
     public final void execute(final Tracker tracker, final Input input) {
         String answer = input.ask("Item's name: ");
-        Item[] data = tracker.findByName(answer);
-        if (data.length == 0) {
+        ArrayList<Item> data = tracker.findByName(answer);
+        if (data.size() == 0) {
             System.out.println("Item with this name doesn't exist");
         }
         for (Item item : data) {
