@@ -63,9 +63,9 @@ public class Tracker {
      * @param id индекс удаляемого значения.
      */
     public final void delete(final String id) {
-        for (Item item : this.items) {
-            if (item.getId().equals(id)) {
-                this.items.remove(item);
+        for (int index = 0; index < this.items.size(); index++) {
+            if (this.items.get(index).getId().equals(id)) {
+                this.items.remove(index);
                 break;
             }
         }

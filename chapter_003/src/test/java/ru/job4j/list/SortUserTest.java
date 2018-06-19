@@ -46,4 +46,20 @@ public class SortUserTest {
                 .toString()
         ));
     }
+
+    @Test
+    public void whenSameNamesThenSortByAges() {
+        User first = new User("Сергей", 25);
+        User second = new User("Иван", 30);
+        User third = new User("Сергей", 20);
+        User fourth = new User("Иван", 25);
+        List<User> list = new ArrayList<>(Arrays.asList(first, second, third, fourth));
+        List<User> result = new SortUser().sortByAllFields(list);
+        List<User> expected = new ArrayList<>();
+        expected.add(fourth);
+        expected.add(second);
+        expected.add(third);
+        expected.add(first);
+        assertThat(result, is(expected));
+    }
 }
