@@ -87,17 +87,6 @@ public class Tracker {
                                        final String dstPassport, final String dstRequisite,
                                        final double amount) {
         boolean result = false;
-        User sender = null;
-        User recipient = null;
-        for (User user : bank.keySet()) {
-            if (user.getPassport().equals(srcPassport)) {
-                sender = user;
-            } else if (user.getPassport().equals(dstPassport)) {
-                recipient = user;
-            } else if (sender != null && recipient != null) {
-                break;
-            }
-        }
         Account src = findAccount(srcRequisite, getUserAccounts(srcPassport));
         Account dst = findAccount(dstRequisite, getUserAccounts(dstPassport));
         if (src != null && dst != null && src.getValue() >= amount) {
