@@ -1,6 +1,5 @@
 package ru.job4j.bank;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +15,7 @@ public class Tracker {
      */
     Map<User, List<Account>> bank = new HashMap<>();
     /**
-     *
-     */
-    private Map<String, Account> requisitesData = new HashMap<>();
-    /**
-     * Добавление полбзователя.
+     * Добавление пользователя.
      * @param user пользователь
      */
     public final void addUser(final User user) {
@@ -44,7 +39,6 @@ public class Tracker {
         for (User user : this.bank.keySet()) {
             if (user.getPassport().equals(passport)) {
                 user.addAccount(account);
-                requisitesData.put(account.getRequisites(), account);
                 break;
             }
         }
@@ -58,7 +52,6 @@ public class Tracker {
     public final void deleteAccountFromUser(final String passport, final Account account) {
         for (User user : this.bank.keySet()) {
             if (user.getPassport().equals(passport)) {
-                requisitesData.remove(account.getRequisites());
                 user.deleteAccount(account);
                 break;
             }
@@ -105,8 +98,8 @@ public class Tracker {
                 break;
             }
         }
-        Account src = searchAccount(srcRequisite);
-        Account dst = searchAccount(dstRequisite);
+        Account src = findAccount(srcRequisite, getUserAccounts(srcPassport));
+        Account dst = findAccount(dstRequisite, getUserAccounts(dstPassport));
         if (src != null && dst != null && src.getValue() >= amount) {
             src.changeValue(-amount);
             dst.changeValue(amount);
@@ -117,7 +110,13 @@ public class Tracker {
         }
         return result;
     }
-    public Account searchAccount(String requisite) {
-        return requisitesData.get(requisite);
+    public Account findAccount(String requisite, List<Account> list) {
+        Account result = null;
+        for (Account account : list) {
+            if (account.getRequisites().equals(requisite)) {
+                result = account;
+            }
+        }
+        return result;
     }
 }
