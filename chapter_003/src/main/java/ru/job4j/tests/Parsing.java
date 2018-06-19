@@ -6,6 +6,7 @@ package ru.job4j.tests;
  * Пока не придумал как отследить такие
  * неверные входящие значения:
  * "{([)]}"
+ *
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 18.06.18
  */

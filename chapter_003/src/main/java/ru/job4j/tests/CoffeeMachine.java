@@ -15,10 +15,8 @@ public class CoffeeMachine {
     private final static int COIN2 = 2;
     private final static int COIN5 = 5;
     private final static int COIN10 = 10;
-    /**
-     * Максимальное количество возвращаемых монет.
-     */
-    private final static int MAX_COINS_IN_CHANGE = 50;
+
+    private int[] array = new int[50];
 
     /**
      * Метод вычисляет количество и тип
@@ -28,24 +26,32 @@ public class CoffeeMachine {
      * @return массив с монетами
      */
     public final int[] changes(final int value, int price) {
-        int[] array = new int[MAX_COINS_IN_CHANGE];
         int flag = 0;
         for (int index = 0; price != value; index++) {
+            if (this.array.length - index == 1) {
+                this.array = expandedArray();
+            }
             if (value - price >= COIN10) {
-                array[index] = COIN10;
+                this.array[index] = COIN10;
                 price += COIN10;
             } else if (value - price >= COIN5) {
-                array[index] = COIN5;
+                this.array[index] = COIN5;
                 price += COIN5;
             } else if (value - price >= COIN2) {
-                array[index] = COIN2;
+                this.array[index] = COIN2;
                 price += COIN2;
             } else {
-                array[index] = COIN1;
+                this.array[index] = COIN1;
                 price += COIN1;
             }
             flag++;
         }
-        return Arrays.copyOf(array, flag);
+        return Arrays.copyOf(this.array, flag);
+    }
+
+    public int[] expandedArray() {
+        int[] newArray = new int[this.array.length * 2];
+        System.arraycopy(this.array, 0, newArray, 0, this.array.length);
+        return newArray;
     }
 }

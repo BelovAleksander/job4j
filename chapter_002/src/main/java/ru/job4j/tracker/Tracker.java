@@ -50,8 +50,7 @@ public class Tracker {
             if (element.getId().equals(id)) {
                 int index = this.items.indexOf(element);
                 item.setId(id);
-                this.items.remove(element);
-                this.items.add(index, item);
+                this.items.set(index, item);
                 break;
             }
         }

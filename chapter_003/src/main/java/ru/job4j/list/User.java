@@ -6,16 +6,17 @@ import java.util.Random;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 19.06.18
  */
-public class User {
+public class User implements Comparable<User> {
     private final String name;
-    private final String city;
-    private final int id;
+//    private final String city;
+    private final int age;
+//    private final int id;
 
-    public User(String name, String city) {
+    public User(String name, int age) {
         this.name = name;
-        this.city = city;
-        this.id = setId();
-        System.out.println(this.id);
+//        this.city = city;
+//        this.id = setId();
+        this.age = age;
     }
 
     private int setId() {
@@ -23,7 +24,19 @@ public class User {
         return rn.nextInt();
     }
 
-    public int getId() {
-        return this.id;
+//    public int getId() {
+//        return this.id;
+//    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getAge() {
+        return this.age;
+    }
+
+    public int compareTo(User o1) {
+        return Integer.compare(this.getAge(), o1.getAge());
     }
 }
