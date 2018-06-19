@@ -9,6 +9,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ListCompareTest {
     @Test
+    public void whenAbaaaAndAbaa() {
+        ListCompare compare = new ListCompare();
+        int rst = compare.compare(
+                "abaaa",
+                "abaa"
+        );
+        assertThat(rst, is(1));
+    }
+
+    @Test
     public void whenStringsAreEqualThenZero() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
