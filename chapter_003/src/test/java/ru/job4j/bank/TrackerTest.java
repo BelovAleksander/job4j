@@ -80,8 +80,8 @@ public class TrackerTest {
         tracker.addAccountToUser("dstPas", test2);
         tracker.transferMoney("srcPas", "srcReq",
                 "dstPas", "dstReq", 100);
-        int[] result = new int[]{(int) tracker.getUserAccounts("srcPas").get(0).getValue(),
-                (int) tracker.getUserAccounts("dstPas").get(0).getValue()};
+        int[] result = new int[]{(int) tracker.searchAccount("srcReq").getValue(),
+                (int) tracker.searchAccount("dstReq").getValue()};
         assertThat(result, is(new int[]{0, 150}));
     }
 

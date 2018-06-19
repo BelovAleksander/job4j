@@ -1,5 +1,6 @@
 package ru.job4j.bank;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,13 @@ import java.util.Map;
  */
 public class Tracker {
     /**
-     * база данных.
+     * база данных счетов с привязкой к пользователям.
      */
     Map<User, List<Account>> bank = new HashMap<>();
-
+    /**
+     *
+     */
+    private Map<String, Account> requisitesData = new HashMap<>();
     /**
      * Добавление полбзователя.
      * @param user пользователь
@@ -40,6 +44,7 @@ public class Tracker {
         for (User user : this.bank.keySet()) {
             if (user.getPassport().equals(passport)) {
                 user.addAccount(account);
+                requisitesData.put(account.getRequisites(), account);
                 break;
             }
         }
@@ -53,6 +58,7 @@ public class Tracker {
     public final void deleteAccountFromUser(final String passport, final Account account) {
         for (User user : this.bank.keySet()) {
             if (user.getPassport().equals(passport)) {
+                requisitesData.remove(account.getRequisites());
                 user.deleteAccount(account);
                 break;
             }
@@ -99,26 +105,19 @@ public class Tracker {
                 break;
             }
         }
-        Account src = null;
-        for (Account account : sender.getAccounts()) {
-            if (account.getRequisites().equals(srcRequisite)
-                    && account.getValue() >= amount) {
-                src = account;
-            }
-        }
-        for (Account account : recipient.getAccounts()) {
-            if (account.getRequisites().equals(dstRequisite)
-                    && src != null) {
-                src.changeValue(-amount);
-                account.changeValue(amount);
-                result = true;
-            }
-        }
-        if (result) {
-            System.out.println("Transfer successful!");
+        Account src = searchAccount(srcRequisite);
+        Account dst = searchAccount(dstRequisite);
+        if (src != null && dst != null && src.getValue() >= amount) {
+            src.changeValue(-amount);
+            dst.changeValue(amount);
+            result = true;
+            System.out.println("Transfer succeed!");
         } else {
             System.out.println("Transfer failed!");
         }
         return result;
+    }
+    public Account searchAccount(String requisite) {
+        return requisitesData.get(requisite);
     }
 }
