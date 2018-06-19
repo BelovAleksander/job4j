@@ -5,6 +5,10 @@ import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+/**
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 20.06.18
+ */
 public class TrackerTest {
     @Test
     public void whenAddUserThenSuccess() {

@@ -3,22 +3,49 @@ package ru.job4j.bank;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс описывает Пользователя.
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 20.06.18
+ */
 public class User {
+    /**
+     * имя
+     */
     private final String name;
+    /**
+     * id
+     */
     private final String passport;
+    /**
+     * список счетов, принадлежащих пользователю
+     */
     private List<Account> accounts = new ArrayList<>();
 
+    /**
+     * Конструктор
+     * @param name имя
+     * @param passport id
+     */
     public User(String name, String passport) {
         this.name = name;
         this.passport = passport;
     }
 
-    public void addAccount(Account account) {
+    /**
+     * добавление счета
+     * @param account
+     */
+    public final void addAccount(final Account account) {
         this.accounts.add(account);
         System.out.println("Account added. Passport: " + this.passport);
     }
 
-    public void deleteAccount(Account account) {
+    /**
+     * удаление счета
+     * @param account
+     */
+    public final void deleteAccount(final Account account) {
         if (!accounts.contains(account)) {
             System.out.println("There is no such account!");
         }
@@ -26,16 +53,24 @@ public class User {
         System.out.println("Account deleted.");
     }
 
-    public List<Account> getAccounts() {
+    /**
+     * геттер для списка счетов
+     * @return список счетов
+     */
+    public final List<Account> getAccounts() {
         return this.accounts;
     }
 
-    public String getPassport() {
+    /**
+     * геттер для id
+     * @return id
+     */
+    public final String getPassport() {
         return this.passport;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
