@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Содержит различные реализации сортировки list.
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 18.06.18
+ */
 public class SortUser {
     public Set<User> sort(List<User> list) {
-        TreeSet<User> set = new TreeSet<>();
-        set.addAll(list);
-        return set;
+        return new TreeSet<>(list);
     }
     public List<User> sortNameLength(List<User> list) {
         list.sort(
