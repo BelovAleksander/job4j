@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 /**
  * Итератор для возвращения четных чисел из массивов int[].
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 4.08.18
+ * @since 24.06.18
  */
 public class EventIterator implements Iterator {
     /**

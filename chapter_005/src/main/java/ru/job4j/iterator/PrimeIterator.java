@@ -6,9 +6,9 @@ import java.util.NoSuchElementException;
 /**
  * Итератор для возвращения простых чисел из массивов int[].
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 4.08.18
+ * @since 24.06.18
  */
-public class PrimeIterator implements Iterator {
+public class PrimeIterator implements Iterator{
     /**
      * массив int[]
      */
