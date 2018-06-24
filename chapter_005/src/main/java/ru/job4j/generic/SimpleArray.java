@@ -34,11 +34,11 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param element добавляемый элемент
      */
     public void add(T element) {
-        if(index == size) {
+        if (this.index == this.size) {
             throw new StackOverflowError("Array is full!");
         }
         this.array[this.index] = element;
-        index++;
+        this.index++;
     }
 
     /**
@@ -55,7 +55,7 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param index индекс
      */
     public void delete(int index) {
-        array[index] = null;
+        this.array[index] = null;
     }
 
     /**
@@ -64,7 +64,7 @@ public class SimpleArray<T> implements Iterable<T> {
      * @return элемент
      */
     public T get(int index) {
-        return array[index];
+        return this.array[index];
     }
 
     @Override

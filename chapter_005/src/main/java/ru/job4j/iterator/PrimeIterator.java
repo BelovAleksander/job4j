@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 24.06.18
  */
-public class PrimeIterator implements Iterator{
+public class PrimeIterator implements Iterator {
     /**
      * массив int[]
      */
@@ -29,8 +29,8 @@ public class PrimeIterator implements Iterator{
      */
     public int indexOfPrime() {
         int result = -1;
-        for (int i = this.index; i < array.length; i++) {
-            if (array[i] > 1 && isPrime(array[i])) {
+        for (int i = this.index; i < this.array.length; i++) {
+            if (this.array[i] > 1 && isPrime(this.array[i])) {
                 result = i;
                 break;
             }
@@ -68,11 +68,11 @@ public class PrimeIterator implements Iterator{
      * @return следующее простое число из массива
      */
     public Object next() {
-        if (index >= array.length || indexOfPrime() == -1) {
+        if (this.index >= this.array.length || indexOfPrime() == -1) {
             throw new NoSuchElementException("No such element!");
         }
         this.index = indexOfPrime();
-        int result = array[index++];
+        int result = this.array[this.index++];
         return result;
     }
 }
