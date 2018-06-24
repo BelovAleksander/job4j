@@ -1,20 +1,19 @@
 package ru.job4j.list;
 
-import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 /**
- * Класс создает динамический список на базе массива.
+ * Класс создает динамический список на базе связанного списка.
  * Реализует Iterable.
  *
  * @param <E> задаваемый входящий тип
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 25.06.18
  */
-public class DynamicArray<E> implements Iterable<E> {
-    private Object[] container;
-    private int index = 0;
+public class DynamicLinkedList<E> implements Iterable<E> {
+    private Node<E> first;
+    private Node<E> last;
     private int size;
     /**
      * счетчик изменений
@@ -25,21 +24,26 @@ public class DynamicArray<E> implements Iterable<E> {
      */
     private int itCount = 0;
 
-    public DynamicArray(int size) {
-        this.size = size;
-        this.container = new Object[size];
+    public DynamicLinkedList() {
+        this.size = 0;
     }
 
     /**
      * Добавление элемента.
      *
-     * @param value новый элемент
+     * @param data новый элемент
      */
-    public void add(E value) {
-        this.container[this.index++] = value;
-        if (this.size == this.index) {
-            this.container = grow();
+    public void add(E data) {
+        Node<E> newLink = new Node<>(data);
+        if (this.first != null) {
+            this.first.last = newLink;
         }
+        newLink.next = this.first;
+        if (this.last == null) {
+            this.last = newLink;
+        }
+        this.first = newLink;
+        this.size++;
         this.modCount++;
     }
 
@@ -50,27 +54,11 @@ public class DynamicArray<E> implements Iterable<E> {
      * @return элемент
      */
     public E get(int index) {
-        return (E) this.container[index];
-    }
-
-    /**
-     * Увеличение size массива.
-     *
-     * @return увеличенный массив
-     */
-    public Object[] grow() {
-        this.modCount++;
-        size *= 2;
-        return Arrays.copyOf(this.container, this.size * 2);
-    }
-
-    /**
-     * Возвращает размер массива.
-     *
-     * @return размер
-     */
-    public int getSize() {
-        return this.size;
+        Node<E> result = this.last;
+        for (int i = 0; i < index; i++) {
+            result = result.last;
+        }
+        return result.data;
     }
 
     /**
@@ -93,8 +81,18 @@ public class DynamicArray<E> implements Iterable<E> {
                 if (modCountCopy != modCount) {
                     throw new ConcurrentModificationException("Concurrent modification!");
                 }
-                return (E) container[itCount++];
+                return get(itCount++);
             }
         };
+    }
+
+    private static class Node<E> {
+        E data;
+        DynamicLinkedList.Node<E> next;
+        DynamicLinkedList.Node<E> last;
+
+        Node(E data) {
+            this.data = data;
+        }
     }
 }

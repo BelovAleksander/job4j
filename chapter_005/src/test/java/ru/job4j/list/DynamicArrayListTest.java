@@ -14,8 +14,8 @@ import static org.hamcrest.core.Is.is;
  * @since 25.06.18
  */
 
-public class DynamicArrayTest {
-    DynamicArray<Integer> container = new DynamicArray<>(3);
+public class DynamicArrayListTest {
+    DynamicArrayList<Integer> container = new DynamicArrayList<>(3);
 
     @Before
     public void setUp() {
