@@ -27,7 +27,6 @@ public class DynamicLinkedList<E> implements Iterable<E> {
     public DynamicLinkedList() {
         this.size = 0;
     }
-
     /**
      * Добавление элемента.
      *
@@ -35,16 +34,41 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      */
     public void add(E data) {
         Node<E> newLink = new Node<>(data);
-        if (this.first != null) {
-            this.first.last = newLink;
+        if (this.first == null) {
+            this.last = newLink;
+        } else {
+            this.first.previous = newLink;
         }
         newLink.next = this.first;
-        if (this.last == null) {
-            this.last = newLink;
-        }
         this.first = newLink;
         this.size++;
         this.modCount++;
+    }
+
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
+    public E removeFirst() {
+        E data = this.first.data;
+        if (this.first.next == null) {
+            this.last = null;
+        }
+        this.first = this.first.next;
+        this.first.previous = null;
+        this.size--;
+        return data;
+    }
+
+    public E removeLast() {
+        E data = this.last.data;
+        if (this.last.previous == null) {
+            this.first = null;
+        }
+        this.last = this.last.previous;
+        this.last.next = null;
+        this.size--;
+        return data;
     }
 
     /**
@@ -56,7 +80,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
     public E get(int index) {
         Node<E> result = this.last;
         for (int i = 0; i < index; i++) {
-            result = result.last;
+            result = result.previous;
         }
         return result.data;
     }
@@ -89,7 +113,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
     private static class Node<E> {
         E data;
         DynamicLinkedList.Node<E> next;
-        DynamicLinkedList.Node<E> last;
+        DynamicLinkedList.Node<E> previous;
 
         Node(E data) {
             this.data = data;
