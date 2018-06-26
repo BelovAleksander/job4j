@@ -23,7 +23,7 @@ public class DynamicArrayList<E> implements Iterable<E> {
     /**
      * счетчик для итератора
      */
-    private int itCount = 0;
+
 
     public DynamicArrayList(int size) {
         this.size = size;
@@ -83,9 +83,10 @@ public class DynamicArrayList<E> implements Iterable<E> {
         int modCountCopy = this.modCount;
 
         return new Iterator<E>() {
+            int itCount = 0;
             @Override
             public boolean hasNext() {
-                return itCount < size - 1;
+                return itCount < size - 1 && container[itCount] != null;
             }
 
             @Override

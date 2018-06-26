@@ -10,7 +10,7 @@ import java.util.Iterator;
  * @since 24.06.18
  */
 
-public class SimpleArray<T> implements Iterable<T> {
+public class DynamicArray<T> implements Iterable<T> {
     /**
      * массив для заполнения
      */
@@ -24,7 +24,7 @@ public class SimpleArray<T> implements Iterable<T> {
      */
     private int size;
 
-    public SimpleArray(int size) {
+    public DynamicArray(int size) {
         this.size = size;
         this.array = (T[]) new Object[size];
     }

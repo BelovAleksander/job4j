@@ -9,14 +9,14 @@ public abstract class AbstractStore implements Store {
     /**
      * база данных
      */
-    private SimpleArray<Base> array;
+    private DynamicArray<Base> array;
     /**
      * заданный размер массива
      */
     private int size;
 
     public AbstractStore(int size) {
-        this.array = new SimpleArray<>(size);
+        this.array = new DynamicArray<>(size);
         this.size = size;
     }
 
