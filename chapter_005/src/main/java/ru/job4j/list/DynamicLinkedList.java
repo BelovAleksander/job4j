@@ -19,10 +19,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      * счетчик изменений
      */
     private int modCount = 0;
-    /**
-     * счетчик для итератора
-     */
-    private int itCount = 0;
+
 
     public DynamicLinkedList() {
         this.size = 0;
@@ -47,6 +44,10 @@ public class DynamicLinkedList<E> implements Iterable<E> {
 
     public boolean isEmpty() {
         return this.size == 0;
+    }
+
+    public int getSize() {
+        return this.size;
     }
 
     public E removeFirst() {
@@ -95,6 +96,10 @@ public class DynamicLinkedList<E> implements Iterable<E> {
         int modCountCopy = this.modCount;
 
         return new Iterator<E>() {
+            /**
+             * счетчик для итератора
+             */
+            private int itCount = 0;
             @Override
             public boolean hasNext() {
                 return itCount < size - 1;
