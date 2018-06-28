@@ -2,6 +2,7 @@ package ru.job4j.generic;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Универсальный класс-обертка для массива.
@@ -69,6 +70,20 @@ public class DynamicArray<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return Arrays.asList(this.array).iterator();
+        return new Iterator<T>() {
+            private int itCount = 0;
+            @Override
+            public boolean hasNext() {
+                return itCount < array.length - 1;
+            }
+
+            @Override
+            public T next() {
+                if (itCount == size) {
+                    throw new NoSuchElementException("No such element!");
+                }
+                return array[itCount];
+            }
+        };
     }
 }

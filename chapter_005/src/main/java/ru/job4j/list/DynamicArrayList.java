@@ -3,6 +3,7 @@ package ru.job4j.list;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Класс создает динамический список на базе массива.
@@ -93,6 +94,9 @@ public class DynamicArrayList<E> implements Iterable<E> {
             public E next() {
                 if (modCountCopy != modCount) {
                     throw new ConcurrentModificationException("Concurrent modification!");
+                }
+                if (itCount == size) {
+                    throw new NoSuchElementException("No such element!");
                 }
                 return (E) container[itCount++];
             }
