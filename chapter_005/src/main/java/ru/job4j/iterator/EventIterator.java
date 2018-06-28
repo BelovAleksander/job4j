@@ -55,7 +55,7 @@ public class EventIterator implements Iterator {
         if (index >= array.length || indexOfEvent() == -1) {
             throw new NoSuchElementException("No such element!");
         }
-        int index = indexOfEvent();
+        index = indexOfEvent();
         return array[index++];
     }
 }

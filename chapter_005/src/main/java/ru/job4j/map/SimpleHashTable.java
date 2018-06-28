@@ -1,193 +1,190 @@
 package ru.job4j.map;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
- * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 28.06.18
- *
- * Класс реализует упрощенный вариант хеш-таблицы,
- * реализующей двойное хеширование.
  * @param <K> key
  * @param <V> value
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 28.06.18
+ * <p>
+ * Класс реализует упрощенный вариант хеш-таблицы,
+ * использующий метод цепочек.
  */
 
 public class SimpleHashTable<K, V> implements Iterable {
-    private Object[] values;
-    private Object[] keys;
+    private Object[] array;
     /**
      * счетчик элементов данных
      */
     private int counter = 0;
-    /**
-     * указатель на пустую ячейку
-     * используется в методе add(E value)
-     */
-    private int emptyCell;
 
     public SimpleHashTable() {
-        this.values = new Object[19];
-        this.keys = new Object[19];
+        this.array = new Object[19];
     }
 
     /**
      * Хеш-функция.
+     *
      * @param key объект
      * @return хеш-код
      */
-    private int firstHashFunction(K key) {
-        return key.hashCode() % this.values.length;
-    }
-
-    /**
-     * Хеш-функция для пробирования.
-     * @param key объект
-     * @return хеш-код
-     */
-    private int secondHashFunction(K key) {
-        return 3 - (key.hashCode() % 3);
-    }
-
-    /**
-     * Метод подбирает ближайшее большее простое число.
-     * @param min число
-     * @return простое число
-     */
-    private int getPrime(int min) {
-        for (int j = min + 1; true; j++) {
-            if (isPrime(j)) {
-                return j;
-            }
-        }
-    }
-
-    /**
-     * Этот метод своровал из учебника.
-     * @param n число
-     * @return true если простое
-     */
-    private boolean isPrime(int n) {
-        for (int j = 2; (j * j <= n); j++) {
-            if (n % j == 0) {
-                return false;
-            }
-        }
-        return true;
+    private int hashFunc(K key) {
+        int h = key.hashCode();
+        h ^= (h >>> 20) ^ (h >>> 12);
+        return (h ^ (h >>> 7) ^ (h >>> 4)) % array.length;
     }
 
     /**
      * Метод добавляет елемент в массив.
-     * Вызывает grow(), если коэффициент заполнения 66%
+     *
      * @param value элемент данных
      * @return true, если успешно
      */
     public boolean add(K key, V value) {
-        boolean isDublicat = false;
-        for (Object el : this.keys) {
-            if (key.equals((K) el)) {
-                isDublicat = true;
-                break;
-            }
-        }
-        int index = 0;
-        if (!isDublicat) {
-            index = this.findElement(key);
-        }
-        if (index == -1) {
-            this.values[this.emptyCell] = value;
-            this.keys[this.emptyCell] = key;
-            this.counter++;
-            if (this.values.length < this.counter * 1.5) {
-                this.grow();
-            }
-        }
-        return index == -1;
-    }
+        boolean result = false;
+        Link newLink = new Link(key, value);
+        Link oldLink = (Link) this.array[newLink.hash];
 
-    /**
-     * Находит заданный элемент в массиве по ключу
-     * @param key ключ
-     * @return значение
-     */
-    private int findElement(K key) {
-        int result = -1;
-        int firstValue = firstHashFunction(key);
-        int secondValue = secondHashFunction(key);
-        while (this.keys[firstValue] != null) {
-            if (this.keys[firstValue].equals(key)) {
-                result = firstValue;
-                break;
+        if (oldLink == null) {
+            this.array[newLink.hash] = newLink;
+            result = true;
+            this.counter++;
+        } else if (!oldLink.equals(newLink)) {
+            while (oldLink.next != null) {
+                oldLink = oldLink.next;
             }
-            firstValue += secondValue;
-            if (firstValue >= this.keys.length) {
-                firstValue = firstValue % this.keys.length;
-            }
+            oldLink.next = newLink;
+            result = true;
+            this.counter++;
         }
-        this.emptyCell = firstValue;
         return result;
     }
 
     /**
-     * Возвращает значение по ключу.
+     * Находит заданный элемент в массиве по ключу
+     *
      * @param key ключ
      * @return значение
      */
     public V getValue(K key) {
-        int index = findElement(key);
-        return index == -1 ? null : (V) values[index];
+        int hashVal = this.hashFunc(key);
+        Link oldLink = (Link) this.array[hashVal];
+        V result = null;
+        if (oldLink != null) {
+            if (oldLink.key.equals(key)) {
+                result = oldLink.value;
+            } else {
+                while (oldLink.next != null) {
+                    oldLink = oldLink.next;
+                    if (oldLink.key.equals(key)) {
+                        result = oldLink.value;
+                        break;
+                    }
+                }
+            }
+        }
+        if (result == null) {
+            throw new NoSuchElementException("No such element!");
+        }
+        return result;
     }
 
     /**
      * Удаляет ключ из множества и значение по ключу.
+     *
      * @param key ключ
      * @return true, если успешно
      */
     public boolean remove(K key) {
-        int index = findElement(key);
-        if (index != -1) {
-            this.values[index] = null;
-            this.counter--;
-            this.keys[index] = null;
-        }
-        return index != -1;
-    }
-
-    /**
-     * Увеличивает размер массива до простого числа
-     * чуть более чем в 2 раза.
-     */
-    private void grow() {
-        Object[] oldValues = this.values;
-        Object[] oldKeys = this.keys;
-        this.values = new Object[getPrime(this.values.length * 2)];
-        this.keys = new Object[this.values.length];
-        for (int i = 0; i < oldKeys.length; i++) {
-            if (oldKeys[i] != null) {
-                this.add((K) oldKeys[i], (V) oldValues[i]);
+        boolean result = false;
+        int hashVal = this.hashFunc(key);
+        Link oldLink = (Link) this.array[hashVal];
+        if (oldLink != null) {
+            if (oldLink.key.equals(key)) {
+                oldLink = oldLink.next;
+                result = true;
+                this.counter--;
+            } else {
+                while (oldLink.next != null) {
+                    oldLink = oldLink.next;
+                    if (oldLink.key.equals(key)) {
+                        oldLink = oldLink.next;
+                        result = true;
+                        this.counter--;
+                        break;
+                    }
+                }
             }
         }
+        return result;
     }
+
 
     /**
      * Возвращает размер.
+     *
      * @return размер
      */
     public int getCounter() {
         return this.counter;
     }
 
+    /**
+     * Внутренний класс, являющийся
+     * базовым элементом внутреннего массива.
+     */
+    private class Link {
+        private V value;
+        private K key;
+        public Link next;
+        private int hash;
+
+        public Link(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.hash = hashFunc(key);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Link link = (Link) o;
+            return Objects.equals(key, link.key);
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(value, key, hash);
+        }
+
+    }
+
     @Override
     public Iterator<K> iterator() {
         return new Iterator<K>() {
             private int itCount = 0;
+            Link link = (Link) array[itCount];
+
             @Override
             public boolean hasNext() {
-                return itCount < keys.length - 1;
+                return ((itCount < array.length - 1) || (link.next != null));
             }
 
             @Override
             public K next() {
-                return (K) keys[itCount++];
+                if (link.next != null) {
+                    link = link.next;
+                }
+                return link.key;
             }
         };
     }

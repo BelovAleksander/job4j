@@ -31,7 +31,7 @@ public class SimpleMapTest {
     }
 
     @Test
-    public void whenInsertDublicatElementThenReturnFalse() {
+    public void whenInsertDuplicateElementThenReturnFalse() {
         SimpleMap<Integer, Integer> test = new SimpleMap<>();
         test.insert(1, 10);
         assertThat(test.insert(1, 10), is(false));
