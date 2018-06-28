@@ -12,15 +12,15 @@ public class ArrayIterator implements Iterator {
     /**
      * массив
      */
-    public int[][] array;
+    private int[][] array;
     /**
      * индекс
      */
-    public int index = 0;
+    private int index = 0;
     /**
      * индекс во вложенном массиве
      */
-    public int position = 0;
+    private int position = 0;
 
     public ArrayIterator(final int[][] array) {
         this.array = array;

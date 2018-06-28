@@ -27,7 +27,7 @@ public class EventIterator implements Iterator {
      * или -1, если такового не обнаружится.
      * @return index или -1
      */
-    public int indexOfEvent() {
+    private int indexOfEvent() {
         int result = -1;
         for (int i = this.index; i < array.length; i++) {
             if (array[i] % 2 == 0) {
@@ -55,8 +55,7 @@ public class EventIterator implements Iterator {
         if (index >= array.length || indexOfEvent() == -1) {
             throw new NoSuchElementException("No such element!");
         }
-        index = indexOfEvent();
-        int result = array[index++];
-        return result;
+        int index = indexOfEvent();
+        return array[index++];
     }
 }

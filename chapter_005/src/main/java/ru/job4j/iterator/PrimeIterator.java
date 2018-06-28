@@ -27,7 +27,7 @@ public class PrimeIterator implements Iterator {
      * или -1, если такового не обнаружится.
      * @return index или -1
      */
-    public int indexOfPrime() {
+    private int indexOfPrime() {
         int result = -1;
         for (int i = this.index; i < this.array.length; i++) {
             if (this.array[i] > 1 && isPrime(this.array[i])) {
@@ -43,7 +43,7 @@ public class PrimeIterator implements Iterator {
      * @param number проверяемое значение
      * @return true, если простое
      */
-    public boolean isPrime(int number) {
+    private boolean isPrime(int number) {
         boolean result = true;
         for (int i = 2; i < number; i++) {
             if (number % i == 0) {
@@ -72,7 +72,6 @@ public class PrimeIterator implements Iterator {
             throw new NoSuchElementException("No such element!");
         }
         this.index = indexOfPrime();
-        int result = this.array[this.index++];
-        return result;
+        return this.array[index++];
     }
 }
