@@ -1,5 +1,7 @@
 package ru.job4j.list;
 
+import java.util.NoSuchElementException;
+
 /**
  * Класс SimpleArrayList.
  */
@@ -23,6 +25,9 @@ public class SimpleArrayList<E> {
      */
 
     public E delete() {
+        if (this.first == null) {
+            throw new NoSuchElementException("List is empty!");
+        }
         Node<E> element = this.first;
         this.first = this.first.next;
         this.size--;

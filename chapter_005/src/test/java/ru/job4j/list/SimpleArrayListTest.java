@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import org.junit.Before;
 
+import java.util.NoSuchElementException;
+
 import static org.hamcrest.Matchers.is;
 
 import static org.junit.Assert.assertThat;
@@ -37,5 +39,13 @@ public class SimpleArrayListTest {
     public void whenDeleteOneElementThenSizeIs2() {
         list.delete();
         assertThat(list.get(0), is(2));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenListIsEmptyAndDeleteThenException() {
+        list.delete();
+        list.delete();
+        list.delete();
+        list.delete();
     }
 }
