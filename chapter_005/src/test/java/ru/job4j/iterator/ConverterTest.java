@@ -47,6 +47,7 @@ public class ConverterTest {
         assertThat(it.hasNext(), is(false));
     }
 
+
     @Test
     public void testsThatNextMethodDoesntDependsOnPriorHasNextInvocation() {
         assertThat(it.next(), is(1));
@@ -74,7 +75,7 @@ public class ConverterTest {
         assertThat(it.next(), is(8));
         assertThat(it.next(), is(9));
     }
-    /**
+
     @Test
     public void hasNextShouldReturnFalseInCaseOfEmptyIterators() {
         Iterator<Integer> it1 = (new ArrayList<Integer>()).iterator();
@@ -85,7 +86,7 @@ public class ConverterTest {
         it = iteratorOfIterators.convert(its);
         assertThat(it.hasNext(), is(false));
     }
-    */
+
     @Test(expected = NoSuchElementException.class)
     public void invocationOfNextMethodShouldThrowNoSuchElementException() {
         Iterator<Integer> it1 = Arrays.asList(1, 2, 3).iterator();

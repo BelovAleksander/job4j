@@ -162,8 +162,7 @@ public class SimpleHashTable<K, V> implements Iterable {
 
         @Override
         public int hashCode() {
-
-            return Objects.hash(value, key, hash);
+            return 31 * Objects.hash(key);
         }
 
     }
