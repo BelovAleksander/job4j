@@ -5,18 +5,18 @@ package ru.job4j.generic;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 24.06.18
  */
-public abstract class AbstractStore implements Store {
+public abstract class AbstractStore<T extends Base> implements Store<T> {
     /**
      * база данных
      */
-    private DynamicArray<Base> array;
+    private SimpleArray<T> array;
     /**
      * заданный размер массива
      */
     private int size;
 
     public AbstractStore(int size) {
-        this.array = new DynamicArray<>(size);
+        this.array = new SimpleArray<>(size);
         this.size = size;
     }
 
@@ -25,7 +25,7 @@ public abstract class AbstractStore implements Store {
      * @param model новый элемент
      */
     @Override
-    public void add(Base model) {
+    public void add(T model) {
         this.array.add(model);
     }
 
@@ -36,7 +36,7 @@ public abstract class AbstractStore implements Store {
      * @return true, если успешно
      */
     @Override
-    public boolean replace(String id, Base model) {
+    public boolean replace(String id, T model) {
         boolean result = false;
         int index = findIndex(id);
         if (index != -1) {
@@ -68,9 +68,9 @@ public abstract class AbstractStore implements Store {
      * @return null, если неудачно
      */
     @Override
-    public Base findById(String id) {
+    public T findById(String id) {
         int result = findIndex(id);
-        return result != -1 ? this.array.get(result) : null;
+        return result != -1 ? (T) this.array.get(result) : null;
     }
 
     /**
