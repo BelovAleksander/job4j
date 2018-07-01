@@ -20,9 +20,11 @@ public class SimpleHashTable<K, V> implements Iterable {
      * счетчик элементов данных
      */
     private int counter = 0;
+    private int size;
 
-    public SimpleHashTable() {
-        this.array = new Object[19];
+    public SimpleHashTable(int size) {
+        this.array = new Object[size];
+        this.size = size;
     }
 
     /**
@@ -52,12 +54,23 @@ public class SimpleHashTable<K, V> implements Iterable {
             this.array[newLink.hash] = newLink;
             result = true;
             this.counter++;
-        } else if (!oldLink.equals(newLink)) {
+        } else if (!oldLink.key.equals(key)) {
             while (oldLink.next != null) {
                 oldLink = oldLink.next;
+                if (oldLink.key.equals(key)) {
+                    oldLink.setValue(value);
+                    result = false;
+                    this.counter++;
+                }
             }
-            oldLink.next = newLink;
-            result = true;
+            if (!result) {
+                oldLink.next = newLink;
+                result = true;
+                this.counter++;
+            }
+        } else if (oldLink.key.equals(key)) {
+            oldLink.setValue(value);
+            result = false;
             this.counter++;
         }
         return result;
@@ -93,7 +106,7 @@ public class SimpleHashTable<K, V> implements Iterable {
     }
 
     /**
-     * Удаляет ключ из множества и значение по ключу.
+     * Удаляет елемент из массива по ключу.
      *
      * @param key ключ
      * @return true, если успешно
@@ -104,14 +117,14 @@ public class SimpleHashTable<K, V> implements Iterable {
         Link oldLink = (Link) this.array[hashVal];
         if (oldLink != null) {
             if (oldLink.key.equals(key)) {
-                oldLink = oldLink.next;
+                this.array[hashVal] = oldLink.next;
                 result = true;
                 this.counter--;
             } else {
                 while (oldLink.next != null) {
                     oldLink = oldLink.next;
                     if (oldLink.key.equals(key)) {
-                        oldLink = oldLink.next;
+                        this.array[hashVal] = oldLink.next;
                         result = true;
                         this.counter--;
                         break;
@@ -148,21 +161,12 @@ public class SimpleHashTable<K, V> implements Iterable {
             this.hash = hashFunc(key);
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Link link = (Link) o;
-            return Objects.equals(key, link.key);
+        public Link(Link next) {
+            this.next = next;
         }
 
-        @Override
-        public int hashCode() {
-            return 31 * Objects.hash(key);
+        public void setValue(V value) {
+            this.value = value;
         }
 
     }
@@ -170,20 +174,39 @@ public class SimpleHashTable<K, V> implements Iterable {
     @Override
     public Iterator<K> iterator() {
         return new Iterator<K>() {
-            private int itCount = 0;
-            Link link = (Link) array[itCount];
+            private int outCount = 0;
+            private int innerCount = 0;
+            Link link =  null;
 
             @Override
             public boolean hasNext() {
-                return ((itCount < array.length - 1) || (link.next != null));
+                return innerCount < counter;
             }
 
             @Override
             public K next() {
-                if (link.next != null) {
-                    link = link.next;
+                if (innerCount == 0) {
+                    link = (Link) array[outCount];
+                    innerCount++;
+                } else if (link != null) {
+                    if (link.next != null) {
+                        link = link.next;
+                        innerCount++;
+                    } else if (outCount < size) {
+                        link = (Link) array[++outCount];
+                        innerCount++;
+                    } else {
+                        throw new NoSuchElementException("No such element!");
+                    }
+                } else {
+                    if (outCount < size - 1) {
+                        link = (Link) array[++outCount];
+                        innerCount++;
+                    } else {
+                        throw new NoSuchElementException("No such element!");
+                    }
                 }
-                return link.key;
+                return link != null ? link.key : null;
             }
         };
     }
