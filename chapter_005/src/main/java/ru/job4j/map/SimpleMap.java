@@ -4,9 +4,12 @@ import java.util.Iterator;
 
 public class SimpleMap<K, V> implements Iterable {
     private SimpleHashTable<K, V> table;
+    private int size;
 
-    public SimpleMap() {
-        this.table = new SimpleHashTable<>();
+    public SimpleMap(int size) {
+        this.table = new SimpleHashTable<>(size);
+        this.size = size;
+
     }
 
     public boolean insert(K key, V value) {

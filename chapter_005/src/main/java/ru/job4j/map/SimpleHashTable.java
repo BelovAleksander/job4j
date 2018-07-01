@@ -20,9 +20,11 @@ public class SimpleHashTable<K, V> implements Iterable {
      * счетчик элементов данных
      */
     private int counter = 0;
+    private int size;
 
-    public SimpleHashTable() {
-        this.array = new Object[19];
+    public SimpleHashTable(int size) {
+        this.array = new Object[size];
+        this.size = size;
     }
 
     /**
@@ -52,12 +54,25 @@ public class SimpleHashTable<K, V> implements Iterable {
             this.array[newLink.hash] = newLink;
             result = true;
             this.counter++;
-        } else if (!oldLink.equals(newLink)) {
+        } else if (!oldLink.key.equals(key)) {
             while (oldLink.next != null) {
                 oldLink = oldLink.next;
+                if (oldLink.key.equals(key)) {
+                    newLink.next = oldLink.next;
+                    oldLink = newLink;
+                    result = false;
+                    this.counter++;
+                }
             }
-            oldLink.next = newLink;
-            result = true;
+            if (!result) {
+                oldLink.next = newLink;
+                result = true;
+                this.counter++;
+            }
+        } else if (oldLink.key.equals(key)) {
+            newLink.next = oldLink.next;
+            oldLink = newLink;
+            result = false;
             this.counter++;
         }
         return result;
@@ -148,6 +163,10 @@ public class SimpleHashTable<K, V> implements Iterable {
             this.hash = hashFunc(key);
         }
 
+        public Link(Link next) {
+            this.next = next;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) {
@@ -157,33 +176,43 @@ public class SimpleHashTable<K, V> implements Iterable {
                 return false;
             }
             Link link = (Link) o;
-            return Objects.equals(key, link.key);
+            return hash == link.hash
+                    && Objects.equals(value, link.value)
+                    && Objects.equals(key, link.key)
+                    && Objects.equals(next, link.next);
         }
 
         @Override
         public int hashCode() {
-            return 31 * Objects.hash(key);
-        }
 
+            return Objects.hash(value, key, next, hash);
+        }
     }
 
     @Override
     public Iterator<K> iterator() {
         return new Iterator<K>() {
-            private int itCount = 0;
-            Link link = (Link) array[itCount];
+            private int outCount = 0;
+            private int innerCount = 0;
+            Link link =  new Link((Link) array[outCount]);
 
             @Override
             public boolean hasNext() {
-                return ((itCount < array.length - 1) || (link.next != null));
+                return innerCount < counter;
             }
 
             @Override
             public K next() {
-                if (link.next != null) {
+                if (link.next != null || innerCount == 0) {
                     link = link.next;
+                    innerCount++;
+                } else if (link.next == null && outCount < size) {
+                    link = (Link) array[++outCount];
+                    innerCount++;
+                } else {
+                    throw new NoSuchElementException("No such element!");
                 }
-                return link.key;
+                return link != null ? link.key : null;
             }
         };
     }
