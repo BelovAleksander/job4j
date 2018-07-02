@@ -1,5 +1,7 @@
 package ru.job4j.list;
 
+import java.util.Objects;
+
 /**
  * @param <E> любой тип
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
@@ -20,6 +22,25 @@ public class Node<E> {
         counter++;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Node<?> node = (Node<?>) o;
+        return Objects.equals(value, node.value)
+                && Objects.equals(next, node.next);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(value, next);
+    }
+
     /**
      * Метод проверяет входящий объект на зацикленнссть.
      *
@@ -27,12 +48,14 @@ public class Node<E> {
      * @return true, если зациклен
      */
     public boolean hasCycle(Node<E> first) {
-        boolean result = true;
-        Node<E> test = first;
-        for (int i = 0; i < counter; i++) {
-            test = test.next;
-            if (test == null) {
-                result = false;
+        boolean result = false;
+        Node<E> turtle = first;
+        Node<E> rabbit = first;
+        while (rabbit != null && rabbit.next != null) {
+            turtle = turtle.next;
+            rabbit = rabbit.next.next;
+            if (turtle.equals(rabbit)) {
+                result = true;
                 break;
             }
         }
