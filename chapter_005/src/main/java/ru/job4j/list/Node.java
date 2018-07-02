@@ -7,7 +7,7 @@ import java.util.Objects;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 26.06.18
  * <p>
- * Класс создает объекты Node, затем проверяет их на зацикленность.
+ * Класс создает объекты Node, способен проверять их на зацикленность.
  */
 public class Node<E> {
     private E value;
