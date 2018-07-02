@@ -2,11 +2,31 @@ package ru.job4j.map;
 
 import org.junit.Test;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class SimpleHashTableTest {
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenRemoveElementThenNoSuchElementException() {
+        SimpleHashTable<Integer, Integer> test = new SimpleHashTable<>(3);
+        test.add(1, 5);
+        test.add(4, 10);
+        System.out.println(test.getValue(1));
+        test.remove(1);
+        test.getValue(1);
+    }
+
+    @Test
+    public void whenAddDuplicateThenValueIsOverwriting() {
+        SimpleHashTable<Integer, Integer> test = new SimpleHashTable<>(3);
+        test.add(1, 5);
+        test.add(1, 10);
+        test.add(1, 15);
+        assertThat(test.getValue(1), is(15));
+    }
 
     @Test
     public void whenAddElementThenReturnTrue() {
@@ -29,7 +49,7 @@ public class SimpleHashTableTest {
     }
 
     @Test
-    public void whenInsertAndGetThenReturn() {
+    public void whenInsertAndGetThenReturnValue() {
         SimpleHashTable<Integer, Integer> test = new SimpleHashTable<>(3);
         test.add(1, 10);
         Integer result = test.getValue(1);
@@ -52,12 +72,6 @@ public class SimpleHashTableTest {
         assertThat(test.getCounter(), is(0));
     }
 
-    @Test
-    public void whenInsertDuplicateElementThenReturnFalse() {
-        SimpleHashTable<Integer, Integer> test = new SimpleHashTable<>(3);
-        test.add(1, 10);
-        assertThat(test.add(1, 10), is(false));
-    }
 
     @Test
     public void whenNoSuchElementsThenDeleteReturnFalse() {
@@ -65,30 +79,6 @@ public class SimpleHashTableTest {
         assertThat(test.remove(2), is(false));
     }
 
-    @Test
-    public void when10ElementsAddedAndRemoveThenReturnTrue() {
-        SimpleHashTable<Integer, Integer> test = new SimpleHashTable<>(3);
-        test.add(2, 10);
-        test.add(3, 10);
-        test.add(4, 10);
-        test.add(5, 10);
-        test.add(6, 10);
-        test.add(7, 10);
-        test.add(8, 10);
-        test.add(9, 10);
-        test.add(10, 10);
-        test.add(11, 10);
-        org.hamcrest.MatcherAssert.assertThat(test.remove(2), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(3), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(4), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(5), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(6), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(7), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(8), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(9), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(10), org.hamcrest.Matchers.is(true));
-        org.hamcrest.MatcherAssert.assertThat(test.remove(11), org.hamcrest.Matchers.is(true));
-    }
 
     @Test
     public void whenAdd5ElementsThenIterateThem() {
@@ -110,5 +100,15 @@ public class SimpleHashTableTest {
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(5));
         assertThat(it.hasNext(), is(false));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenNoElementsAndWeCallNextThenNoSuchElementException() {
+        SimpleHashTable<Integer, Integer> test = new SimpleHashTable<>(3);
+        Iterator it = test.iterator();
+        it.next();
+        it.next();
+        it.next();
+        it.next();
     }
 }
