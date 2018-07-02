@@ -6,20 +6,14 @@ import java.util.Objects;
  * @param <E> любой тип
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 26.06.18
- * <p>
  * Класс создает объекты Node, способен проверять их на зацикленность.
  */
 public class Node<E> {
     private E value;
     public Node<E> next;
-    /**
-     * Счетчик экземпляров класса
-     */
-    private static int counter = 0;
 
     public Node(E value) {
         this.value = value;
-        counter++;
     }
 
     @Override
