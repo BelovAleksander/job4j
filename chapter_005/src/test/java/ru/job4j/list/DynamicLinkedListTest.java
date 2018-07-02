@@ -18,20 +18,20 @@ public class DynamicLinkedListTest {
     @Test
     public void whenAddThenSuccess() {
         DynamicLinkedList<Integer> container = new DynamicLinkedList<>();
-        container.add(1);
-        container.add(2);
-        container.add(3);
-        container.add(4);
-        container.add(5);
+        container.addLast(1);
+        container.addLast(2);
+        container.addLast(3);
+        container.addLast(4);
+        container.addLast(5);
         assertThat(container.get(1), is(2));
     }
 
     @Test
     public void whenIteratorNextThenReturnElementWithIndex0() {
         DynamicLinkedList<Integer> container = new DynamicLinkedList<>();
-        container.add(1);
-        container.add(2);
-        container.add(3);
+        container.addLast(1);
+        container.addLast(2);
+        container.addLast(3);
         Iterator<Integer> it = container.iterator();
         assertThat(it.next(), is(1));
     }
@@ -39,11 +39,11 @@ public class DynamicLinkedListTest {
     @Test(expected = ConcurrentModificationException.class)
     public void whenUseIteratorAndAddElementThenException() {
         DynamicLinkedList<Integer> container = new DynamicLinkedList<>();
-        container.add(1);
-        container.add(2);
+        container.addLast(1);
+        container.addLast(2);
         Iterator<Integer> it = container.iterator();
         it.next();
-        container.add(10);
+        container.addLast(10);
         it.next();
     }
 }

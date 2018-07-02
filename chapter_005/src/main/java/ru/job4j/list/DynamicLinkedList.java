@@ -29,7 +29,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      *
      * @param data новый элемент
      */
-    public void add(E data) {
+    public void addLast(E data) {
         Node<E> newLink = new Node<>(data);
         if (this.first == null) {
             this.last = newLink;
@@ -38,6 +38,19 @@ public class DynamicLinkedList<E> implements Iterable<E> {
         }
         newLink.next = this.first;
         this.first = newLink;
+        this.size++;
+        this.modCount++;
+    }
+
+    public void addFirst(E data) {
+        Node<E> newLink = new Node<>(data);
+        if (this.last == null) {
+            this.first = newLink;
+        } else {
+            this.first.next = newLink;
+        }
+        newLink.previous = this.first;
+        this.last = newLink;
         this.size++;
         this.modCount++;
     }

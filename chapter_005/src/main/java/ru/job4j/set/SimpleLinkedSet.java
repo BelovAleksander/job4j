@@ -30,7 +30,7 @@ public class SimpleLinkedSet<E> implements Iterable<E> {
      */
     public void add(E value) {
         if (this.array.isEmpty()) {
-            this.array.add(value);
+            this.array.addLast(value);
         } else {
             boolean isDuplicate = false;
             for (E el : this.array) {
@@ -40,7 +40,7 @@ public class SimpleLinkedSet<E> implements Iterable<E> {
                 }
             }
             if (!isDuplicate) {
-                this.array.add(value);
+                this.array.addLast(value);
             }
         }
     }

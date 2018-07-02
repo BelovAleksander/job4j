@@ -8,10 +8,10 @@ public class SimpleStack<E> {
     }
 
     public E poll() {
-        return list.isEmpty() ? null : list.removeFirst();
+        return list.isEmpty() ? null : list.removeLast();
     }
 
     public void push(final E value) {
-        list.add(value);
+        list.addFirst(value);
     }
 }

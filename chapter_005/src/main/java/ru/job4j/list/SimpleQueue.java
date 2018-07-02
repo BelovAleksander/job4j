@@ -8,10 +8,10 @@ public class SimpleQueue<E> {
     }
 
     public E poll() {
-        return list.isEmpty() ? null : list.removeLast();
+        return list.isEmpty() ? null : list.removeFirst();
     }
 
     public void push(final E value) {
-        list.add(value);
+        list.addFirst(value);
     }
 }
