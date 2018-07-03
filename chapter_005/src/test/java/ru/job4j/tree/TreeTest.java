@@ -6,10 +6,10 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 /**
- * @author Petr Arsentev (mailto:parsentev@yandex.ru)
- * @version $Id$
- * @since 0.1
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 04.07.18
  */
+
 public class TreeTest {
     @Test
     public void when6ElFindLastThen6() {
@@ -41,5 +41,28 @@ public class TreeTest {
         Iterator it = tree.iterator();
         it.next();
         assertThat(it.hasNext(), is(false));
+    }
+
+    @Test
+    public void whenTreeIsBinaryThenIsBinaryMethodReturnTrue() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(3, 4);
+        tree.add(4, 5);
+        tree.add(5, 6);
+        tree.add(3, 7);
+        assertThat(tree.isBinary(), is(true));
+    }
+
+    @Test
+    public void whenTreeIsNotBinaryThenIsBinaryMethodReturnFalse() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(1, 4);
+        tree.add(4, 5);
+        tree.add(5, 6);
+        assertThat(tree.isBinary(), is(false));
     }
 }

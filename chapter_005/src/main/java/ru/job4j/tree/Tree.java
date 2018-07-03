@@ -2,9 +2,15 @@ package ru.job4j.tree;
 
 import java.util.*;
 
+/**
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 04.07.18
+ */
+
 public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E> {
     private Node<E> root;
     private List<Node<E>> list;
+    private boolean binary = true;
 
     public Tree(E root) {
         this.root = new Node<>(root);
@@ -36,14 +42,25 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
         return rsl;
     }
 
-    public void treeTraversal(Node<E> parent) {
+    private void treeTraversal(Node<E> parent) {
         Node<E> node = parent;
-        if (!node.leaves().isEmpty()) {
-            for (Node<E> child : node.leaves()) {
+        List<Node<E>> array = node.leaves();
+        list.add(parent);
+        if (!array.isEmpty()) {
+            for (Node<E> child : array) {
                 treeTraversal(child);
             }
         }
-        list.add(parent);
+        if (array.size() > 2) {
+            this.binary = false;
+        }
+
+    }
+
+    public boolean isBinary() {
+        list = new ArrayList<>();
+        treeTraversal(root);
+        return binary;
     }
 
     @Override
