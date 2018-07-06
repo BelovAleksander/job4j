@@ -8,6 +8,11 @@ import java.util.List;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+/**
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 06.07.18
+ */
+
 public class StoreTest {
 
     @Test

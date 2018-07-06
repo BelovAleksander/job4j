@@ -1,5 +1,11 @@
 package ru.job4j.test;
 
+/**
+ * @author Alexander Belov (whiterabbit.nsk@gmail.com)
+ * @since 06.07.18
+ */
+
+
 public class Info {
     private int added;
     private int changed;
@@ -15,14 +21,6 @@ public class Info {
 
     public void plusDeleted() {
         this.deleted++;
-    }
-
-    public void minusDeleted() {
-        deleted--;
-    }
-
-    public int getDeleted() {
-        return deleted;
     }
 
     @Override
