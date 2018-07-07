@@ -11,37 +11,22 @@ class Store {
 
     public Info diff(final List<User> previoues, final List<User> current) {
         Info info = new Info();
-        Map<Integer, Queue<String>> map = new HashMap<>();
+        Map<Integer, String> map = new HashMap<>();
 
         for (User old : previoues) {
-            Queue<String> data = new LinkedList<>();
-            data.offer(old.name);
-            map.put(old.id, data);
+            map.put(old.id, old.name);
         }
         for (User fresh : current) {
             if (map.containsKey(fresh.id)) {
-                Queue<String> data = map.get(fresh.id);
-                data.offer(fresh.name);
-                map.put(fresh.id, data);
+                if (!fresh.name.equals(map.get(fresh.id))) {
+                    info.plusChanged(1);
+                }
             } else {
-                Queue<String> data = new LinkedList<>();
-                data.offer(null);
-                data.offer(fresh.name);
-                map.put(fresh.id, data);
+                info.plusNew(1);
             }
         }
-        for (Integer id : map.keySet()) {
-            Queue<String> data = map.get(id);
-            String old = data.poll();
-            String fresh = data.peek();
-            if (old == null) {
-                info.plusNew();
-            } else if (fresh == null) {
-                info.plusDeleted();
-            } else if (!old.equals(fresh)) {
-                info.plusChanged();
-            }
-        }
+        int deleted = previoues.size() - current.size() + info.getNew();
+        info.plusDeleted(deleted);
         return info;
     }
 

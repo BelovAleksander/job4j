@@ -11,16 +11,20 @@ public class Info {
     private int changed;
     private int deleted;
 
-    public void plusNew() {
-        this.added++;
+    public void plusNew(int change) {
+        this.added += change;
     }
 
-    public void plusChanged() {
-        this.changed++;
+    public void plusChanged(int change) {
+        this.changed += change;
     }
 
-    public void plusDeleted() {
-        this.deleted++;
+    public void plusDeleted(int change) {
+        this.deleted += change;
+    }
+
+    public int getNew() {
+        return this.added;
     }
 
     @Override
