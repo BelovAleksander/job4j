@@ -11,30 +11,34 @@ class Store {
 
     public Info diff(final List<User> previoues, final List<User> current) {
         Info info = new Info();
-        Map<Integer, String[]> map = new HashMap<>();
+        Map<Integer, Queue<String>> map = new HashMap<>();
 
         for (User old : previoues) {
-            String[] array = new String[2];
-            array[0] = old.name;
-            map.put(old.id, array);
+            Queue<String> data = new LinkedList<>();
+            data.offer(old.name);
+            map.put(old.id, data);
         }
         for (User fresh : current) {
             if (map.containsKey(fresh.id)) {
-                String[] array = map.get(fresh.id);
-                array[1] = fresh.name;
-                map.put(fresh.id, array);
+                Queue<String> data = map.get(fresh.id);
+                data.offer(fresh.name);
+                map.put(fresh.id, data);
             } else {
-                String[] array = new String[2];
-                map.put(fresh.id, array);
+                Queue<String> data = new LinkedList<>();
+                data.offer(null);
+                data.offer(fresh.name);
+                map.put(fresh.id, data);
             }
         }
         for (Integer id : map.keySet()) {
-            String[] array = map.get(id);
-            if (array[0] == null) {
+            Queue<String> data = map.get(id);
+            String old = data.poll();
+            String fresh = data.peek();
+            if (old == null) {
                 info.plusNew();
-            } else if (array[1] == null) {
+            } else if (fresh == null) {
                 info.plusDeleted();
-            } else if (!array[0].equals(array[1])) {
+            } else if (!old.equals(fresh)) {
                 info.plusChanged();
             }
         }

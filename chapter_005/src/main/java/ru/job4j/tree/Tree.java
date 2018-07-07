@@ -10,7 +10,6 @@ import java.util.*;
 public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E> {
     private Node<E> root;
     private List<Node<E>> list;
-    private boolean binary = true;
 
     public Tree(E root) {
         this.root = new Node<>(root);
@@ -18,10 +17,33 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
 
     @Override
     public boolean add(E parent, E child) {
+        boolean result = true;
         Node<E> father = findBy(parent).get();
         Node<E> son = new Node<>(child);
-        father.add(son);
-        return false;
+        for (Node<E> node : father.leaves()) {
+            if (node.eqValue(child)) {
+                result = false;
+                break;
+            }
+        }
+        if (result) {
+            father.add(son);
+        }
+        return result;
+    }
+
+    private ArrayList<Node<E>> treeTraversal() {
+        ArrayList<Node<E>> result = new ArrayList<>();
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            result.add(el);
+            for (Node<E> child : el.leaves()) {
+                data.offer(child);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -42,31 +64,9 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
         return rsl;
     }
 
-    private void treeTraversal(Node<E> parent) {
-        Node<E> node = parent;
-        List<Node<E>> array = node.leaves();
-        list.add(parent);
-        if (!array.isEmpty()) {
-            for (Node<E> child : array) {
-                treeTraversal(child);
-            }
-        }
-        if (array.size() > 2) {
-            this.binary = false;
-        }
-
-    }
-
-    public boolean isBinary() {
-        list = new ArrayList<>();
-        treeTraversal(root);
-        return binary;
-    }
-
     @Override
     public Iterator iterator() {
-        this.list = new ArrayList<>();
-        treeTraversal(root);
+        this.list = treeTraversal();
         return list.iterator();
     }
 }
