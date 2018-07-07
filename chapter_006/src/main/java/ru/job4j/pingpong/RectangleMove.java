@@ -14,12 +14,16 @@ public class RectangleMove implements Runnable {
         double x = 1D;
         double y = 0.5;
         while (true) {
-            this.rect.setX(this.rect.getX() + x);
-            this.rect.setY(this.rect.getY() + y);
+            if (!Thread.interrupted()) {
+                this.rect.setX(this.rect.getX() + x);
+                this.rect.setY(this.rect.getY() + y);
+            } else {
+                return;
+            }
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                return;
             }
             if (this.rect.getX() == 300) {
                 x = -1;
@@ -31,6 +35,7 @@ public class RectangleMove implements Runnable {
             } else if (this.rect.getY() == 0) {
                 y = 0.5;
             }
+
         }
     }
 }
