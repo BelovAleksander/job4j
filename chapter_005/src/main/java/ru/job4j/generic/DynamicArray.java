@@ -1,8 +1,8 @@
 package ru.job4j.generic;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 
 /**
  * Универсальный класс-обертка для массива.

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * Класс создает динамический список на базе массива.
@@ -13,8 +15,11 @@ import java.util.NoSuchElementException;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 25.06.18
  */
+@ThreadSafe
 public class DynamicArrayList<E> implements Iterable<E> {
+    @GuardedBy("this")
     private Object[] container;
+    @GuardedBy("this")
     private int index = 0;
     private int size;
     /**
@@ -36,7 +41,7 @@ public class DynamicArrayList<E> implements Iterable<E> {
      *
      * @param value новый элемент
      */
-    public void add(E value) {
+    public synchronized void add(E value) {
         this.container[this.index++] = value;
         if (this.size == this.index) {
             this.container = grow();
@@ -50,7 +55,7 @@ public class DynamicArrayList<E> implements Iterable<E> {
      * @param index индекс
      * @return элемент
      */
-    public E get(int index) {
+    public synchronized E get(int index) {
         return (E) this.container[index];
     }
 
@@ -59,7 +64,7 @@ public class DynamicArrayList<E> implements Iterable<E> {
      *
      * @return увеличенный массив
      */
-    public Object[] grow() {
+    public synchronized Object[] grow() {
         this.modCount++;
         size *= 2;
         return Arrays.copyOf(this.container, this.size * 2);

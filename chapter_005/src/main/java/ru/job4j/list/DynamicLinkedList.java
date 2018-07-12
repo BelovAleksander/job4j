@@ -1,5 +1,8 @@
 package ru.job4j.list;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
@@ -11,8 +14,11 @@ import java.util.Iterator;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 25.06.18
  */
+@ThreadSafe
 public class DynamicLinkedList<E> implements Iterable<E> {
+    @GuardedBy("this")
     private Node<E> first;
+    @GuardedBy("this")
     private Node<E> last;
     private int size;
     /**
@@ -29,7 +35,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      *
      * @param data новый элемент
      */
-    public void addLast(E data) {
+    public synchronized void addLast(E data) {
         Node<E> newLink = new Node<>(data);
         if (this.first == null) {
             this.last = newLink;
@@ -42,7 +48,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
         this.modCount++;
     }
 
-    public void addFirst(E data) {
+    public synchronized void addFirst(E data) {
         Node<E> newLink = new Node<>(data);
         if (this.last == null) {
             this.first = newLink;
@@ -63,7 +69,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
         return this.size;
     }
 
-    public E removeFirst() {
+    public synchronized E removeFirst() {
         E data = this.first.data;
         if (this.first.next == null) {
             this.last = null;
@@ -74,7 +80,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
         return data;
     }
 
-    public E removeLast() {
+    public synchronized E removeLast() {
         E data = this.last.data;
         if (this.last.previous == null) {
             this.first = null;
@@ -91,7 +97,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      * @param index индекс
      * @return элемент
      */
-    public E get(int index) {
+    public synchronized E get(int index) {
         Node<E> result = this.last;
         for (int i = 0; i < index; i++) {
             result = result.previous;
