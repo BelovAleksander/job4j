@@ -3,99 +3,84 @@ package ru.job4j.queue;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 14.07.18
+ * @since 16.07.18
  * Класс реализует простой вариант пула нитей.
  */
 
 @ThreadSafe
 public class SimpleThreadPool {
     @GuardedBy("this")
-    private final List<Thread> threads;
+    private final Thread[]threads;
     @GuardedBy("this")
-    private final Queue<Runnable> tasks = new LinkedBlockingQueue<>(3);
+    private final LinkedBlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>(5);
+
+    private boolean shutdown = false;
 
     public SimpleThreadPool() {
         int size = Runtime.getRuntime().availableProcessors();
-        this.threads = new LinkedList<>();
-        while (size > 0) {
-            threads.add(new InnerThread());
-            size--;
-        }
-        for (Thread th : threads) {
-            th.start();
+        this.threads = new Thread[size];
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new InnerThread();
+            threads[i].start();
         }
     }
 
     public void work(Runnable job) {
-        synchronized (tasks) {
-            tasks.add(job);
-            tasks.notify();
+        try {
+            tasks.put(job);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    public synchronized void shutdown() {
-        System.out.println("shutdown");
-        for (Thread th : threads) {
-            th.interrupt();
-
+    public  void shutdown() {
+        this.shutdown = true;
+        for (Thread t : threads) {
+            t.interrupt();
+            System.out.println(t + "shutdowned");
         }
     }
 
-    /**
-     * После вызова метода shutdown() потоки будто продолжают работать.
-     * Как дебажить такой код?
-     */
     class InnerThread extends Thread {
         @Override
         public void run() {
-            Runnable task;
-            while (!Thread.currentThread().isInterrupted()) {
-                synchronized (tasks) {
-                    while (tasks.isEmpty() && !Thread.currentThread().isInterrupted()) {
-                        try {
-                            tasks.wait();
-                        } catch (InterruptedException e) {
-                            System.out.println("Interrupted in InnerThread");
-                        }
-                    }
-                    task = tasks.poll();
+            Runnable task = null;
+            while (!shutdown) {
+                try {
+                    task = tasks.take();
+                } catch (InterruptedException e) {
+                    System.out.println("shout down");
+                }
+                if (task != null) {
                     task.run();
                 }
             }
         }
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SimpleThreadPool pool = new SimpleThreadPool();
-        pool.work(new Thread() {
-            public void run() {
-                System.out.println("first job");
-            }
-        });
-        pool.work(new Thread() {
-            public void run() {
-                System.out.println("second job");
-            }
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        for (int i = 0; i < 10; i++) {
+            int finalI = i;
+            pool.work(new Thread() {
+                public void run() {
+                    try {
+                        System.out.println(" job " + finalI);
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        System.out.println("job off " + finalI);
+                    }
+                }
+            });
         }
+
         pool.shutdown();
-        /**
-         * Рассчет был на то, что эта строка никогда не выведется, потому что
-         * исполняющие строки должны завершиться методом shutdown().
-         * Почему процесс не завершается? Если все 4 строки (при size = 4) отработали -
-         * кто обрабатывает новую задачу?
-         */
         pool.work(new Thread() {
             public void run() {
                 System.out.println("this message should't be printed");
