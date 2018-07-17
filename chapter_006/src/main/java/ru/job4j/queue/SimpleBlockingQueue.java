@@ -10,18 +10,17 @@ import java.util.Queue;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 13.07.2018
  * Класс является реализацией простой блокирующей очереди.
- * @param <T> любой тип
+ * @param <T> наследник Numbers
  */
 
 @ThreadSafe
-public class SimpleBlockingQueue<T> {
+public class SimpleBlockingQueue<T extends Integer> {
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
     private final static int QUEUE_MAX_SIZE = 2;
 
     public synchronized void offer(final T value) {
-        if (Thread.currentThread().getName().equals("producer")
-                && queue.size() == QUEUE_MAX_SIZE) {
+        if (queue.size() == QUEUE_MAX_SIZE) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -32,8 +31,7 @@ public class SimpleBlockingQueue<T> {
         queue.offer(value);
     }
     public synchronized T poll() {
-        if (Thread.currentThread().getName().equals("consumer")
-                    && queue.size() == 0) {
+        if (queue.size() == 0) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -45,17 +43,17 @@ public class SimpleBlockingQueue<T> {
     }
 }
 
-class Interaction {
+class Interaction<T extends Integer> {
 
-    private SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+    private SimpleBlockingQueue queue = new SimpleBlockingQueue<>();
 
-    class Consumer<T> implements Runnable {
-        private final Object[] array;
+    class Consumer<T extends Integer> implements Runnable {
+        private final Integer[] array;
         private int count;
 
         public Consumer(final int count) {
             this.count = count;
-            this.array = new Object[count];
+            this.array = new Integer[count];
         }
 
         public T[] getValues() {
@@ -64,7 +62,6 @@ class Interaction {
 
         @Override
         public void run() {
-            Thread.currentThread().setName("consumer");
             while (count > 0) {
                 array[5 - count] = queue.poll();
                 count--;
@@ -83,7 +80,6 @@ class Interaction {
 
         @Override
         public void run() {
-            Thread.currentThread().setName("producer");
             while (count > 0) {
                 queue.offer(value);
                 count--;

@@ -61,11 +61,11 @@ public class DynamicLinkedList<E> implements Iterable<E> {
         this.modCount++;
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return this.size == 0;
     }
 
-    public int getSize() {
+    public synchronized int getSize() {
         return this.size;
     }
 
@@ -111,7 +111,7 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      * @return итератор
      */
     @Override
-    public Iterator<E> iterator() {
+    public synchronized Iterator<E> iterator() {
         int modCountCopy = this.modCount;
 
         return new Iterator<E>() {

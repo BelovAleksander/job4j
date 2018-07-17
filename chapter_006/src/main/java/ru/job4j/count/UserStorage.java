@@ -13,11 +13,7 @@ import java.util.HashSet;
 @ThreadSafe
 public class UserStorage {
     @GuardedBy("this")
-    public HashSet<User> data;
-
-    public UserStorage() {
-        data = new HashSet<>();
-    }
+    public HashSet<User> data = new HashSet<>();
 
     public synchronized boolean add(User user) {
         return data.add(user);

@@ -11,11 +11,10 @@ import static org.hamcrest.core.Is.is;
  */
 
 public class SimpleBlockingQueueTest {
-    SimpleBlockingQueue queue = new SimpleBlockingQueue();
     Interaction action = new Interaction();
     @Test
     public void whenOneConsumerAndThreeProducers() {
-        Interaction.Consumer consumer = action.new Consumer<>(5);
+        Interaction.Consumer consumer = action.new Consumer(5);
         Thread cons = new Thread(consumer, "consumer");
         Thread prod1 = new Thread(action.new Producer(1, 2), "producer");
         Thread prod2 = new Thread(action.new Producer(2, 1), "producer");
@@ -32,11 +31,11 @@ public class SimpleBlockingQueueTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Integer result = 0;
-        for (Object el :  consumer.getValues()) {
-            result += (Integer) el;
+        int result = 0;
+        for (Integer el :  consumer.getValues()) {
+            result += el;
         }
 
-        assertThat(result, is(1 + 1 + 2 + 3 + 3));
+        assertThat(result, is(10));
     }
 }

@@ -75,7 +75,7 @@ public class DynamicArrayList<E> implements Iterable<E> {
      *
      * @return размер
      */
-    public int getSize() {
+    public synchronized int getSize() {
         return this.size;
     }
 
@@ -85,7 +85,7 @@ public class DynamicArrayList<E> implements Iterable<E> {
      * @return итератор
      */
     @Override
-    public Iterator<E> iterator() {
+    public synchronized Iterator<E> iterator() {
         int modCountCopy = this.modCount;
 
         return new Iterator<E>() {
