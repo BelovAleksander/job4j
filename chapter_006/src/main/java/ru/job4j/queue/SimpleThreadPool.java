@@ -17,7 +17,7 @@ public class SimpleThreadPool {
     @GuardedBy("this")
     private final Thread[]threads;
     @GuardedBy("this")
-    private final LinkedBlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>(5);
+    private final LinkedBlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>(1);
 
     private boolean shutdown = false;
 
@@ -42,7 +42,6 @@ public class SimpleThreadPool {
         this.shutdown = true;
         for (Thread t : threads) {
             t.interrupt();
-            System.out.println(t + "shutdowned");
         }
     }
 
@@ -70,12 +69,7 @@ public class SimpleThreadPool {
             int finalI = i;
             pool.work(new Thread() {
                 public void run() {
-                    try {
-                        System.out.println(" job " + finalI);
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        System.out.println("job off " + finalI);
-                    }
+                    System.out.println(" job " + finalI);
                 }
             });
         }
