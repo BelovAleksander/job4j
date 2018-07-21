@@ -22,30 +22,23 @@ public class NonBlockingCache {
     }
 
     public void update(final int id, final int newValue) {
-        if (data.get(id) != null) {
-            int old = data.get(id).getVersion();
-            data.computeIfPresent(id, new BiFunction<Integer, Base, Base>() {
-                @Override
-                public Base apply(final Integer integer, Base base) {
-                    if (old == base.getVersion()) {
-                        base.changeValue(newValue);
-                        base.incrementVersion();
-                    } else {
-                        throw new OptimisticException("Optimistic Exception!");
-                    }
-                    return base;
+        int old = data.get(id).getVersion();
+        data.computeIfPresent(id, new BiFunction<Integer, Base, Base>() {
+            @Override
+            public Base apply(final Integer integer, Base base) {
+                if (old == base.getVersion()) {
+                    base.changeValue(newValue);
+                    base.incrementVersion();
+                } else {
+                    throw new OptimisticException("Optimistic Exception!");
                 }
-            });
-        }
+                return base;
+            }
+        });
     }
 
-    public boolean delete(int id) {
-        boolean res = false;
-        if (data.containsKey(id)) {
-            data.remove(id);
-            res = true;
-        }
-        return res;
+    public void delete(int id) {
+        data.remove(id);
     }
 
     public Base get(int id) {

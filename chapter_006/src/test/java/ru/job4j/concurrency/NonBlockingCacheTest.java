@@ -8,20 +8,6 @@ import static org.hamcrest.core.Is.is;
 public class NonBlockingCacheTest {
 
     @Test
-    public void whenDeleteExistElementThenReturnTrue() {
-        NonBlockingCache cache = new NonBlockingCache();
-        cache.add(new Base(1, 10));
-        assertThat(cache.delete(1), is(true));
-    }
-
-    @Test
-    public void whenDeleteNonExistElementThenReturnFalse() {
-        NonBlockingCache cache = new NonBlockingCache();
-        cache.add(new Base(1, 10));
-        assertThat(cache.delete(2), is(false));
-    }
-
-    @Test
     public void whenUpdateElementThenValueChange() {
         NonBlockingCache cache = new NonBlockingCache();
         cache.add(new Base(1, 10));
@@ -36,10 +22,9 @@ public class NonBlockingCacheTest {
         cache.update(1, 15);
         assertThat(cache.get(1).getVersion(), is(1));
     }
-/**
- * Тест выкидывает множество непонятных ошибок.
- *
-    @Test(expected = OptimisticException.class)
+
+    /**
+     * @Test(expected = OptimisticException.class)
     public void whenManyThreadsTriesToUpdateElementThenThrowsOptimisticException() {
         NonBlockingCache cache = new NonBlockingCache();
         cache.add(new Base(1 ,10));
