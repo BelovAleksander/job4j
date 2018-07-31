@@ -25,20 +25,20 @@ WHERE products.type_id = (SELECT types.id
 
 SELECT * 
 FROM products p
-WHERE p.name like '%мороженное%';
+WHERE p.name LIKE '%мороженное%';
 
 --3. Написать запрос, который выводит все продукты,
 --   срок годности которых заканчивается в следующем месяце.
 
 SELECT *
 FROM products p
-WHERE p.expired_date BETWEEN '2018,07,22'AND '2018,08,22';
+WHERE p.expired_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '1 mons';
 
 --4. Написать запрос, который вывод самый дорогой продукт.
 
 SELECT products.*
 FROM products
-WHERE products.price = (SELECT max(price) FROM products);
+WHERE products.price IN (SELECT max(price) FROM products);
 
 --5. Написать запрос, который выводит количество всех продуктов
 --   определенного типа.
@@ -60,7 +60,11 @@ WHERE products.type_id IN (SELECT types.id
 --7. Написать запрос, который выводит тип продуктов,
 --   которых осталось меньше 10 штук.  
 
--- Но у нас нет поля amount
+SELECT types.name
+FROM types, products
+WHERE types.id = products.type_id
+GROUP BY types.name
+HAVING count(*) < 10;
 
 --8. Вывести все продукты и их тип.
 
