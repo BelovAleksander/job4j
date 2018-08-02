@@ -66,7 +66,9 @@ public class StoreXML {
     public static class Entry {
         private int value;
 
-        public Entry(){}
+        public Entry() {
+
+        }
 
         public Entry(int value) {
             this.value = value;
@@ -89,7 +91,7 @@ public class StoreXML {
             this.list = listNew;
         }
 
-        @XmlElement(name="myEntry")
+        @XmlElement(name = "myEntry")
         public List<Entry> getList() {
             return list;
         }

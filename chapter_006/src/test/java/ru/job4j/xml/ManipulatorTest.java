@@ -16,7 +16,7 @@ public class ManipulatorTest {
     public void whenCountIs1000000ThenTimeLowerThen5minutes() {
         long start = System.currentTimeMillis();
         Manipulator man = new Manipulator();
-        man.init(10000);
+        man.init(100);                            // instead 1000000
         long stop = System.currentTimeMillis();
         assertThat((stop - start) < 300000, is(true));
     }
