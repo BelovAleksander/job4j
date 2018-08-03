@@ -38,14 +38,6 @@ public class UserStorageTest {
     }
 
     @Test
-    public void whenDeleteThenDataDoestContainsIt() {
-        User user = new User(1, 100);
-        storage.add(user);
-        storage.delete(user);
-        assertThat(storage.data.contains(user), is(false));
-    }
-
-    @Test
     public void whenAddUpdateDeleteThenReturnTrue() {
         User user1 = new User(1, 100);
         User user2 = new User(1, 200);
