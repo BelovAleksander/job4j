@@ -3,52 +3,73 @@ package ru.job4j.tracker;
 import java.sql.*;
 import java.util.*;
 
-
 /**
- * @author whiterabbit.nsk
- * @since 27.07.2018
+ * @author Alexander Belov(whiterabbit.nsk@gmail.com)
+ * @since 06.08.2018
  * Класс Tracker предоставляет набор методов
  * для обработки заявок.
  */
 public class Tracker implements AutoCloseable {
-    private final String url = "jdbc:postgresql://localhost:5432/tracker";
-    private final String usertitle = "postgres";
-    private final String password = "password";
-    private Connection connection = null;
+    private final String config = "tracker";
+    private final String url;
+    private final String user;
+    private final String password;
+    private final String scriptCheckDB;
+    private final String scriptCreateDB;
+    private final String scriptCreateTable;
+    private Connection connection;
     private boolean haveBase = false;
+    private static final Random RN = new Random();
 
     public Tracker() {
+        ResourceBundle resource = ResourceBundle.getBundle(config);
+        String driver = resource.getString("driver");
+        this.user = resource.getString("user");
+        this.password = resource.getString("password");
+        this.url = resource.getString("url");
+        this.scriptCheckDB = resource.getString("checkDBExistenceScript");
+        this.scriptCreateDB = resource.getString("createDBScript");
+        this.scriptCreateTable = resource.getString("createTableIfNotExistScript");
+
+        /**
+         * Здесь решил не испоьзовать try-with-resources, т.к. Connection придется открывать
+         * в каждом методе.
+         */
+        Statement st = null;
         try {
-            this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost/?user=postgres&password=password");
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(
-                    "SELECT EXISTS (SELECT datname FROM pg_catalog.pg_database WHERE datname = 'tracker');");
-            rs.next();
-            haveBase =  rs.getBoolean(1);
-            rs.close();
-
-            if (!haveBase) {
-                st.executeUpdate("CREATE DATABASE tracker");
-            }
+            checkDB(this.user, this.password);
+            Class.forName(driver).newInstance();
+            this.connection = DriverManager.getConnection(this.url, this.user, this.password);
+            st = connection.createStatement();
+            st.executeUpdate(scriptCreateTable);
             st.close();
-            this.connection.close();
-
-            this.connection = DriverManager.getConnection(url, usertitle, password);
-            Statement st2 = connection.createStatement();
-            st2.executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS items(id varchar(20) PRIMARY KEY, title varchar(20), description text);");
-            st2.close();
-
-
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
-    /**
-     * Хранит рандомное значение.
-     */
-    private static final Random RN = new Random();
+
+    private void checkDB(final String user, final String password) throws SQLException {
+        String urlDef = String.format("jdbc:postgresql://localhost/?user=%s&password=%s", user, password);
+        try (Connection conn = DriverManager.getConnection(urlDef);
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(scriptCheckDB)) {
+
+            rs.next();
+            haveBase = rs.getBoolean(1);
+            if (!haveBase) {
+                st.executeUpdate(scriptCreateDB);
+            }
+        }
+    }
+
 
     /**
      * Результат работы метода указывает на то, что массив заявок пуст.
