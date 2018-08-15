@@ -19,8 +19,20 @@ public class User {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
     public int getId() {
         return this.id;
+    }
+
+    public String getEmail() {
+        return this.email;
     }
 
     public void setName(final String name) {

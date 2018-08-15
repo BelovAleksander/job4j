@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ThreadSafe
 public class MemoryStore implements Store {
     @GuardedBy("this")
-    private final ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
     private int countForId = 0;
 
     private MemoryStore() {
@@ -34,20 +34,21 @@ public class MemoryStore implements Store {
     }
 
     public void update(final User user, final String name, final String login, final String email) {
-        if (name != null) {
+        if (!name.equals("")) {
             user.setName(name);
         }
-        if (login != null) {
+        if (!login.equals("")) {
             user.setLogin(login);
         }
-        if (email != null) {
+        if (!email.equals("")) {
+            this.users.remove(user.getEmail());
             user.setEmail(email);
             this.users.put(email, user);
         }
     }
 
     public void delete(final User user) {
-        users.remove(user);
+        this.users.remove(user.getEmail());
     }
 
     public User findById(final int id) {

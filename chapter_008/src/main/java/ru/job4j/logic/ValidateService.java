@@ -13,11 +13,11 @@ import java.util.function.Function;
 
 public class ValidateService {
     private final static ValidateService INSTANCE = new ValidateService();
-    private final HashMap<String, Function<String, Boolean>> actions = new HashMap<>();
+    private HashMap<String, Function<String, Boolean>> actions = new HashMap<>();
     private HttpServletRequest req;
     private final MemoryStore store = MemoryStore.getInstance();
 
-    private ValidateService(){
+    private ValidateService() {
         }
     public static ValidateService getInstance() {
         return INSTANCE;
@@ -32,60 +32,41 @@ public class ValidateService {
 
     public Function<String, Boolean> add() {
         return action -> {
-            boolean result = true;
             String name = req.getParameter("name");
             String login = req.getParameter("login");
             String email = req.getParameter("email");
 
-            if ((name == null) || (email == null)) {
-                result = false;
+            if ((name.equals("")) || (email.equals(""))) {
                 throw new DataInputException("Name and email fields should be specified!");
             } else if (store.findAllEmails().contains(email)) {
                 throw new DataInputException("User with this email already exist!");
-            } else if (login == null) {
+            } else if (login.equals("")) {
                 login = email;
             }
-            if (result) {
-                this.store.add(name, login, email);
-            }
-            return result;
+            this.store.add(name, login, email);
+            return true;
         };
     }
 
     public Function<String, Boolean> update() {
         return action -> {
-            boolean result = false;
             String id = req.getParameter("id");
             String name = req.getParameter("name");
             String login = req.getParameter("login");
             String email = req.getParameter("email");
 
-            if (id == null) {
-                throw new DataInputException("Please, input id");
-            }
             User user = store.findById(Integer.parseInt(id));
-            if (user != null) {
-                store.update(user, name, login, email);
-                result = true;
-            }
-            return result;
+            store.update(user, name, login, email);
+            return true;
         };
     }
 
     public Function<String, Boolean> delete() {
         return action -> {
-            boolean result = false;
             String id = req.getParameter("id");
-            if (id == null) {
-                throw new DataInputException("Please, input id!");
-            }
-            User user = this.store.findById(Integer.parseInt(id));
-            if (user == null) {
-                throw new DataInputException("Such user doesn't exist!");
-            }
+            User user = findById(Integer.parseInt(id));
             store.delete(user);
-            result = true;
-            return result;
+            return true;
         };
     }
 

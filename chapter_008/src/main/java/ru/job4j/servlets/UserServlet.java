@@ -16,10 +16,11 @@ import java.io.PrintWriter;
 public class UserServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ValidateService service = ValidateService.getInstance();
         service.init(req);
         service.apply(req.getParameter("action"));
+        resp.sendRedirect(req.getContextPath() + "/list");
     }
 
     @Override
