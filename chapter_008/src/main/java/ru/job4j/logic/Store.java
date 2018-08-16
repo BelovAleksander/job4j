@@ -10,4 +10,5 @@ public interface Store {
     void delete(final User user);
     User findById(final int id);
     List<User> findAll();
+    List<String> findAllEmails();
 }

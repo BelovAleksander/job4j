@@ -13,9 +13,9 @@ import java.util.function.Function;
 
 public class ValidateService {
     private final static ValidateService INSTANCE = new ValidateService();
-    private HashMap<String, Function<String, Boolean>> actions = new HashMap<>();
+    private final HashMap<String, Function<String, Boolean>> actions = new HashMap<>();
     private HttpServletRequest req;
-    private final MemoryStore store = MemoryStore.getInstance();
+    private final Store store = DBStore.getInstance();
 
     private ValidateService() {
         }
