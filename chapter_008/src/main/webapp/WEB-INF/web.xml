@@ -5,29 +5,12 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
     <servlet>
-        <servlet-name>EchoServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>EchoServlet</servlet-name>
-        <url-pattern>/echo</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/user</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>UsersServlet</servlet-name>
         <servlet-class>ru.job4j.servlets.UsersServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/list</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>UserUpdateServlet</servlet-name>
@@ -45,4 +28,31 @@
         <servlet-name>UserCreateServlet</servlet-name>
         <url-pattern>/create</url-pattern>
     </servlet-mapping>
+    <listener>
+        <listener-class>ru.job4j.models.DBConnect</listener-class>
+    </listener>
+    <context-param>
+        <param-name>SQLDriver</param-name>
+        <param-value>org.postgresql.Driver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>url</param-name>
+        <param-value>jdbc:postgresql://localhost/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>user</param-name>
+        <param-value>postgres</param-value>
+    </context-param>
+    <context-param>
+        <param-name>password</param-name>
+        <param-value>password</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dbName</param-name>
+        <param-value>servlets_db</param-value>
+    </context-param>
+    <context-param>
+        <param-name>tableName</param-name>
+        <param-value>users</param-value>
+    </context-param>
 </web-app>

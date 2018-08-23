@@ -1,6 +1,7 @@
 package ru.job4j.servlets;
 
 import ru.job4j.logic.ValidateService;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,12 +22,8 @@ public class UserUpdateServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");
-        resp.sendRedirect(String.format("%s/update.jsp?name=%s&login=%s&email=%s&id=%s", req.getContextPath(),
-                req.getParameter("name"),
-                req.getParameter("login"),
-                req.getParameter("email"),
-                req.getParameter("id")));
+        req.getRequestDispatcher("/WEB-INF/views/update.jsp").forward(req, resp);
     }
 }

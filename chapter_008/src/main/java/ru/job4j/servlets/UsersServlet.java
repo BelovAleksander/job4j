@@ -1,5 +1,7 @@
 package ru.job4j.servlets;
 
+import ru.job4j.logic.ValidateService;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,8 +14,17 @@ import java.io.IOException;
 
 public class UsersServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");
-        resp.sendRedirect(String.format("%s/list.jsp", req.getContextPath()));
+        req.setAttribute("users", ValidateService.getInstance().findAll());
+        req.getRequestDispatcher("/WEB-INF/views/list.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ValidateService service = ValidateService.getInstance();
+        service.init(req);
+        service.apply(req.getParameter("action"));
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 }
