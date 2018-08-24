@@ -1,22 +1,23 @@
 package ru.job4j.models;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 public class User {
     private final int id;
     private String name;
     private String login;
     private String email;
+    private String password;
     private final long createDate;
+    private String role;
 
-    public User(final int id, final String name, final String login, String email, final long date) {
+    public User(final int id, final String name, final String login, final String email,
+                final String password, final long date, final String role) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = date;
-
+        this.password = password;
+        this.role = role;
     }
 
     public String getName() {
@@ -35,6 +36,14 @@ public class User {
         return this.email;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
     public void setName(final String name) {
         this.name = name;
     }
@@ -47,15 +56,23 @@ public class User {
         this.email = email;
     }
 
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        DateFormat formatter = new SimpleDateFormat("dd:MM:yyyy");
-        String dateFormatted = formatter.format(createDate);
-        return "User{"
-                + "id=" + id
+        return  "id=" + id
                 + ", name='" + name + '\''
                 + ", login='" + login + '\''
                 + ", email='" + email + '\''
-                + ", createDate=" + dateFormatted + '}';
+                + ", password='" + password + '\''
+                + ", createDate=" + createDate + '\''
+                + ", role=" + role
+                + '}';
     }
 }

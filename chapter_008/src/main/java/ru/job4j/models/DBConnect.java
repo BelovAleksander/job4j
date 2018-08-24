@@ -9,17 +9,21 @@ import javax.servlet.ServletContextListener;
 import java.sql.*;
 
 public class DBConnect implements ServletContextListener {
+    private String url;
+    private String dbName;
+    private String user;
+    private String password;
+
     @Override
     public void contextInitialized(final ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
         String driver = context.getInitParameter("SQLDriver");
-        String url = context.getInitParameter("url");
-        String user = context.getInitParameter("user");
-        String password = context.getInitParameter("password");
-        String dbName = context.getInitParameter("dbName");
-        String tableName = context.getInitParameter("tableName");
+        this.url = context.getInitParameter("url");
+        this.user = context.getInitParameter("user");
+        this.password = context.getInitParameter("password");
+        this.dbName = context.getInitParameter("dbName");
 
-        initDB(url, user, password, dbName, driver, tableName);
+        initDB(driver);
         BasicDataSource source = new BasicDataSource();
 
         source.setDriverClassName(driver);
@@ -35,39 +39,59 @@ public class DBConnect implements ServletContextListener {
 
     @Override
     public void contextDestroyed(final ServletContextEvent sce) {
-
+        try (Connection conn = DriverManager.getConnection(url + dbName, user, password)) {   //???
+            Statement st = conn.createStatement();
+            st.executeUpdate("DELETE FROM users;");
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void initDB(final String url, final String user, final String password,
-                                  final String dbName, final String driver, final String tableName) {
+    private void initDB(final String driver) {
         String sql = String.format(
                 "SELECT EXISTS(SELECT datname FROM pg_catalog.pg_database WHERE datname = '%s');", dbName
         );
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         try (Connection conn = DriverManager
                 .getConnection(String.format("%s?user=%s&password=%s", url, user, password));
              ResultSet rs = conn.createStatement().executeQuery(sql);
              Statement st = conn.createStatement()) {
-            Class.forName(driver);
             rs.next();
             boolean haveBase = rs.getBoolean(1);
             if (!haveBase) {
                 sql = String.format("CREATE database %s", dbName);
                 st.executeUpdate(sql);
-                createTable(url, user, password, dbName, tableName);
             }
+            createTable(url, user, password, dbName);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void createTable(final String url, final String user, final String password,
-                             final String dbName, final String tableName) {
-        StringBuilder sb = new StringBuilder("CREATE table ")
-                .append(tableName)
+    private void createTable(final String url, final String user, final String password, final String dbName) {
+        StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS users")
                 .append("(id integer PRIMARY KEY, user_name varchar(30), login varchar(30), ")
-                .append("email varchar(30), createDate date);");
+                .append("email varchar(30), password varchar(20), createDate date, role varchar(5));");
         try (Connection conn = DriverManager.getConnection(url + dbName, user, password)) {   //???
-            conn.createStatement().executeUpdate(sb.toString());
+            Statement st = conn.createStatement();
+            st.executeUpdate(sb.toString());
+            String sql =
+                    "INSERT INTO users(id, user_name, login, email, password, createDate, role)"
+                            + " VALUES(?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, 0);
+            ps.setString(2, "alexander");
+            ps.setString(3, "admin");
+            ps.setString(4, "example@mail.com");
+            ps.setString(5, "123");
+            ps.setDate(6, new Date(System.currentTimeMillis()));
+            ps.setString(7, "admin");
+            ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }

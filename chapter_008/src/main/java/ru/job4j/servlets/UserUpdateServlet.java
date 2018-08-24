@@ -15,15 +15,8 @@ import java.io.IOException;
 public class UserUpdateServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        ValidateService service = ValidateService.getInstance();
-        service.init(req);
-        service.apply("update");
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        req.getRequestDispatcher("/WEB-INF/views/update.jsp").forward(req, resp);
-    }
+        req.getRequestDispatcher("/WEB-INF/views/update.jsp").forward(req, resp); }
+
 }

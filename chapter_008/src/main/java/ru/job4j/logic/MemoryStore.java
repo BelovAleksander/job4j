@@ -28,12 +28,15 @@ public class MemoryStore implements Store {
         return StoreHolder.INSTANCE;
     }
 
-    public synchronized void add(final String name, final String login, final String email) {
-        this.users.put(email, new User(this.countForId, name, login, email, System.currentTimeMillis()));
+    public synchronized void add(final String name, final String login, final String email,
+                                 final String password, final String role) {
+        this.users.put(email, new User(
+                this.countForId, name, login, email, password, System.currentTimeMillis(), role));
         countForId++;
     }
 
-    public void update(final User user, final String name, final String login, final String email) {
+    public void update(final User user, final String name, final String login,
+                       final String email, final String password, final String role) {
         if (!name.equals("")) {
             user.setName(name);
         }

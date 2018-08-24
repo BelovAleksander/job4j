@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 11.08.18
+ * @since 24.08.18
  */
 
 public class ValidateService {
@@ -30,20 +30,47 @@ public class ValidateService {
         this.actions.put("delete", delete());
     }
 
+    public boolean isValid(final String login, final String password) {
+        return DBStore.isValid(login, password);
+    }
+
+    public User findByLogin(final String login) {
+        return DBStore.findByLogin(login);
+    }
+
+    public String inputErrors(final HttpServletRequest request) {
+        String error = "";
+        String action = request.getParameter("action");
+        String email = request.getParameter("email");
+        String password1 = request.getParameter("password1");
+        String password2 = request.getParameter("password2");
+
+        if (!action.equals("delete")) {                                     //???
+            if (email.equals("")) {
+                error = "Email field should be specified!";
+            } else if (!password1.equals(password2)) {
+                error = "Passwords not equals!";
+            }
+            if (action.equals("add")) {
+                if (store.findAllEmails().contains(email)) {
+                    error = "User with this email already exist";
+                }
+            }
+        }
+        return error;
+    }
+
     public Function<String, Boolean> add() {
         return action -> {
             String name = req.getParameter("name");
             String login = req.getParameter("login");
             String email = req.getParameter("email");
-
-            if ((name.equals("")) || (email.equals(""))) {
-                throw new DataInputException("Name and email fields should be specified!");
-            } else if (store.findAllEmails().contains(email)) {
-                throw new DataInputException("User with this email already exist!");
-            } else if (login.equals("")) {
+            String password = req.getParameter("password1");
+            String role = req.getParameter("role");
+            if (login.equals("")) {
                 login = email;
             }
-            this.store.add(name, login, email);
+            this.store.add(name, login, email, password, role);
             return true;
         };
     }
@@ -54,9 +81,11 @@ public class ValidateService {
             String name = req.getParameter("name");
             String login = req.getParameter("login");
             String email = req.getParameter("email");
+            String password = req.getParameter("password1");
+            String role = req.getParameter("role");
 
             User user = store.findById(Integer.parseInt(id));
-            store.update(user, name, login, email);
+            store.update(user, name, login, email, password, role);
             return true;
         };
     }
