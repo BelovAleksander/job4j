@@ -1,4 +1,4 @@
-package ru.job4j.models;
+package ru.job4j.logic;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.logic.DBStore;

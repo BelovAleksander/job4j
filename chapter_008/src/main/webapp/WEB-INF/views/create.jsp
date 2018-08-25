@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <form action='${pageContext.servletContext.contextPath}/user' method='POST'>
+    <form action='${pageContext.servletContext.contextPath}/' method='POST'>
         name: <input type='text' name='name' value=''/>
         email: <input type='text' name='email' value=''/>
         login: <input type='text' name='login' value=''/>
@@ -14,7 +14,7 @@
         <c:if test="${sessionScope.user.role.equals('admin')}">
             role: <select name="role">
                 <option value="admin">admin</option>
-                <option value="user">user</option>
+            <option value="user">user</option>
             </select>
         </c:if>
         <input type='hidden' name='action' value='add'/>

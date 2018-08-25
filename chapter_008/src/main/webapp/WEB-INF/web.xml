@@ -53,7 +53,7 @@
         <url-pattern>/signout</url-pattern>
     </servlet-mapping>
     <listener>
-        <listener-class>ru.job4j.models.DBConnect</listener-class>
+        <listener-class>ru.job4j.logic.DBConnect</listener-class>
     </listener>
     <context-param>
         <param-name>SQLDriver</param-name>
@@ -74,9 +74,5 @@
     <context-param>
         <param-name>dbName</param-name>
         <param-value>servlets_db</param-value>
-    </context-param>
-    <context-param>
-        <param-name>tableName</param-name>
-        <param-value>users</param-value>
     </context-param>
 </web-app>

@@ -44,6 +44,7 @@ public class ValidateService {
         String email = request.getParameter("email");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
+        List<String> emails = store.findAllEmails();
 
         if (!action.equals("delete")) {                                     //???
             if (email.equals("")) {
@@ -52,7 +53,7 @@ public class ValidateService {
                 error = "Passwords not equals!";
             }
             if (action.equals("add")) {
-                if (store.findAllEmails().contains(email)) {
+                if (emails.contains(email)) {
                     error = "User with this email already exist";
                 }
             }

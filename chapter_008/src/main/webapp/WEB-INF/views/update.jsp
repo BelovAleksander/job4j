@@ -11,12 +11,17 @@
         email: <input type='email' name='email' value='${param.email}'/>
         new password: <input type='password' name='password1' value=''/>
         repeat password: <input type="password" name="password2" value=""/>
-        <c:if test="${sessionScope.user.role.equals('admin')}">
-            role: <select name="role">
-            <option value="admin">admin</option>
-            <option value="user">user</option>
-        </select>
-        </c:if>
+        <c:choose>
+            <c:when test="${sessionScope.user.role.equals('admin')}">
+                role: <select name="role">
+                <option value="admin">admin</option>
+                <option value="user">user</option>
+            </select>
+            </c:when>
+            <c:otherwise>
+                <input type="hidden" name="role" value="user"/>
+            </c:otherwise>
+        </c:choose>
         <input type='hidden' name='id' value='${param.id}'/>
         <input type='hidden' name='action' value='update'/>
         <input type='submit' value='edit'/>
