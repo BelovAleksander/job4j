@@ -17,7 +17,7 @@
             } else if ($('#desc').val() == "") {
                 alert("Empty Description field!")
             }
-            validateSex()
+            validateSex();
             return false;
         }
     </script>
@@ -28,12 +28,26 @@
 
             var i = 0;
             while (!formValid && i < radios.length) {
-                if (radios[i].checked) formValid = true;
+                if (radios[i].checked) {
+                    formValid = true;
+                    var res = radios[i].value;
+                }
                 i++;
             }
 
             if (!formValid) alert("Please select Sex!");
-            return false;
+            return res;
+        }
+    </script>
+    <script>
+        function addRow() {
+            var name = $('#name').val();
+            var lsname = $('#lsname').val();
+            var sex = validateSex();
+            var desc = $('#desc').val();
+
+            $('#MyTable tr:last').after('<tr><th>' + name + '</th><th>' + lsname + '</th>' +
+                '<th>' + sex + '</th><th>' + desc + '</th></tr>');
         }
     </script>
 </head>
@@ -51,9 +65,9 @@
         <div class="form-group">
             <label>Sex: </label>
             <label for="male">Male</label>
-            <input type="radio" name="sex" id="male"/>
+            <input type="radio" name="sex" value="Male" id="male"/>
             <label for="female">Female</label>
-            <input type="radio" name="sex" id="female"/>
+            <input type="radio" name="sex" value="Female" id="female"/>
         </div>
         <div class="form-group">
             <label for="desc">Description: </label>
@@ -62,11 +76,14 @@
         <div>
             <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
         </div>
+        <div>
+            <button type="button" class="btn btn-default" onclick="return addRow();">Add Row</button>
+        </div>
     </form>
 </div>
 <div class="container">
     <h2>Table</h2>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="MyTable">
         <thead>
         <tr>
             <th>Firstname</th>
@@ -77,10 +94,10 @@
         </thead>
         <tbody>
         <tr>
-            <td>Alex</td>
-            <td>Doe</td>
-            <td>Male</td>
-            <td>alex@example.com</td>
+            <th>Alex</th>
+            <th>White</th>
+            <th>Male</th>
+            <th>Good Man</th>
         </tr>
         </tbody>
     </table>
