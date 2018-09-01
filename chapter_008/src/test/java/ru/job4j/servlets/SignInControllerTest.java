@@ -4,6 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import ru.job4j.logic.DBStore;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,14 +17,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static org.mockito.Mockito.*;
-
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 25.08.18
  */
 
-public class SignInControllerTest {
+public class SignInControllerTest extends Mockito {
     BasicDataSource source;
 
     @Before

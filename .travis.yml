@@ -15,3 +15,10 @@ notifications:
       -mailto: whiterabbit.nsk@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
+services:
+  - postgresql
+addons:
+  postgresql: "9.6"
+before_script:
+  - psql -c 'create database servlets_db;' -U postgres
+  - psql -c 'CREATE TABLE IF NOT EXISTS users(id integer PRIMARY KEY, user_name varchar(30), login varchar(30), email varchar(30), password varchar(20), createDate date, role varchar(5));' -U postgres

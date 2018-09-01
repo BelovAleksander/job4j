@@ -1,5 +1,7 @@
 package ru.job4j.smartprogress;
 
+import java.util.*;
+
 public class StringConverter {
     /**
      * Ровняем по регистру, разбиваем строку на слова, меняем регистр первой буквы каждого слова.
@@ -34,6 +36,10 @@ public class StringConverter {
                     .append(". ");
         }
         return sb.toString();
+    }
+
+    public void out() {
+        Set<String> set = new HashSet<>();
     }
 
     /**

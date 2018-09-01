@@ -52,6 +52,14 @@
         <servlet-name>SignOutController</servlet-name>
         <url-pattern>/signout</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>JSONController</servlet-name>
+        <servlet-class>ru.job4j.servlets.JSONController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JSONController</servlet-name>
+        <url-pattern>/json</url-pattern>
+    </servlet-mapping>
     <listener>
         <listener-class>ru.job4j.logic.DBConnect</listener-class>
     </listener>

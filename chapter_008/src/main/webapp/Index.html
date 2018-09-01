@@ -10,27 +10,33 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         function validate() {
+            var result = true;
             if ($('#name').val() == "") {
+                result = false;
                 alert("Empty Firstname field!")
             } else if ($('#lsname').val() == "") {
+                result = false;
                 alert("Empty Lastname field!")
             } else if ($('#desc').val() == "") {
+                result = false;
                 alert("Empty Description field!")
             }
-            validateSex();
-            return false;
+            var sex = validateSex();
+            if (sex == null) {
+                result = false;
+            }
+            return result;
         }
-    </script>
-    <script>
         function validateSex() {
             var radios = document.getElementsByName("sex");
             var formValid = false;
 
+            var res = null;
             var i = 0;
             while (!formValid && i < radios.length) {
                 if (radios[i].checked) {
                     formValid = true;
-                    var res = radios[i].value;
+                    res = radios[i].value;
                 }
                 i++;
             }
@@ -38,8 +44,6 @@
             if (!formValid) alert("Please select Sex!");
             return res;
         }
-    </script>
-    <script>
         function addRow() {
             var name = $('#name').val();
             var lsname = $('#lsname').val();
@@ -48,6 +52,25 @@
 
             $('#MyTable tr:last').after('<tr><th>' + name + '</th><th>' + lsname + '</th>' +
                 '<th>' + sex + '</th><th>' + desc + '</th></tr>');
+        }
+        function postToServlet() {
+            var validation = validate();
+
+            if (!validation) {
+                return;
+            }
+            var name = $('#name').val();
+            var lsname = $('#lsname').val();
+            var sex = validateSex();
+            var desc = $('#desc').val();
+            $.ajax({
+                type: "POST",
+                url: "/json",
+                data: ({firstName: name, lastName: lsname, sex: sex, description: desc}),
+                success: addRow(),
+                dataType: "json"
+            });
+            return false;
         }
     </script>
 </head>
@@ -78,6 +101,9 @@
         </div>
         <div>
             <button type="button" class="btn btn-default" onclick="return addRow();">Add Row</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-default" onclick="return postToServlet();">Post to Servlet</button>
         </div>
     </form>
 </div>
