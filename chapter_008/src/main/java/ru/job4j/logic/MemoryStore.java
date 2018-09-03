@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 @ThreadSafe
-public class MemoryStore implements Store {
+public class MemoryStore  {
     @GuardedBy("this")
     private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
     private int countForId = 0;
@@ -29,9 +29,9 @@ public class MemoryStore implements Store {
     }
 
     public synchronized void add(final String name, final String login, final String email,
-                                 final String password, final String role) {
+                                 final String password, final String role, final String city, final String country) {
         this.users.put(email, new User(
-                this.countForId, name, login, email, password, System.currentTimeMillis(), role));
+                this.countForId, name, login, email, password, System.currentTimeMillis(), role, city, country));
         countForId++;
     }
 

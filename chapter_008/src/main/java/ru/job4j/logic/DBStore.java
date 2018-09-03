@@ -63,8 +63,10 @@ public class DBStore implements Store {
             String userPassword = rs.getString("password");
             Date userCreateDate = rs.getDate("createDate");
             String userRole = rs.getString("role");
+            String userCity = rs.getString("city");
+            String userCountry = rs.getString("country");
             result = new User(Integer.parseInt(userId), userName, userLogin, userEmail,
-                    userPassword, userCreateDate.getTime(), userRole);
+                    userPassword, userCreateDate.getTime(), userRole, userCity, userCountry);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,11 +74,11 @@ public class DBStore implements Store {
     }
 
     @Override
-    public synchronized void add(final String name, final String login, final String email,
-                                 final String password, final String role) {
+    public synchronized void add(final String name, final String login, final String email, final String password,
+                                 final String role, final String city, final String country) {
         String sql =
-                "INSERT INTO users(id, user_name, login, email, password, createDate, role) "
-                        + "VALUES(?, ?, ?, ?, ?, ?, ?)";
+                "INSERT INTO users(id, user_name, login, email, password, createDate, role, city, country) "
+                        + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = source.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, this.count);
@@ -86,6 +88,8 @@ public class DBStore implements Store {
             ps.setString(5, password);
             ps.setDate(6, new Date(System.currentTimeMillis()));
             ps.setString(7, role);
+            ps.setString(8, city);
+            ps.setString(9, country);
             ps.execute();
         } catch (SQLException e1) {
             e1.printStackTrace();
@@ -94,9 +98,11 @@ public class DBStore implements Store {
     }
 
     @Override
-    public void update(final User user, final String name, final String login,
-                       final String email, final String password, final String role) {
-        String sql = "UPDATE users SET user_name = ?, login = ?, email = ?, password = ?, role = ? WHERE id = ?;";
+    public void update(final User user, final String name, final String login, final String email,
+                       final String password, final String role, final String city, final String country) {
+        String sql =
+                "UPDATE users SET user_name = ?, login = ?, email = ?, password = ?, role = ?, city = ?,"
+                        + " country = ? WHERE id = ?;";
         try (Connection conn = source.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
@@ -104,7 +110,9 @@ public class DBStore implements Store {
             ps.setString(3, email);
             ps.setString(4, password);
             ps.setString(5, role);
-            ps.setInt(6, user.getId());
+            ps.setString(6, city);
+            ps.setString(7, country);
+            ps.setInt(8, user.getId());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,8 +151,10 @@ public class DBStore implements Store {
                 String userPassword = rs.getString("password");
                 Date userCreateDate = rs.getDate("createDate");
                 String userRole = rs.getString("role");
-                User user = new User(Integer.parseInt(userId), userName, userLogin,
-                        userEmail, userPassword, userCreateDate.getTime(), userRole);
+                String userCity = rs.getString("city");
+                String userCountry = rs.getString("country");
+                User user = new User(Integer.parseInt(userId), userName, userLogin, userEmail,
+                        userPassword, userCreateDate.getTime(), userRole, userCity, userCountry);
                 list.add(user);
             }
         } catch (SQLException e) {
@@ -153,14 +163,14 @@ public class DBStore implements Store {
         return list;
     }
 
-    public List<String> findAllEmails() {
+    @Override
+    public List<String> findAllElements(String column, String query) {
         List<String> result = new ArrayList<>();
-        String sql = "SELECT email FROM users;";
         try (Connection conn = source.getConnection();
-        ResultSet rs = conn.createStatement().executeQuery(sql)) {
+        ResultSet rs = conn.createStatement().executeQuery(query)) {
             while (rs.next()) {
-                String email = rs.getString("email");
-                result.add(email);
+                String element = rs.getString(column);
+                result.add(element);
             }
         } catch (SQLException e) {
             e.printStackTrace();

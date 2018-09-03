@@ -1,8 +1,6 @@
 package ru.job4j.logic;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import ru.job4j.logic.DBStore;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -76,13 +74,14 @@ public class DBConnect implements ServletContextListener {
     private void createTable(final String url, final String user, final String password, final String dbName) {
         StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS users")
                 .append("(id integer PRIMARY KEY, user_name varchar(30), login varchar(30), ")
-                .append("email varchar(30), password varchar(20), createDate date, role varchar(5));");
+                .append("email varchar(30), password varchar(20), createDate date, role varchar(5), ")
+                .append("city varchar(30), country varchar(30));");
         try (Connection conn = DriverManager.getConnection(url + dbName, user, password)) {   //???
             Statement st = conn.createStatement();
             st.executeUpdate(sb.toString());
             String sql =
-                    "INSERT INTO users(id, user_name, login, email, password, createDate, role)"
-                            + " VALUES(?, ?, ?, ?, ?, ?, ?);";
+                    "INSERT INTO users(id, user_name, login, email, password, createDate, role, city, country)"
+                            + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, 0);
             ps.setString(2, "alexander");
@@ -91,6 +90,8 @@ public class DBConnect implements ServletContextListener {
             ps.setString(5, "123");
             ps.setDate(6, new Date(System.currentTimeMillis()));
             ps.setString(7, "admin");
+            ps.setString(8, "Norilsk");
+            ps.setString(9, "Russia");
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();

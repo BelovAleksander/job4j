@@ -3,10 +3,26 @@
 <html>
 <head>
     <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .quitBt, .editUsBt, .addBt{
+            float: right;
+            margin-right: 2px;
+        }
+        .editBt, .deleteBt{
+            float: right;
+            margin-right: 2px;
+        }
+
+    </style>
 </head>
 <body>
     <form action="${pageContext.servletContext.contextPath}/signout" method="GET">
-        <input type="submit" value="quit"/>
+        <input type="submit" value="quit" class="quitBt"/>
     </form>
     <form action="${pageContext.servletContext.contextPath}/edit" method="POST">
         <input type='hidden' name='id' value='<c:out value="${sessionScope.user.id}"></c:out>'/>
@@ -15,34 +31,66 @@
         <input type='hidden' name='email' value='<c:out value="${sessionScope.user.email}"></c:out>'/>
         <input type="hidden" name="password" value='<c:out value="${sessionScope.user.password}"></c:out>'>
         <input type="hidden" name="role" value="<c:out value="$${sessionScope.user.role}"></c:out>">
-        <input type="submit" value="edit">
+        <input type="submit" value="edit" class="editUsBt">
     </form>
+    <c:if test="${sessionScope.user.role.equals('admin')}">
+    <form action='${pageContext.servletContext.contextPath}/create' method='POST'>
+        <input type='submit' value="add" class="addBt"/>
+    </form>
+    </c:if>
     <h2>Users table:</h2>
-        <form action='${pageContext.servletContext.contextPath}/create' method='POST'>
-            <input type='submit' value="add"/>
-        </form>
-    <table>
+    <div class="container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>login</th>
+            <th>email</th>
+            <th>password</th>
+            <th>create date</th>
+            <th>role</th>
+            <th>city</th>
+            <th>country</th>
+            <th>actions</th>
+        </tr>
+        </thead>
         <c:forEach items="${users}" var="user">
-        <tr><td>
-            <c:out value="${user}"></c:out>
+        <tbody>
+            <tr>
+            <th><c:out value="${user.id}"></c:out></th>
+            <th><c:out value="${user.name}"></c:out></th>
+            <th><c:out value="${user.login}"></c:out></th>
+            <th><c:out value="${user.email}"></c:out></th>
+            <th><c:out value="${user.password}"></c:out></th>
+            <th><c:out value="${user.createDate}"></c:out></th>
+            <th><c:out value="${user.role}"></c:out></th>
+            <th><c:out value="${user.city}"></c:out></th>
+            <th><c:out value="${user.country}"></c:out></th>
             <c:if test="${sessionScope.user.role.equals('admin')}">
-            <form action="${pageContext.servletContext.contextPath}/edit" method="POST">
+            <th>
+                <form action="${pageContext.servletContext.contextPath}/edit" method="POST">
                 <input type='hidden' name='id' value='<c:out value="${user.id}"></c:out>'/>
                 <input type='hidden' name='name' value='<c:out value="${user.name}"></c:out>'/>
                 <input type='hidden' name='login' value='<c:out value="${user.login}"></c:out>'/>
                 <input type='hidden' name='email' value='<c:out value="${user.email}"></c:out>'/>
-                <input type="hidden" name="password" value='<c:out value="${user.password}"></c:out>'>
-                <input type="hidden" name="role" value="<c:out value="$${user.role}"></c:out>">
-                <input type="submit" value="edit">
+                <input type="hidden" name="password" value='<c:out value="${user.password}"></c:out>'/>
+                <input type="hidden" name="role" value="<c:out value="${user.role}"></c:out>"/>
+                <input type="hidden" name="city" value="<c:out value="${user.city}"></c:out>"/>
+                <input type="hidden" name="country" value="<c:out value="${user.country}"></c:out>"/>
+                <input type="submit" value="edit" class="editBt"/>
             </form>
             <form action='${pageContext.servletContext.contextPath}/' method='POST'>
                 <input type='hidden' name='id' value='<c:out value="${user.id}"></c:out>'/>
                 <input type='hidden' name='action' value='delete'/>
-                <input type='submit' value='delete'/>
+                <input type='submit' value='delete' class="deleteBt"/>
             </form>
+            </th>
             </c:if>
-        </td></tr>
+            </tr>
         </c:forEach>>
+        </tbody>
     </table>
+    </div>
 </body>
 </html>

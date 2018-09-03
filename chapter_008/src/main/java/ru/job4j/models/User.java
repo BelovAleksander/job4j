@@ -6,11 +6,13 @@ public class User {
     private String login;
     private String email;
     private String password;
-    private final long createDate;
+    private long createDate;
     private String role;
+    private String city;
+    private String country;
 
-    public User(final int id, final String name, final String login, final String email,
-                final String password, final long date, final String role) {
+    public User(final int id, final String name, final String login, final String email, final String password,
+                final long date, final String role, final String city, final String country) {
         this.id = id;
         this.name = name;
         this.login = login;
@@ -18,6 +20,8 @@ public class User {
         this.createDate = date;
         this.password = password;
         this.role = role;
+        this.city = city;
+        this.country = country;
     }
 
     public String getName() {
@@ -38,6 +42,10 @@ public class User {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public long getCreateDate() {
+        return createDate;
     }
 
     public String getRole() {
@@ -64,15 +72,20 @@ public class User {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return  "id=" + id
-                + ", name='" + name + '\''
-                + ", login='" + login + '\''
-                + ", email='" + email + '\''
-                + ", password='" + password + '\''
-                + ", createDate=" + createDate + '\''
-                + ", role=" + role
-                + '}';
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
     }
 }

@@ -5,12 +5,11 @@ import ru.job4j.models.User;
 import java.util.List;
 
 public interface Store {
-    void add(final String name, final String login, final String email,
-             final String password, final String role);
-    void update(final User user, final String name, final String login,
-                final String email, final String password, final String role);
+    void add(String name, String login, String email, String password, String role, String city, String country);
+    void update(User user, String name, String login, String email, String password,
+                String role, String city, String country);
     void delete(final User user);
     User findById(final int id);
     List<User> findAll();
-    List<String> findAllEmails();
+    List<String> findAllElements(String column, String query);
 }

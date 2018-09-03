@@ -30,6 +30,20 @@ public class ValidateService {
         this.actions.put("delete", delete());
     }
 
+    public List<String> findCities(String country) {
+        String query = String.format("SELECT city FROM users WHERE country = '%s';", country);
+        return store.findAllElements("city", query);
+    }
+
+    public List<String> findEmails() {
+        String query = "SELECT email FROM users;";
+        return store.findAllElements("email", query);
+    }
+
+    public List<String> findCountries() {
+        String query = "SELECT country FROM users;";
+        return store.findAllElements("country", query);}
+
     public boolean isValid(final String login, final String password) {
         return DBStore.isValid(login, password);
     }
@@ -44,7 +58,7 @@ public class ValidateService {
         String email = request.getParameter("email");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
-        List<String> emails = store.findAllEmails();
+        List<String> emails = findEmails();
 
         if (!action.equals("delete")) {                                     //???
             if (email.equals("")) {
@@ -68,10 +82,9 @@ public class ValidateService {
             String email = req.getParameter("email");
             String password = req.getParameter("password1");
             String role = req.getParameter("role");
-            if (login.equals("")) {
-                login = email;
-            }
-            this.store.add(name, login, email, password, role);
+            String city = req.getParameter("city");
+            String country = req.getParameter("country");
+            this.store.add(name, login, email, password, role, city, country);
             return true;
         };
     }
@@ -84,9 +97,11 @@ public class ValidateService {
             String email = req.getParameter("email");
             String password = req.getParameter("password1");
             String role = req.getParameter("role");
+            String city = req.getParameter("city");
+            String country = req.getParameter("country");
 
             User user = store.findById(Integer.parseInt(id));
-            store.update(user, name, login, email, password, role);
+            store.update(user, name, login, email, password, role, city, country);
             return true;
         };
     }
