@@ -2,47 +2,34 @@ package ru.job4j.models;
 
 public class User {
     private final int id;
-    private String name;
-    private String login;
-    private String email;
-    private String password;
+    private Personality personality;
     private long createDate;
     private String role;
     private String city;
     private String country;
 
-    public User(final int id, final String name, final String login, final String email, final String password,
+    public User(final int id, final Personality personality,
                 final long date, final String role, final String city, final String country) {
         this.id = id;
-        this.name = name;
-        this.login = login;
-        this.email = email;
         this.createDate = date;
-        this.password = password;
+        this.personality = personality;
         this.role = role;
         this.city = city;
         this.country = country;
     }
 
-    public String getName() {
-        return name;
+    public Personality getPersonality() {
+        return personality;
     }
 
-    public String getLogin() {
-        return login;
+    public void setPersonality(Personality personality) {
+        this.personality = personality;
     }
 
     public int getId() {
         return this.id;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
 
     public long getCreateDate() {
         return createDate;
@@ -50,22 +37,6 @@ public class User {
 
     public String getRole() {
         return role;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public void setLogin(final String login) {
-        this.login = login;
-    }
-
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
     }
 
     public void setRole(String role) {

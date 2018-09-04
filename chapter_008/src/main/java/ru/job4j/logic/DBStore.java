@@ -1,20 +1,22 @@
 package ru.job4j.logic;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import ru.job4j.models.Personality;
 import ru.job4j.models.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 24.08.18
  */
 
-public class DBStore implements Store {
+public class DBStore {
     private static BasicDataSource source;
     private final static DBStore INSTANCE = new DBStore();
-    private int count = 1;
+    private final AtomicInteger countId = new AtomicInteger(1);
 
     private DBStore() {
 
@@ -28,7 +30,7 @@ public class DBStore implements Store {
         return INSTANCE;
     }
 
-    public static boolean isValid(String login, String password) {
+    public boolean isValid(String login, String password) {
         boolean result = false;
         String sql = String.format("SELECT EXISTS(SELECT * FROM users WHERE login = '%s' AND password = '%s');",
                 login, password);
@@ -45,12 +47,12 @@ public class DBStore implements Store {
         return result;
     }
 
-    public static User findByLogin(final String login) {
+    public User findByLogin(final String login) {
         String sql = String.format("SELECT * FROM users WHERE login = '%s'", login);
         return getUser(sql);
     }
 
-    private static User getUser(final String sql) {
+    private User getUser(final String sql) {
         User result = null;
         try (Connection conn = source.getConnection();
              Statement st = conn.createStatement()) {
@@ -65,27 +67,28 @@ public class DBStore implements Store {
             String userRole = rs.getString("role");
             String userCity = rs.getString("city");
             String userCountry = rs.getString("country");
-            result = new User(Integer.parseInt(userId), userName, userLogin, userEmail,
-                    userPassword, userCreateDate.getTime(), userRole, userCity, userCountry);
+
+            Personality personality = new Personality(userName, userLogin, userEmail, userPassword);
+            result = new User(Integer.parseInt(userId), personality, userCreateDate.getTime(),
+                    userRole, userCity, userCountry);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
     }
 
-    @Override
-    public synchronized void add(final String name, final String login, final String email, final String password,
+    public void add(final Personality personality,
                                  final String role, final String city, final String country) {
         String sql =
                 "INSERT INTO users(id, user_name, login, email, password, createDate, role, city, country) "
                         + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = source.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, this.count);
-            ps.setString(2, name);
-            ps.setString(3, login);
-            ps.setString(4, email);
-            ps.setString(5, password);
+            ps.setInt(1, this.countId.get());
+            ps.setString(2, personality.getName());
+            ps.setString(3, personality.getLogin());
+            ps.setString(4, personality.getEmail());
+            ps.setString(5, personality.getPassword());
             ps.setDate(6, new Date(System.currentTimeMillis()));
             ps.setString(7, role);
             ps.setString(8, city);
@@ -94,21 +97,19 @@ public class DBStore implements Store {
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
-        this.count++;
+        this.countId.getAndIncrement();
     }
 
-    @Override
-    public void update(final User user, final String name, final String login, final String email,
-                       final String password, final String role, final String city, final String country) {
+    public void update(final User user, final Personality personality, final String role, final String city, final String country) {
         String sql =
                 "UPDATE users SET user_name = ?, login = ?, email = ?, password = ?, role = ?, city = ?,"
                         + " country = ? WHERE id = ?;";
         try (Connection conn = source.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ps.setString(2, login);
-            ps.setString(3, email);
-            ps.setString(4, password);
+            ps.setString(1, personality.getName());
+            ps.setString(2, personality.getLogin());
+            ps.setString(3, personality.getEmail());
+            ps.setString(4, personality.getPassword());
             ps.setString(5, role);
             ps.setString(6, city);
             ps.setString(7, country);
@@ -119,7 +120,6 @@ public class DBStore implements Store {
         }
     }
 
-    @Override
     public void delete(final User user) {
         String sql = "DELETE FROM users WHERE id = ?";
         try (Connection conn = source.getConnection();
@@ -131,13 +131,11 @@ public class DBStore implements Store {
         }
     }
 
-    @Override
     public User findById(final int id) {
         String sql = String.format("SELECT * FROM users WHERE id = %s", id);
         return getUser(sql);
     }
 
-    @Override
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM users;";
@@ -153,8 +151,10 @@ public class DBStore implements Store {
                 String userRole = rs.getString("role");
                 String userCity = rs.getString("city");
                 String userCountry = rs.getString("country");
-                User user = new User(Integer.parseInt(userId), userName, userLogin, userEmail,
-                        userPassword, userCreateDate.getTime(), userRole, userCity, userCountry);
+
+                Personality personality = new Personality(userName, userLogin, userEmail, userPassword);
+                User user = new User(Integer.parseInt(userId), personality, userCreateDate.getTime(),
+                        userRole, userCity, userCountry);
                 list.add(user);
             }
         } catch (SQLException e) {
@@ -163,7 +163,6 @@ public class DBStore implements Store {
         return list;
     }
 
-    @Override
     public List<String> findAllElements(String column, String query) {
         List<String> result = new ArrayList<>();
         try (Connection conn = source.getConnection();

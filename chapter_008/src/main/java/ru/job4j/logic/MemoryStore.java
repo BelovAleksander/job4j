@@ -2,6 +2,7 @@ package ru.job4j.logic;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import ru.job4j.models.Personality;
 import ru.job4j.models.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,27 +32,19 @@ public class MemoryStore  {
     public synchronized void add(final String name, final String login, final String email,
                                  final String password, final String role, final String city, final String country) {
         this.users.put(email, new User(
-                this.countForId, name, login, email, password, System.currentTimeMillis(), role, city, country));
+                this.countForId, new Personality(name, login, email, password), System.currentTimeMillis(), role, city, country));
         countForId++;
     }
 
     public void update(final User user, final String name, final String login,
                        final String email, final String password, final String role) {
-        if (!name.equals("")) {
-            user.setName(name);
-        }
-        if (!login.equals("")) {
-            user.setLogin(login);
-        }
-        if (!email.equals("")) {
-            this.users.remove(user.getEmail());
-            user.setEmail(email);
-            this.users.put(email, user);
-        }
+        Personality personality = new Personality(name, login, email, password);
+        user.setPersonality(personality);
+        user.setRole(role);
     }
 
     public void delete(final User user) {
-        this.users.remove(user.getEmail());
+        this.users.remove(user.getPersonality().getEmail());
     }
 
     public User findById(final int id) {

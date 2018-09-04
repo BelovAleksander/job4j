@@ -26,10 +26,8 @@ public class SignInController extends HttpServlet {
         ValidateService service = ValidateService.getInstance();
         if (service.isValid(login, password)) {
             HttpSession session = req.getSession();
-            synchronized (session) {
                 session.setAttribute("login", login);
                 session.setAttribute("user", service.findByLogin(login));
-            }
             resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
             req.setAttribute("error", "Credential invalid!");

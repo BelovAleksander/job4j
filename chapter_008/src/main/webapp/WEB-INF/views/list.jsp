@@ -26,10 +26,10 @@
     </form>
     <form action="${pageContext.servletContext.contextPath}/edit" method="POST">
         <input type='hidden' name='id' value='<c:out value="${sessionScope.user.id}"></c:out>'/>
-        <input type='hidden' name='name' value='<c:out value="${sessionScope.user.name}"></c:out>'/>
-        <input type='hidden' name='login' value='<c:out value="${sessionScope.user.login}"></c:out>'/>
-        <input type='hidden' name='email' value='<c:out value="${sessionScope.user.email}"></c:out>'/>
-        <input type="hidden" name="password" value='<c:out value="${sessionScope.user.password}"></c:out>'>
+        <input type='hidden' name='name' value='<c:out value="${sessionScope.user.personality.name}"></c:out>'/>
+        <input type='hidden' name='login' value='<c:out value="${sessionScope.user.personality.login}"></c:out>'/>
+        <input type='hidden' name='email' value='<c:out value="${sessionScope.user.personality.email}"></c:out>'/>
+        <input type="hidden" name="password" value='<c:out value="${sessionScope.user.personality.password}"></c:out>'>
         <input type="hidden" name="role" value="<c:out value="$${sessionScope.user.role}"></c:out>">
         <input type="submit" value="edit" class="editUsBt">
     </form>
@@ -59,10 +59,10 @@
         <tbody>
             <tr>
             <th><c:out value="${user.id}"></c:out></th>
-            <th><c:out value="${user.name}"></c:out></th>
-            <th><c:out value="${user.login}"></c:out></th>
-            <th><c:out value="${user.email}"></c:out></th>
-            <th><c:out value="${user.password}"></c:out></th>
+            <th><c:out value="${user.personality.name}"></c:out></th>
+            <th><c:out value="${user.personality.login}"></c:out></th>
+            <th><c:out value="${user.personality.email}"></c:out></th>
+            <th><c:out value="${user.personality.password}"></c:out></th>
             <th><c:out value="${user.createDate}"></c:out></th>
             <th><c:out value="${user.role}"></c:out></th>
             <th><c:out value="${user.city}"></c:out></th>
@@ -71,10 +71,10 @@
             <th>
                 <form action="${pageContext.servletContext.contextPath}/edit" method="POST">
                 <input type='hidden' name='id' value='<c:out value="${user.id}"></c:out>'/>
-                <input type='hidden' name='name' value='<c:out value="${user.name}"></c:out>'/>
-                <input type='hidden' name='login' value='<c:out value="${user.login}"></c:out>'/>
-                <input type='hidden' name='email' value='<c:out value="${user.email}"></c:out>'/>
-                <input type="hidden" name="password" value='<c:out value="${user.password}"></c:out>'/>
+                <input type='hidden' name='name' value='<c:out value="${user.personality.name}"></c:out>'/>
+                <input type='hidden' name='login' value='<c:out value="${user.personality.login}"></c:out>'/>
+                <input type='hidden' name='email' value='<c:out value="${user.personality.email}"></c:out>'/>
+                <input type="hidden" name="password" value='<c:out value="${user.personality.password}"></c:out>'/>
                 <input type="hidden" name="role" value="<c:out value="${user.role}"></c:out>"/>
                 <input type="hidden" name="city" value="<c:out value="${user.city}"></c:out>"/>
                 <input type="hidden" name="country" value="<c:out value="${user.country}"></c:out>"/>

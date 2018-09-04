@@ -1,5 +1,6 @@
 package ru.job4j.logic;
 
+import ru.job4j.models.Personality;
 import ru.job4j.models.User;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class ValidateService {
     private final static ValidateService INSTANCE = new ValidateService();
     private final HashMap<String, Function<String, Boolean>> actions = new HashMap<>();
     private HttpServletRequest req;
-    private final Store store = DBStore.getInstance();
+    private final DBStore store = DBStore.getInstance();
 
     private ValidateService() {
         }
@@ -42,14 +43,15 @@ public class ValidateService {
 
     public List<String> findCountries() {
         String query = "SELECT country FROM users;";
-        return store.findAllElements("country", query);}
+        return store.findAllElements("country", query);
+    }
 
     public boolean isValid(final String login, final String password) {
-        return DBStore.isValid(login, password);
+        return store.isValid(login, password);
     }
 
     public User findByLogin(final String login) {
-        return DBStore.findByLogin(login);
+        return store.findByLogin(login);
     }
 
     public String inputErrors(final HttpServletRequest request) {
@@ -84,7 +86,8 @@ public class ValidateService {
             String role = req.getParameter("role");
             String city = req.getParameter("city");
             String country = req.getParameter("country");
-            this.store.add(name, login, email, password, role, city, country);
+            Personality personality = new Personality(name, login, email, password);
+            this.store.add(personality, role, city, country);
             return true;
         };
     }
@@ -101,7 +104,8 @@ public class ValidateService {
             String country = req.getParameter("country");
 
             User user = store.findById(Integer.parseInt(id));
-            store.update(user, name, login, email, password, role, city, country);
+            Personality personality = new Personality(name, login, email, password);
+            store.update(user, personality, role, city, country);
             return true;
         };
     }
