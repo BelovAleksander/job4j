@@ -41,7 +41,7 @@
                 i++;
             }
 
-            if (!formValid) alert("Please select Sex!");
+            if (!formValid) alert("Please select your Sex!");
             return res;
         }
         function addRow() {
@@ -73,10 +73,20 @@
             return false;
         }
     </script>
+    <style>
+        .container{
+            text-align: center;
+        }
+        #button1, #button2, #button3{
+            display: inline-block;
+            width: 140px;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <form action="Index.html">
+<div class="myForm">
+    <form action="Index.html" class="container">
+        <h2>Form:</h2>
         <div class="form-group">
             <label for="name">Firstname:</label>
             <input type="text" name="name" id="name"/>
@@ -86,24 +96,23 @@
             <input type="text" name="surname" id="lsname"/>
         </div>
         <div class="form-group">
-            <label>Sex: </label>
+            <label for="desc">Description: </label>
+            <input type="text" name="description" id="desc"/>
+        </div>
+        <div class="form-group">
             <label for="male">Male</label>
             <input type="radio" name="sex" value="Male" id="male"/>
             <label for="female">Female</label>
             <input type="radio" name="sex" value="Female" id="female"/>
         </div>
-        <div class="form-group">
-            <label for="desc">Description: </label>
-            <input type="text" name="description" id="desc"/>
+        <div>
+            <button type="button" class="btn btn-default" onclick="return validate();" id="button1">Submit</button>
         </div>
         <div>
-            <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
+            <button type="button" class="btn btn-default" onclick="return addRow();" id="button2">Add Row</button>
         </div>
         <div>
-            <button type="button" class="btn btn-default" onclick="return addRow();">Add Row</button>
-        </div>
-        <div>
-            <button type="button" class="btn btn-default" onclick="return postToServlet();">Post to Servlet</button>
+            <button type="button" class="btn btn-default" onclick="return postToServlet();" id="button3">Post to Servlet</button>
         </div>
     </form>
 </div>
