@@ -12,27 +12,34 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 29.08.18
+ * @since 04.09.18
  */
 public class JSONControllerTest {
+    private JSONController controller = new JSONController();
+    private HttpServletRequest request = mock(HttpServletRequest.class);
+    private HttpServletResponse response = mock(HttpServletResponse.class);
+    private BufferedReader reader = mock(BufferedReader.class);
+
     @Test
     public void whenDoPost() throws ServletException, IOException {
-        JSONController controller = new JSONController();
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        BufferedReader reader = mock(BufferedReader.class);
-
-
         when(request.getReader()).thenReturn(reader);
         when(reader.readLine()).thenReturn(
                 "{\"firstName\" : \"Alex\", \"lastName\" : \"White\","
                         + " \"sex\" : \"male\", \"description\" : \"empty\"}");
         controller.doPost(request, response);
 
-        assertThat(UsersStorage.getInstance().
-                findByNameAndLastName("Alex", "White") != null, is(true));
+        assertThat(UsersStorage.getInstance().findAll().values().iterator().next().getFirstName(), is("Alex"));
+    }
+
+    @Test
+    public void whenDoGet() throws ServletException, IOException {
+        controller.doGet(request, response);
+
+        verify(response).setContentType("text/html");
+        verify(request).setAttribute("users", UsersStorage.getInstance().findAll());
     }
 }

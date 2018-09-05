@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class UsersStorage {
     private static final UsersStorage INSTANCE = new UsersStorage();
-    final private ConcurrentHashMap<String, JSONUser> users = new ConcurrentHashMap();
+    final private ConcurrentHashMap<String, JSONUser> users = new ConcurrentHashMap<>();
 
     private UsersStorage() {
 
