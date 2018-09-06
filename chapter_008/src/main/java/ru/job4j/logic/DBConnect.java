@@ -32,7 +32,7 @@ public class DBConnect implements ServletContextListener {
         source.setMaxIdle(10);
         source.setMaxOpenPreparedStatements(100);
 
-        DBStore.getInstance().setSource(source);
+        DBStore.getInstance().init(source);
     }
 
     @Override

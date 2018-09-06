@@ -1,6 +1,9 @@
 package ru.job4j.logic;
 
 import ru.job4j.models.JSONUser;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UsersStorage {
@@ -18,8 +21,8 @@ public class UsersStorage {
                 .append(user.getLastName()).toString();
         users.put(id, user);
     }
-    public ConcurrentHashMap<String, JSONUser> findAll() {
-        return this.users;
+    public ArrayList<JSONUser> findAll() {
+        return new ArrayList<JSONUser>(this.users.values());
     }
     public JSONUser findByNameAndLastName(String name, String lastName) {
         return this.users.get(name + lastName);

@@ -1,5 +1,7 @@
 package ru.job4j.models;
 
+import java.util.Objects;
+
 public class User {
     private final int id;
     private Personality personality;
@@ -58,5 +60,28 @@ public class User {
 
     public String getCountry() {
         return country;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return id == user.id
+                && createDate == user.createDate
+                && Objects.equals(personality, user.personality)
+                && Objects.equals(role, user.role)
+                && Objects.equals(city, user.city)
+                && Objects.equals(country, user.country);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, personality, createDate, role, city, country);
     }
 }

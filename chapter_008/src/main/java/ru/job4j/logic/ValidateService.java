@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 
 public class ValidateService {
-    private final static ValidateService INSTANCE = new ValidateService();
+    private static final ValidateService INSTANCE = new ValidateService();
     private final HashMap<String, Function<String, Boolean>> actions = new HashMap<>();
     private HttpServletRequest req;
     private final DBStore store = DBStore.getInstance();

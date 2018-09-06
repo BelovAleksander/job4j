@@ -1,5 +1,7 @@
 package ru.job4j.models;
 
+import java.util.Objects;
+
 public class Personality {
     private String name;
     private String login;
@@ -39,6 +41,27 @@ public class Personality {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Personality that = (Personality) o;
+        return Objects.equals(name, that.name)
+                && Objects.equals(login, that.login)
+                && Objects.equals(email, that.email)
+                && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, login, email, password);
     }
 
     public void setPassword(String password) {

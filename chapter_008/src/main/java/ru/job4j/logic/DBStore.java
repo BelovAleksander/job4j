@@ -15,14 +15,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DBStore {
     private static BasicDataSource source;
-    private final static DBStore INSTANCE = new DBStore();
-    private final AtomicInteger countId = new AtomicInteger(1);
+    private static final DBStore INSTANCE = new DBStore();
+    private AtomicInteger countId = new AtomicInteger(1);
 
     private DBStore() {
 
     }
 
-    public void setSource(BasicDataSource bds) {
+    public void init(BasicDataSource bds) {
         source = bds;
     }
 
@@ -52,7 +52,14 @@ public class DBStore {
         return getUser(sql);
     }
 
-    private User getUser(final String sql) {
+    /**
+     * Возвращает пользователя, удовлетворяющего условиям sql-запроса.
+     * Если таких несколько, возвращает первого.
+     * P.S.: изменил модификатор доступа на public ради тестов.
+     * @param sql
+     * @return
+     */
+    public User getUser(final String sql) {
         User result = null;
         try (Connection conn = source.getConnection();
              Statement st = conn.createStatement()) {
