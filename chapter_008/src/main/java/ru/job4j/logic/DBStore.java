@@ -107,7 +107,8 @@ public class DBStore {
         this.countId.getAndIncrement();
     }
 
-    public void update(final User user, final Personality personality, final String role, final String city, final String country) {
+    public void update(final User user, final Personality personality, final String role,
+                       final String city, final String country) {
         String sql =
                 "UPDATE users SET user_name = ?, login = ?, email = ?, password = ?, role = ?, city = ?,"
                         + " country = ? WHERE id = ?;";

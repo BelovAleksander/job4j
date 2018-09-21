@@ -127,7 +127,7 @@ public class ValidateService {
         return this.store.findById(id);
     }
 
-    public boolean apply(final String action) {
+    public boolean applyFunc(final String action) {
         return this.actions.get(action).apply(req.getParameter("action"));
     }
 }

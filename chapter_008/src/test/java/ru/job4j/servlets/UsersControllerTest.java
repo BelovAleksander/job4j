@@ -69,7 +69,7 @@ public class UsersControllerTest {
 
         verify(responseMock).setContentType("text/html");
         verify(serviceMock).init(requestMock);
-        verify(serviceMock).apply("someAction");
+        verify(serviceMock).applyFunc("someAction");
         verify(responseMock).sendRedirect("somePath/");
     }
 }

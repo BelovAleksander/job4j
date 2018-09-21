@@ -87,7 +87,7 @@
         <c:if test="${sessionScope.user.role.equals('admin')}">
             role: <select name="role">
                 <option value="admin">admin</option>
-            <option value="user">user</option>
+                <option value="user">user</option>
             </select>
         </c:if>
         <input type='hidden' name='action' value='add'/>

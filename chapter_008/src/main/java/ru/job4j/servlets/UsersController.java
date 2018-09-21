@@ -31,7 +31,7 @@ public class UsersController extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/create.jsp").forward(req, resp);
         } else {
             service.init(req);
-            service.apply(req.getParameter("action"));
+            service.applyFunc(req.getParameter("action"));
             resp.sendRedirect(req.getContextPath() + "/");
         }
     }
