@@ -16,15 +16,16 @@ public class UsersStorage {
     public static UsersStorage getInstance() {
         return INSTANCE;
     }
-    public void add(JSONUser user) {
-        String id = new StringBuilder().append(user.getFirstName())
+
+    public boolean add(JSONUser user) {
+        boolean result = false;
+        String id = new StringBuilder()
+                .append(user.getFirstName())
                 .append(user.getLastName()).toString();
-        users.put(id, user);
-    }
-    public ArrayList<JSONUser> findAll() {
-        return new ArrayList<JSONUser>(this.users.values());
-    }
-    public JSONUser findByNameAndLastName(String name, String lastName) {
-        return this.users.get(name + lastName);
+        if (!users.keySet().contains(id)) {
+            result = true;
+            users.put(id, user);
+        }
+        return result;
     }
 }

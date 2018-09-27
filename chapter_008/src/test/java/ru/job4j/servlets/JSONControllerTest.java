@@ -1,48 +1,39 @@
 package ru.job4j.servlets;
 
 import org.junit.Test;
-import ru.job4j.logic.UsersStorage;
-import ru.job4j.models.JSONUser;
-
-import javax.servlet.ServletException;
+import org.mockito.Mockito;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 06.09.18
+ * @since 27.09.18
  */
 public class JSONControllerTest {
-    private JSONController controller = new JSONController();
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private HttpServletResponse response = mock(HttpServletResponse.class);
-    private BufferedReader reader = mock(BufferedReader.class);
+    private PrintWriter writer = mock(PrintWriter.class);
+
 
     @Test
-    public void whenDoPost() throws ServletException, IOException {
-        String json = "{\"firstName\" : \"Alex\", \"lastName\" : \"White\","
-                + " \"sex\" : \"male\", \"description\" : \"empty\"}";
-        when(request.getReader()).thenReturn(reader);
-        when(reader.readLine()).thenReturn(json);
-        JSONUser user = new JSONUser("Alex", "White", "male", "empty");
+    public void whenDoPostThreeTimesWithEqualsUsersThenUserAddedOnlyOneTimes() throws IOException {
+        JSONController controller = new JSONController();
+        String jsonString =
+                "{\"firstName\" : \"Alex\", \"lastName\" : \"White\", \"sex\" : \"Male\", \"description\" : \"empty\"}";
+        when(request.getReader()).thenReturn(new BufferedReader(new StringReader(jsonString)));
+        when(response.getWriter()).thenReturn(writer);
+        when(response.getWriter().append(jsonString)).thenReturn(writer);
+
+        controller.doPost(request, response);
+        when(request.getReader()).thenReturn(new BufferedReader(new StringReader(jsonString)));
+        controller.doPost(request, response);
+        when(request.getReader()).thenReturn(new BufferedReader(new StringReader(jsonString)));
         controller.doPost(request, response);
 
-        assertThat(UsersStorage.getInstance().findAll().iterator().next(), is(user));
-    }
 
-    @Test
-    public void whenDoGet() throws ServletException, IOException {
-        controller.doGet(request, response);
-
-        verify(response).setContentType("text/html");
-        verify(request).setAttribute("users", UsersStorage.getInstance().findAll());
+        verify(writer, Mockito.times(1)).flush();
     }
 }

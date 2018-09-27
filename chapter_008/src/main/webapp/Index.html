@@ -44,11 +44,11 @@
             if (!formValid) alert("Please select your Sex!");
             return res;
         }
-        function addRow() {
-            var name = $('#name').val();
-            var lsname = $('#lsname').val();
-            var sex = validateSex();
-            var desc = $('#desc').val();
+        function addRow(user) {
+            var name = user.firstName;
+            var lsname = user.lastName;
+            var sex = user.sex;
+            var desc = user.description;
 
             $('#MyTable tr:last').after('<tr><th>' + name + '</th><th>' + lsname + '</th>' +
                 '<th>' + sex + '</th><th>' + desc + '</th></tr>');
@@ -63,11 +63,22 @@
             var lsname = $('#lsname').val();
             var sex = validateSex();
             var desc = $('#desc').val();
+
+            var list = {
+                firstName: name,
+                lastName: lsname,
+                sex: sex,
+                description: desc
+            };
             $.ajax({
                 type: "POST",
-                url: "/json",
-                data: ({firstName: name, lastName: lsname, sex: sex, description: desc}),
-                success: addRow(),
+                url: "./json",
+                data: JSON.stringify(list),
+                async: false,
+                complete: function (data) {
+                    var user = JSON.parse(data.responseText);
+                    addRow(user);
+                },
                 dataType: "json"
             });
             return false;
