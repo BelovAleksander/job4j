@@ -14,41 +14,42 @@ import java.util.List;
  * Класс-слушатель развертывает БД и таблицы.
  */
 public class DBConnect implements ServletContextListener {
-    private String url;
-    private String dbName;
-    private String mcDBName;
-    private String user;
-    private String password;
-    private String driver;
+    private BasicDataSource sourceForServletsDB;
+    private BasicDataSource sourceForMusicCourtDB;
+    private BasicDataSource sourceForInitDB;
 
+    /**
+     * Инициализирует Базы данных и таблицы в них в соответствии с настройками дескриптора развертывания.
+     * @param sce
+     */
     @Override
     public void contextInitialized(final ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
-        this.driver = context.getInitParameter("SQLDriver");
-        this.url = context.getInitParameter("url");
-        this.user = context.getInitParameter("user");
-        this.password = context.getInitParameter("password");
-        this.dbName = context.getInitParameter("dbName");
-        this.mcDBName = context.getInitParameter("mcDBName");
+        String driver = context.getInitParameter("SQLDriver");
+        String url = context.getInitParameter("url");
+        String user = context.getInitParameter("user");
+        String password = context.getInitParameter("password");
+        String dbName = context.getInitParameter("dbName");
+        String mcDBName = context.getInitParameter("mcDBName");
+        this.sourceForServletsDB = getSource(driver, url + dbName, user, password);
+        this.sourceForMusicCourtDB = getSource(driver, url + mcDBName, user, password);
+        this.sourceForInitDB = getSource(driver, url, user, password);
 
         initDB(dbName);
         initDB(mcDBName);
-        BasicDataSource sourceForDB = getSource(dbName);
-        BasicDataSource sourceForMCDB = getSource(mcDBName);
-
-        DBStore.getInstance().init(sourceForDB);
-        MCStore.getInstance().init(sourceForMCDB);
+        DBStore.getInstance().init(sourceForServletsDB);
+        MCStore.getInstance().init(sourceForMusicCourtDB);
     }
 
     /**
-     * Настройки пула коннектов.
-     * @param db БД
+     * Создает пул коннектов.
+     * @param url БД
      * @return пул коннектов
      */
-    private BasicDataSource getSource(final String db) {
+    private BasicDataSource getSource(final String driver, final String url, final String user, final String password) {
         BasicDataSource source = new BasicDataSource();
         source.setDriverClassName(driver);
-        source.setUrl(url + db);
+        source.setUrl(url);
         source.setUsername(user);
         source.setPassword(password);
         source.setMinIdle(5);
@@ -65,15 +66,10 @@ public class DBConnect implements ServletContextListener {
         String sql = String.format(
                 "SELECT EXISTS(SELECT datname FROM pg_catalog.pg_database WHERE datname = '%s');", db
         );
-        try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection conn = DriverManager
-                .getConnection(String.format("%s?user=%s&password=%s", url, user, password));
-             ResultSet rs = conn.createStatement().executeQuery(sql);
-             Statement st = conn.createStatement()) {
+
+        try (Connection conn = sourceForInitDB.getConnection()) {
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            Statement st = conn.createStatement();
             rs.next();
             boolean haveBase = rs.getBoolean(1);
             if (!haveBase) {
@@ -85,6 +81,9 @@ public class DBConnect implements ServletContextListener {
                     createTablesForMC();
                 }
             }
+
+            rs.close();
+            st.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,7 +98,7 @@ public class DBConnect implements ServletContextListener {
                 .append("(id integer PRIMARY KEY, user_name varchar(30), login varchar(30), ")
                 .append("email varchar(30), password varchar(20), createDate date, role varchar(5), ")
                 .append("city varchar(30), country varchar(30));");
-        try (Connection conn = DriverManager.getConnection(url + dbName, user, password)) {
+        try (Connection conn = sourceForServletsDB.getConnection()) {
             Statement st = conn.createStatement();
             st.executeUpdate(sb.toString());
             String sql =
@@ -116,6 +115,9 @@ public class DBConnect implements ServletContextListener {
             ps.setString(8, "Norilsk");
             ps.setString(9, "Russia");
             ps.execute();
+
+            st.close();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,10 +142,9 @@ public class DBConnect implements ServletContextListener {
 
     /**
      * Заполняет таблицы roles, music, addresses, users, music_pref.
-     * @throws SQLException
      */
     private void fillTablesForMC() throws SQLException {
-        Connection conn = DriverManager.getConnection(url + mcDBName, user, password);
+        Connection conn = sourceForMusicCourtDB.getConnection();
         String sql = "INSERT INTO roles(name) VALUES(?), (?), (?);";
         Object[] values = new String[]{"admin", "mandatory", "user"};
         prepareStatement(sql, values, conn);
@@ -171,7 +172,7 @@ public class DBConnect implements ServletContextListener {
      * @param updates список запросов
      */
     private void executeUpdates(final List<String> updates) {
-        try (Connection connection = DriverManager.getConnection(url + mcDBName, user, password)) {
+        try (Connection connection = sourceForMusicCourtDB.getConnection()) {
             Statement st = connection.createStatement();
             for (String sql : updates) {
                 st.executeUpdate(sql);
@@ -187,7 +188,6 @@ public class DBConnect implements ServletContextListener {
      * @param query sql-запрос
      * @param values список используемых в запросе значений
      * @param conn соединение с БД
-     * @throws SQLException
      */
     private void prepareStatement(String query, Object[] values, Connection conn) throws SQLException {
         PreparedStatement ps = conn.prepareStatement(query);
@@ -209,10 +209,9 @@ public class DBConnect implements ServletContextListener {
 
     /**
      * Удаляет из БД servlets_db всех пользователей, кроме администратора.
-     * @throws SQLException
      */
     private void cleanTableUsers() throws SQLException {
-        try (Connection conn = DriverManager.getConnection(url + dbName, user, password)) {
+        try (Connection conn = sourceForServletsDB.getConnection()) {
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM users WHERE id != 0;");
             st.close();
@@ -221,10 +220,9 @@ public class DBConnect implements ServletContextListener {
 
     /**
      * Удаляет из БД music_court все данные, кроме заданных по умолчанию.
-     * @throws SQLException
      */
     private void cleanTablesMC() throws SQLException {
-        try (Connection connection = DriverManager.getConnection(url + mcDBName, user, password)) {
+        try (Connection connection = sourceForMusicCourtDB.getConnection()) {
             Statement st = connection.createStatement();
             st.executeUpdate("DELETE FROM music_pref WHERE user_id > 0;");
             st.executeUpdate("DELETE FROM users WHERE id > 0;");

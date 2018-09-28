@@ -18,7 +18,6 @@ public class UsersMCServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         int result = VALIDATOR.executeUserActions(req);
-        System.out.println(result);
         if (result != 0) {
             UserMC user = CONVERTER.readValue(req.getParameter("user"), UserMC.class);
             user.setId(result);
