@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Items</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function addItem() {
+            var desc = $('#desc').val();
+            if (!validate(desc, "Description")) {
+                return false;
+            }
+            var properties = {
+                "action" : "addItem",
+                "value" : desc
+            }
+            $.ajax({
+                url: "./items",
+                type: "POST",
+                data: properties,
+                async: false,
+                complete: function (data) {
+                    var item = JSON.parse(data.responseText);
+                    $("#items-table-body tr:first").after('<tr><td>' + item.id + '</td><td>' + item.desc + '</td><td>'
+                    + item.created + '</td><td>' + checkPerformance(item.done, item.id) + '</td></tr>');
+                }
+            });
+        }
+
+        function checkPerformance(performance, id) {
+            var result;
+            if (performance === true) {
+                result = '<input type="checkbox" checked onclick="changePerformance(' + id + ')" />';
+            } else {
+                result = '<input type="checkbox" onclick="changePerformance(' + id + ')" />';
+            }
+            return result;
+        }
+
+        function validate(element, name) {
+            var isValid = true;
+            if (element === "") {
+                alert(name + " is empty!");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        function showItems() {
+            var checkbox = document.getElementById("show-all");
+            var action;
+
+            if (checkbox.checked) {
+                action = "getAllItems";
+            } else {
+                action = "getUnperformedItems";
+            }
+            var properties = {
+                "action" : action,
+                "value" : ""
+            };
+
+            $.ajax({
+                url: "./items",
+                type: "POST",
+                data: properties,
+                async: false,
+                complete: function (data) {
+                    refreshData(data);
+                }
+            });
+        }
+
+        function refreshData(data) {
+            var html = "";
+            var items = JSON.parse(data.responseText);
+            for (index in items) {
+                html += '<tr><td>' + items[index].id + '</td><td>' + items[index].desc + '</td><td>'
+                    + items[index].created + '</td><td>' + checkPerformance(items[index].done, items[index].id)
+                    + '</td></tr>';
+            }
+
+            document.getElementById("items-table-body").innerHTML = html;
+        }
+
+        function changePerformance(id) {
+            var parameters = {
+                "action" : "changePerformance",
+                "value" : id
+            }
+
+            $.ajax({
+                url: "./items",
+                type: "POST",
+                data: parameters,
+                async: false,
+            });
+            showItems();
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <label for="add-item">Добавить новое задание:</label>
+        <form id="add-item">
+            <label for="desc">Описание</label>
+            <input type="text" id="desc"/>
+            <button type="button" onclick="addItem()">Add item</button>
+        </form>
+    </div>
+    <div>
+        <label for="show-all">Show all items</label>
+        <input type="checkbox" id="show-all" onclick="showItems()"/>
+    </div>
+    <table id="items-table" class="table table-bordered">
+        <thead>
+            <tr>
+                <td>id</td>
+                <td>description</td>
+                <td>create date</td>
+                <td>performance</td>
+            </tr>
+        </thead>
+        <tbody id="items-table-body">
+            <tr></tr>
+        </tbody>
+    </table>
+</body>
+</html>

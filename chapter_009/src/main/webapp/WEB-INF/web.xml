@@ -1,0 +1,13 @@
+<web-app>
+    <servlet>
+        <servlet-name>ItemController</servlet-name>
+        <servlet-class>ru.job4j.servlets.ItemController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ItemController</servlet-name>
+        <url-pattern>/items</url-pattern>
+    </servlet-mapping>
+    <listener>
+        <listener-class>ru.job4j.logic.DBInit</listener-class>
+    </listener>
+</web-app>
