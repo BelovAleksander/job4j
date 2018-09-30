@@ -80,7 +80,7 @@ public class ValidateService {
         };
     }
 
-    public String execute(HashMap<String, String> parameters) {
+    public String execute(final HashMap<String, String> parameters) {
         LOG.info("validation | executing");
         LOG.info(parameters.get("action") + " | " + parameters.get("value"));
         return actions.get(parameters.get("action")).apply(parameters.get("value"));

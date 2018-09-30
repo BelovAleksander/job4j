@@ -2,7 +2,6 @@ package ru.job4j.servlets;
 
 import ru.job4j.logic.ValidateService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +15,12 @@ public class ItemController extends HttpServlet {
     private static final ValidateService VALIDATOR = ValidateService.getInstance();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json");
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("action", req.getParameter("action"));
         parameters.put("value", req.getParameter("value"));
         String json = VALIDATOR.execute(parameters);
-        System.out.println(json);
         resp.getWriter().append(json).flush();
     }
 }

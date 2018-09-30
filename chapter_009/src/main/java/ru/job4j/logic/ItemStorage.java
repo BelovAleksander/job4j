@@ -3,12 +3,15 @@ package ru.job4j.logic;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import ru.job4j.models.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 30.09.18
@@ -26,58 +29,54 @@ public class ItemStorage {
         return INSTANCE;
     }
 
-    public Item add(Item item) {
-        LOG.info("storage | add");
-        item.setId(countID.getAndIncrement());
-        Session session = factory.openSession();
-        session.beginTransaction();
-        session.save(item);
-        session.getTransaction().commit();
-        session.close();
-        LOG.info("id: " + item.getId() + " desc: " + item.getDesc() + " date: "
-                + item.getCreated() + " done: " + item.isDone());
-        return item;
+    private <T> T tx(final Function<Session, T> command) {
+        final Session session = factory.openSession();
+        final Transaction transaction = session.beginTransaction();
+        try {
+            return command.apply(session);
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            transaction.commit();
+            session.close();
+        }
+    }
+
+    public Item add(final Item item) {
+        return this.tx(session -> {
+            item.setId(countID.getAndIncrement());
+            session.save(item);
+            return item;
+        });
     }
 
     public List<Item> getAllItems() {
-        LOG.info("storage | get all");
-        Session session = factory.openSession();
-        session.beginTransaction();
-        List<Item> items = session.createQuery("from Item").list();
-        for (Item item : items) {
-            LOG.info(item.getDesc());
-        }
-        session.getTransaction().commit();
-        session.close();
-        return items;
+        return this.tx(session ->
+                (List<Item>) session.createQuery("from Item").list()
+            );
     }
 
     public List<Item> getAllUnperformedItems() {
-        LOG.info("storage | get unperformed");
-        Session session = factory.openSession();
-        session.beginTransaction();
-        List<Item> allItems = session.createQuery("from Item").list();
-        List<Item> unperformed = new ArrayList<>();
-        for (Item item : allItems) {
-            if (!item.isDone()) {
-                LOG.info(item.getDesc());
-                unperformed.add(item);
+        return this.tx(session -> {
+            List<Item> allItems = session.createQuery("from Item").list();
+            List<Item> unperformed = new ArrayList<>();
+            for (Item item : allItems) {
+                if (!item.isDone()) {
+                    LOG.info(item.getDesc());
+                    unperformed.add(item);
+                }
             }
-        }
-        session.getTransaction().commit();
-        session.close();
-        return unperformed;
+            return unperformed;
+        });
     }
 
-    public void changePerformance(int id) {
-        LOG.info("storage | changePerformance");
-        Session session = factory.openSession();
-        session.beginTransaction();
-        Item item = session.load(Item.class, id);
-        item.setDone(!item.isDone());
-        LOG.info(item.isDone());
-        session.getTransaction().commit();
-        session.close();
+    public String changePerformance(final int id) {
+        return this.tx(session -> {
+            Item item = session.load(Item.class, id);
+            item.setDone(!item.isDone());
+            return null;
+        });
     }
 
     public void openFactory() {
