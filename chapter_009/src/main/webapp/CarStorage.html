@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="CarStorageScripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadValues, false);
+    </script>
+    <style>
+        body {
+            margin: 5%;
+        }
+        #table1 {
+            width: 30%; /* Ширина таблицы в процентах */
+            float: left;
+        }
+        #table2 {
+            width: 30%;
+            float: left;
+        }
+        #table3 {
+            width: 30%;
+        }
+        #car-table {
+            width: 80%;
+        }
+        #add-entities-div {
+            float: left;
+            margin: 2%;
+        }
+        #add-car-div {
+            float: left;
+            margin: 2%;
+        }
+        .id {
+            width: 50px; /* Ширина ячейки */
+        }
+        .action {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="add-entities-div">
+        <p><label for="class-type">Select type of classes: </label>
+        <select  id="class-type">
+            <option selected value="XML">XML</option>
+            <option value="Annotation">Annotation</option>
+        </select><br>
+        <label for="new-carcase">Add Carcase:</label>
+        <input class="field" type="text" id="new-carcase"/><br>
+        <button type="button" onclick="addCarcase()">Add</button><br>
+        <label for="new-engine">Add Engine:</label>
+        <input class="field" type="text" id="new-engine"/><br>
+        <button type="button" onclick="addEngine()">Add</button><br>
+        <label for="new-transmission">Add Transmission:</label>
+        <input class="field" type="text" id="new-transmission"/><br>
+            <button type="button" onclick="addTransmission()">Add</button><br></p>
+
+        <label>Update Carcase:</label>
+        <select  id="select-carcase">
+            <option disabled selected value="">Select carcase</option>
+        </select><br>
+        <label for="update-carcase">Input new name:</label>
+        <input class="field" type="text" id="update-carcase"><br>
+        <button type="button" onclick="updateCarcase()">Update</button><br>
+
+        <label>Update Engine:</label>
+        <select  id="select-engine">
+            <option disabled selected value="">Select Engine</option>
+        </select><br>
+        <label for="update-engine">Input new name:</label>
+        <input class="field" type="text" id="update-engine"><br>
+        <button type="button" onclick="updateEngine()">Update</button><br>
+
+        <label>Update Transmission:</label>
+        <select id="select-transmission">
+            <option disabled selected value="">Select transmission</option>
+        </select><br>
+        <label for="update-transmission">Input new name:</label>
+        <input class="field" type="text" id="update-transmission"><br>
+        <button type="button" onclick="updateTransmission()">Update</button><br>
+
+    </div>
+    <div id="add-car-div">
+        <p>
+        <label for="new-car">Add Car:</label><br>
+        <input type="text" id="new-car"/><br>
+        <select id="add-carcase">
+            <option disabled selected value="">Select carcase</option>
+        </select><br>
+        <select id="add-engine">
+            <option disabled selected value="">Select engine</option>
+        </select><br>
+        <select id="add-transmission">
+            <option disabled selected value="">Select transmission</option>
+        </select><br>
+        <button onclick="addCar()">Add Car</button><br>
+        </p>
+        <p>
+        <label>Update Car:</label>
+        <select id="select-car">
+            <option disabled selected value="">Select car</option>
+        </select><br>
+        <input type="text" id="new-car-name"/><br>
+        <select id="select-car-carcase">
+            <option selected disabled value="">Select carcase</option>
+        </select><br>
+        <select id="select-car-engine">
+            <option selected disabled value="">Select engine</option>
+        </select><br>
+        <select id="select-car-transmission">
+            <option selected disabled value="">Select transmission</option>
+        </select><br>
+        <button type="button" onclick="updateCar()">update</button><br>
+        </p>
+    </div>
+    <div>
+
+    </div>
+    <div>
+
+    </div>
+    <div>
+        <table id="table1" class="table table-bordered">
+            <caption><h3>Carcases</h3></caption>
+            <thead>
+                <tr>
+                    <td class="id">id</td>
+                    <td class="name">name</td>
+                    <td class="action">action</td>
+                </tr>
+            </thead>
+            <tbody id="carcase-table-body">
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <table id="table2" class="table table-bordered">
+            <caption><h3>Engines</h3></caption>
+            <thead>
+            <tr>
+                <td class="id">id</td>
+                <td class="name">name</td>
+                <td class="action">action</td>
+            </tr>
+            </thead>
+            <tbody id="engine-table-body">
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <table id="table3" class="table table-bordered">
+            <caption><h3>Transmissions</h3></caption>
+            <thead>
+            <tr>
+                <td class="id">id</td>
+                <td class="name">name</td>
+                <td class="action">action</td>
+            </tr>
+            </thead>
+            <tbody id="transmission-table-body">
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <table id="car-table" class="table table-bordered">
+            <caption><h3>Cars</h3></caption>
+            <thead>
+            <tr>
+                <td class="id">id</td>
+                <td class="name">name</td>
+                <td class="carcase">carcase</td>
+                <td class="engine">engine</td>
+                <td class="transmission">transmission</td>
+                <td class="action">action</td>
+            </tr>
+            </thead>
+            <tbody id="car-table-body">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

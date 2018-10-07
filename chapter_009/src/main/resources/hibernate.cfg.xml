@@ -9,5 +9,14 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
 
         <mapping resource="ru/job4j/models/Item.hbm.xml"/>
+        <mapping resource="ru/job4j/models/CarcaseXML.hbm.xml"/>
+        <mapping resource="ru/job4j/models/EngineXML.hbm.xml"/>
+        <mapping resource="ru/job4j/models/TransmissionXML.hbm.xml"/>
+        <mapping resource="ru/job4j/models/CarXML.hbm.xml"/>
+
+        <mapping class="ru.job4j.models.CarAnts"/>
+        <mapping class="ru.job4j.models.TransmissionAnts"/>
+        <mapping class="ru.job4j.models.EngineAnts"/>
+        <mapping class="ru.job4j.models.CarcaseAnts"/>
     </session-factory>
 </hibernate-configuration>

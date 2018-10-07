@@ -1,6 +1,6 @@
 package ru.job4j.servlets;
 
-import ru.job4j.logic.ValidateService;
+import ru.job4j.logic.ItemValidator;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @since 30.09.18
  */
 public class ItemController extends HttpServlet {
-    private static final ValidateService VALIDATOR = ValidateService.getInstance();
+    private static final ItemValidator VALIDATOR = ItemValidator.getInstance();
 
     @Override
     protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {

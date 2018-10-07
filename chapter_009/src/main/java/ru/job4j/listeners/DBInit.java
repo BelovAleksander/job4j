@@ -1,6 +1,8 @@
-package ru.job4j.logic;
+package ru.job4j.listeners;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import ru.job4j.logic.HibernateManager;
+import ru.job4j.logic.ItemStorage;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -63,6 +65,7 @@ public class DBInit implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        HibernateManager.getInstance().closeFactory();
         ItemStorage.getInstance().closeFactory();
         BasicDataSource source = getSource("jdbc:postgresql://localhost/items_db");
         String sql = "DELETE FROM items;";

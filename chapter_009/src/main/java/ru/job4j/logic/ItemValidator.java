@@ -14,20 +14,20 @@ import java.util.function.Function;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 30.09.18
  */
-public class ValidateService {
-    private static final ValidateService INSTANCE = new ValidateService();
+public class ItemValidator {
+    private static final ItemValidator INSTANCE = new ItemValidator();
     private static final ItemStorage STORAGE = ItemStorage.getInstance();
     private static final ObjectMapper CONVERTER = new ObjectMapper();
     private final ConcurrentHashMap<String, Function<String, String>> actions = new ConcurrentHashMap<>();
     private static final Logger LOG = Logger.getLogger("APP1");
 
-    private ValidateService() {
+    private ItemValidator() {
         actions.put("getAllItems", getAllItems());
         actions.put("getUnperformedItems", getAllUnperformedItems());
         actions.put("addItem", add());
         actions.put("changePerformance", changePerformance());
     }
-    public static ValidateService getInstance() {
+    public static ItemValidator getInstance() {
         return INSTANCE;
     }
 

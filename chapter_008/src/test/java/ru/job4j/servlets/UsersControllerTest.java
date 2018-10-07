@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -37,7 +36,7 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void whenDoGet() throws IOException, ServletException, SQLException {
+    public void whenDoGet() throws IOException, ServletException {
         when(ValidateService.getInstance()).thenReturn(serviceMock);
         when(requestMock.getRequestDispatcher("/WEB-INF/views/list.jsp")).thenReturn(dispatcherMock);
         when(serviceMock.findAll()).thenReturn(null);
