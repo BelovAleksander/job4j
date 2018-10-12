@@ -1,6 +1,6 @@
-package ru.job4j.logic;
+package ru.job4j.cars.logic;
 
-import ru.job4j.models.CarXML;
+import ru.job4j.cars.models.CarXML;
 import java.util.ArrayList;
 import java.util.List;
 

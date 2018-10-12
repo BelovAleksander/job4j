@@ -1,5 +1,5 @@
 <hibernate-mapping>
-    <class name="ru.job4j.models.Item" table="items">
+    <class name="ru.job4j.items.models.Item" table="items">
         <id name="id" column="id"/>
         <property name="desc" column="description"/>
         <property name="created" column="create_date"/>

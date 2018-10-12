@@ -1,9 +1,9 @@
-package ru.job4j.logic;
+package ru.job4j.items.logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import ru.job4j.models.Item;
+import ru.job4j.items.models.Item;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +18,14 @@ public class ItemValidator {
     private static final ItemValidator INSTANCE = new ItemValidator();
     private static final ItemStorage STORAGE = ItemStorage.getInstance();
     private static final ObjectMapper CONVERTER = new ObjectMapper();
-    private final ConcurrentHashMap<String, Function<String, String>> actions = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Function<String, String>> ACTIONS = new ConcurrentHashMap<>();
     private static final Logger LOG = Logger.getLogger("APP1");
 
     private ItemValidator() {
-        actions.put("getAllItems", getAllItems());
-        actions.put("getUnperformedItems", getAllUnperformedItems());
-        actions.put("addItem", add());
-        actions.put("changePerformance", changePerformance());
+        ACTIONS.put("getAllItems", getAllItems());
+        ACTIONS.put("getUnperformedItems", getAllUnperformedItems());
+        ACTIONS.put("addItem", add());
+        ACTIONS.put("changePerformance", changePerformance());
     }
     public static ItemValidator getInstance() {
         return INSTANCE;
@@ -34,7 +34,7 @@ public class ItemValidator {
     private Function<String, String> add() {
         return description -> {
             LOG.info("validation | adding");
-            Item item = STORAGE.add(new Item(description));
+            final Item item = STORAGE.add(new Item(description));
             String json = null;
             try {
                 json = CONVERTER.writerWithDefaultPrettyPrinter().writeValueAsString(item);
@@ -48,7 +48,7 @@ public class ItemValidator {
     private Function<String, String> getAllItems() {
         return str -> {
             LOG.info("validation | getting all items");
-            List<Item> items = STORAGE.getAllItems();
+            final List<Item> items = STORAGE.getAllItems();
             String json = null;
             try {
                 json = CONVERTER.writerWithDefaultPrettyPrinter().writeValueAsString(items);
@@ -62,7 +62,7 @@ public class ItemValidator {
     private Function<String, String> getAllUnperformedItems() {
         return str -> {
             LOG.info("validation | getting unperformed");
-            List<Item> items = STORAGE.getAllUnperformedItems();
+            final List<Item> items = STORAGE.getAllUnperformedItems();
             String json = null;
             try {
                 json = CONVERTER.writerWithDefaultPrettyPrinter().writeValueAsString(items);
@@ -83,6 +83,6 @@ public class ItemValidator {
     public String execute(final HashMap<String, String> parameters) {
         LOG.info("validation | executing");
         LOG.info(parameters.get("action") + " | " + parameters.get("value"));
-        return actions.get(parameters.get("action")).apply(parameters.get("value"));
+        return ACTIONS.get(parameters.get("action")).apply(parameters.get("value"));
     }
 }

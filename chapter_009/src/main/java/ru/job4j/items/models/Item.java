@@ -1,4 +1,4 @@
-package ru.job4j.models;
+package ru.job4j.items.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -43,15 +43,15 @@ public class Item {
         this.id = id;
     }
 
-    public void setDesc(String desc) {
+    public void setDesc(final String desc) {
         this.desc = desc;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(final Timestamp created) {
         this.created = created;
     }
 
-    public void setDone(boolean done) {
+    public void setDone(final boolean done) {
         this.done = done;
     }
 }

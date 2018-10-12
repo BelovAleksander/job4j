@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 
 public class UsersController extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");

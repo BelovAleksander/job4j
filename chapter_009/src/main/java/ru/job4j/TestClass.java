@@ -1,6 +1,7 @@
-package ru.job4j.logic;
+package ru.job4j;
 
-import ru.job4j.models.*;
+import ru.job4j.cars.logic.HibernateManager;
+import ru.job4j.cars.models.*;
 
 import java.util.ArrayList;
 import java.util.List;

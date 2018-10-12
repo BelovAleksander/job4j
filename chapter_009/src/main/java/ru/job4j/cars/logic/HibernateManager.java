@@ -1,4 +1,4 @@
-package ru.job4j.logic;
+package ru.job4j.cars.logic;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.job4j.models.*;
+import ru.job4j.cars.logic.CarValidator;
+import ru.job4j.cars.logic.HibernateManager;
+import ru.job4j.cars.models.*;
 
 import java.util.HashMap;
 import static org.hamcrest.core.Is.is;

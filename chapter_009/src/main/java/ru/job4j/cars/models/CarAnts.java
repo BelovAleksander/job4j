@@ -1,4 +1,4 @@
-package ru.job4j.models;
+package ru.job4j.cars.models;
 
 import javax.persistence.*;
 import javax.persistence.Entity;

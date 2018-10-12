@@ -1,26 +1,20 @@
-package ru.job4j.models;
+package ru.job4j.cars.models;
 
-import javax.persistence.*;
+import ru.job4j.cars.models.Entity;
 
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 07.10.18
  */
-@javax.persistence.Entity
-@Table(name = "engines")
-public class EngineAnts implements ru.job4j.models.Entity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class TransmissionXML implements Entity {
     private int id;
-    @Column(name = "name", unique = true)
     private String name;
 
-    public EngineAnts() {
+    public TransmissionXML() {
 
     }
 
-    public EngineAnts(String name) {
+    public TransmissionXML(final String name) {
         this.name = name;
     }
 

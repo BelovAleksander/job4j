@@ -1,12 +1,11 @@
 package ru.job4j.servlets;
 
-import ru.job4j.logic.CarValidator;
+import ru.job4j.cars.logic.CarValidator;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.logging.Logger;
 /**

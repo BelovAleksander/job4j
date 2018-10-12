@@ -1,6 +1,6 @@
 package ru.job4j.servlets;
 
-import ru.job4j.logic.ItemValidator;
+import ru.job4j.items.logic.ItemValidator;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

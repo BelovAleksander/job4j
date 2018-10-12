@@ -1,8 +1,9 @@
 package ru.job4j.listeners;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import ru.job4j.logic.HibernateManager;
-import ru.job4j.logic.ItemStorage;
+import org.apache.log4j.Logger;
+import ru.job4j.cars.logic.HibernateManager;
+import ru.job4j.items.logic.ItemStorage;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -16,9 +17,10 @@ import java.sql.Statement;
  * @since 28.09.18
  */
 public class DBInit implements ServletContextListener {
+    private static final Logger LOG = Logger.getLogger("APP2");
 
     private BasicDataSource getSource(final String url) {
-        BasicDataSource source = new BasicDataSource();
+        final BasicDataSource source = new BasicDataSource();
         source.setUrl(url);
         source.setDriverClassName("org.postgresql.Driver");
         source.setUsername("postgres");
@@ -30,8 +32,7 @@ public class DBInit implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ItemStorage.getInstance().openFactory();
-        BasicDataSource source = getSource("jdbc:postgresql://localhost/");
+        final BasicDataSource source = getSource("jdbc:postgresql://localhost/");
 
         String sql = "SELECT EXISTS (SELECT datname FROM pg_catalog.pg_database WHERE datname = 'items_db');";
         try {
@@ -44,8 +45,6 @@ public class DBInit implements ServletContextListener {
                 Statement st = conn.createStatement();
                 st.executeUpdate(sql);
                 st.close();
-                BasicDataSource sourceForTable = getSource("jdbc:postgresql://localhost/items_db");
-                createTable(sourceForTable);
             }
             rs.close();
 
@@ -54,28 +53,9 @@ public class DBInit implements ServletContextListener {
         }
     }
 
-    private void createTable(BasicDataSource source) throws SQLException {
-        String sql = "CREATE TABLE items(id integer PRIMARY KEY, description varchar(100), create_date date, done boolean);";
-        Connection conn = source.getConnection();
-        Statement st = conn.createStatement();
-        st.executeUpdate(sql);
-        st.close();
-        conn.close();
-    }
-
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         HibernateManager.getInstance().closeFactory();
         ItemStorage.getInstance().closeFactory();
-        BasicDataSource source = getSource("jdbc:postgresql://localhost/items_db");
-        String sql = "DELETE FROM items;";
-        try {
-            Connection conn = source.getConnection();
-            Statement st = conn.createStatement();
-            st.executeUpdate(sql);
-            st.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

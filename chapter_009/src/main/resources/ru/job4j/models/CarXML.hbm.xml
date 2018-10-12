@@ -1,14 +1,14 @@
 <hibernate-mapping>
-    <class name="ru.job4j.models.CarXML" table="cars">
+    <class name="ru.job4j.cars.models.CarXML" table="cars">
         <id name="id" column="id">
             <generator class="identity"/>
         </id>
         <property name="name" column="name" unique="true"/>
         <many-to-one name="carcase" column="carcase" lazy="false"
-                     class="ru.job4j.models.CarcaseXML" not-null="true"/>
+                     class="ru.job4j.cars.models.CarcaseXML" not-null="true"/>
         <many-to-one name="engine" column="engine" lazy="false"
-                     class="ru.job4j.models.EngineXML" not-null="true"/>
+                     class="ru.job4j.cars.models.EngineXML" not-null="true"/>
         <many-to-one name="transmission" column="transmission" lazy="false"
-                     class="ru.job4j.models.TransmissionXML" not-null="true"/>
+                     class="ru.job4j.cars.models.TransmissionXML" not-null="true"/>
     </class>
 </hibernate-mapping>

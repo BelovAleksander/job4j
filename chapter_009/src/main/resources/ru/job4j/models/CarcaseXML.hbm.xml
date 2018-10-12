@@ -1,5 +1,5 @@
 <hibernate-mapping>
-    <class name="ru.job4j.models.CarcaseXML" table="carcases">
+    <class name="ru.job4j.cars.models.CarcaseXML" table="carcases">
         <id name="id" column="id">
             <generator class="identity"/>
         </id>

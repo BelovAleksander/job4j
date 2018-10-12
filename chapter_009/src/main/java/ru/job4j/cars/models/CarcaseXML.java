@@ -1,17 +1,18 @@
-package ru.job4j.models;
+package ru.job4j.cars.models;
+
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
- * @since 05.10.18
+ * @since 07.10.18
  */
-public class EngineXML implements Entity {
+public class CarcaseXML implements Entity {
     private int id;
     private String name;
 
-    public EngineXML() {
+    public CarcaseXML() {
 
     }
 
-    public EngineXML(final String name) {
+    public CarcaseXML(final String name) {
         this.name = name;
     }
 

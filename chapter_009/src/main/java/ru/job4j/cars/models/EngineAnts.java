@@ -1,5 +1,4 @@
-package ru.job4j.models;
-
+package ru.job4j.cars.models;
 
 import javax.persistence.*;
 
@@ -8,8 +7,8 @@ import javax.persistence.*;
  * @since 07.10.18
  */
 @javax.persistence.Entity
-@Table(name = "transmissions")
-public class TransmissionAnts implements ru.job4j.models.Entity {
+@Table(name = "engines")
+public class EngineAnts implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -17,11 +16,11 @@ public class TransmissionAnts implements ru.job4j.models.Entity {
     @Column(name = "name", unique = true)
     private String name;
 
-    public TransmissionAnts() {
+    public EngineAnts() {
 
     }
 
-    public TransmissionAnts(String name) {
+    public EngineAnts(String name) {
         this.name = name;
     }
 
