@@ -12,13 +12,22 @@ import java.util.function.Function;
  */
 public class HibernateManager {
     private static SessionFactory factory;
-    private static final HibernateManager INSTANCE = new HibernateManager();
+    private static HibernateManager INSTANCE = new HibernateManager();
+    private static String CONFIG = "/resources/hibernate.cfg.xml";
 
     private HibernateManager() {
-        openFactory();
+
     }
 
+
     public static HibernateManager getInstance() {
+        openFactory();
+        return INSTANCE;
+    }
+
+    public static HibernateManager getInstance(final String config) {
+        CONFIG = config;
+        openFactory();
         return INSTANCE;
     }
 
@@ -36,11 +45,11 @@ public class HibernateManager {
         }
     }
 
-    public void closeFactory() {
+    public static void closeFactory() {
         factory.close();
     }
 
-    public void openFactory() {
-        factory = new Configuration().configure().buildSessionFactory();
+    public static void openFactory() {
+        factory = new Configuration().configure(CONFIG).buildSessionFactory();
     }
 }

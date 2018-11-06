@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/hibernate_db</property>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">password</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
+
+        <mapping resource="ru/job4j/callboard/models/Advert.hbm.xml"/>
+        <mapping resource="ru/job4j/callboard/models/Brand.hbm.xml"/>
+        <mapping resource="ru/job4j/callboard/models/Color.hbm.xml"/>
+        <mapping resource="ru/job4j/callboard/models/Model.hbm.xml"/>
+        <mapping resource="ru/job4j/callboard/models/Photo.hbm.xml"/>
+        <mapping resource="ru/job4j/callboard/models/Role.hbm.xml"/>
+        <mapping resource="ru/job4j/callboard/models/User.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

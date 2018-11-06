@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:postgresql://localhost/items_db</property>
+        <property name="connection.url">jdbc:postgresql://localhost5432/items_db</property>
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <property name="connection.username">postgres</property>
         <property name="connection.password">password</property>
         <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
 
-        <mapping resource="ru/job4j/models/Item.hbm.xml"/>
-        <mapping resource="ru/job4j/models/CarcaseXML.hbm.xml"/>
-        <mapping resource="ru/job4j/models/EngineXML.hbm.xml"/>
-        <mapping resource="ru/job4j/models/TransmissionXML.hbm.xml"/>
-        <mapping resource="ru/job4j/models/CarXML.hbm.xml"/>
+        <mapping resource="ru/job4j/items/models/Item.hbm.xml"/>
+
+        <mapping resource="ru/job4j/cars/models/CarcaseXML.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/models/EngineXML.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/models/TransmissionXML.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/models/CarXML.hbm.xml"/>
 
         <mapping class="ru.job4j.cars.models.CarAnts"/>
         <mapping class="ru.job4j.cars.models.TransmissionAnts"/>

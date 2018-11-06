@@ -1,0 +1,14 @@
+<hibernate-mapping>
+    <class name="ru.job4j.callboard.models.Model" table="models">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" type="java.lang.String" column="name"/>
+        <many-to-one name="brand" column="brand_id"
+                    class="ru.job4j.callboard.models.Brand" lazy="false"/>
+        <bag name="adverts" inverse="true">
+            <key column="model_id" not-null="true" />
+            <one-to-many class="ru.job4j.callboard.models.Advert" />
+        </bag>
+    </class>
+</hibernate-mapping>

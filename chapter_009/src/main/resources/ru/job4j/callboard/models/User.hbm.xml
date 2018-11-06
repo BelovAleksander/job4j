@@ -1,0 +1,11 @@
+<hibernate-mapping>
+    <class name="ru.job4j.callboard.models.User" table="users">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="email" type="java.lang.String" column="email"/>
+        <property name="password" type="java.lang.String" column="password"/>
+        <many-to-one name="role" column="role_id" lazy="false"
+                class="ru.job4j.callboard.models.Role" not-null="true"/>
+    </class>
+</hibernate-mapping>
