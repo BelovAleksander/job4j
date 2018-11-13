@@ -96,8 +96,8 @@ public class Controller extends HttpServlet {
             LOG.info("***servlet | getUrl");
             final String url = req.getRequestURL().toString();
             LOG.info("URL: " + url);
-            return url.substring(0, url.length() - req.getRequestURI().length()) +
-                    req.getContextPath() + "/";
+            return url.substring(0, url.length() - req.getRequestURI().length())
+                    + req.getContextPath() + "/";
         };
     }
 

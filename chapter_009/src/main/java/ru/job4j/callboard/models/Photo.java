@@ -38,9 +38,9 @@ public class Photo {
 
     @Override
     public String toString() {
-        return "Photo{" +
-                "id=" + id +
-                ", path='" + path + '\'' +
-                '}';
+        return "Photo{"
+                + "id=" + id
+                + ", path='" + path + '\''
+                + '}';
     }
 }

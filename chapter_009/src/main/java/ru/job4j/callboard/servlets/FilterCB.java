@@ -26,8 +26,8 @@ public class FilterCB implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
-        if (request.getRequestURI().contains("/update") ||
-                request.getRequestURI().contains("/new")) {
+        if (request.getRequestURI().contains("/update")
+                || request.getRequestURI().contains("/new")) {
             HttpSession session = request.getSession();
             if (session.getAttribute("email") == null) {
                 //todo: filter should exclude the possibility of updating advert if you aren't owner

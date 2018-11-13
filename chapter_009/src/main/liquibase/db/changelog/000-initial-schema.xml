@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"
+                   logicalFilePath="000-initial-schema.xml" >
+    <changeSet id="000" author="whiterabbit">
+        <sql>
+            CREATE TABLE roles (
+            id SERIAL UNIQUE, name VARCHAR(10))
+        </sql>
+        <sql>
+            CREATE TABLE users (
+            id SERIAL UNIQUE, email VARCHAR(40) UNIQUE, password VARCHAR(15),
+            role_id INTEGER REFERENCES roles(id))
+        </sql>
+        <sql>
+            CREATE TABLE colors (
+            id SERIAL UNIQUE, name VARCHAR(12))
+        </sql>
+        <sql>
+            CREATE TABLE brands (
+            id SERIAL UNIQUE, name VARCHAR(20))
+        </sql>
+        <sql>
+            CREATE TABLE models (
+            id SERIAL UNIQUE, name VARCHAR(20), brand_id INTEGER REFERENCES brands(id))
+        </sql>
+        <sql>
+            CREATE TABLE adverts (
+            vin INTEGER UNIQUE, title VARCHAR(120), status BOOLEAN, price INTEGER,
+            description TEXT, mileage INTEGER, photo VARCHAR(100),
+            user_id INTEGER REFERENCES users(id),
+            color_id INTEGER REFERENCES colors(id), brand_id INTEGER REFERENCES brands(id),
+            model_id INTEGER REFERENCES models(id))
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -7,14 +7,14 @@
     <listener>
         <listener-class>ru.job4j.listeners.DBInit</listener-class>
     </listener>
-    <filter>
+    <!--<filter>
         <filter-name>FilterCB</filter-name>
         <filter-class>ru.job4j.callboard.servlets.FilterCB</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>FilterCB</filter-name>
         <url-pattern>*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <servlet>
         <servlet-name>ItemController</servlet-name>
         <servlet-class>ru.job4j.servlets.ItemController</servlet-class>

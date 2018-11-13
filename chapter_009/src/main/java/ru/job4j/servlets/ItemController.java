@@ -1,5 +1,6 @@
 package ru.job4j.servlets;
 
+import org.apache.log4j.Logger;
 import ru.job4j.items.logic.ItemValidator;
 
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,7 @@ import java.util.HashMap;
  */
 public class ItemController extends HttpServlet {
     private static final ItemValidator VALIDATOR = ItemValidator.getInstance();
+    private static final Logger LOG = Logger.getLogger("APP2");
 
     @Override
     protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {

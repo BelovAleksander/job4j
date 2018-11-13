@@ -12,8 +12,8 @@ import java.util.function.Function;
  */
 public class HibernateManager {
     private static SessionFactory factory;
-    private static HibernateManager INSTANCE = new HibernateManager();
-    private static String CONFIG = "/resources/hibernate.cfg.xml";
+    private static final HibernateManager INSTANCE = new HibernateManager();
+    private static String config = "hibernate.cfg.xml";
 
     private HibernateManager() {
 
@@ -25,8 +25,8 @@ public class HibernateManager {
         return INSTANCE;
     }
 
-    public static HibernateManager getInstance(final String config) {
-        CONFIG = config;
+    public static HibernateManager getInstance(final String conf) {
+        config = conf;
         openFactory();
         return INSTANCE;
     }
@@ -50,6 +50,6 @@ public class HibernateManager {
     }
 
     public static void openFactory() {
-        factory = new Configuration().configure(CONFIG).buildSessionFactory();
+        factory = new Configuration().configure(config).buildSessionFactory();
     }
 }

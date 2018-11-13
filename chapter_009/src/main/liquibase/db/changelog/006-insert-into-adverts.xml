@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"
+                   logicalFilePath="006-insert-into-adverts.xml" >
+    <changeSet id="006" author="whiterabbit">
+        <sql>
+            INSERT INTO adverts
+            (vin, title, status, price, description, mileage, user_id, color_id, brand_id,
+            model_id, photo)
+            VALUES
+            <!--Audi Q7 -->
+            (123454564, 'Used Audi Q7', true, 790000, 'car an a excellent condition non accidental and with
+            service history just like a new car for more details and test drive contact us....',
+            40000, 1, 4, 3, 13, 'C:\Tools\apache-tomcat-8.5.31\bin/images/AudiQ7.jpeg'),
+            <!--Audi A6 -->
+            (649800535, 'Used Audi A6', true, 290000, 'Immaculate condition of Audi A6 TDI Matrix With complete
+            service record owner : 1st', 60000, 1, 3, 3, 10, 'C:\Tools\apache-tomcat-8.5.31\bin/images/AudiA6.jpeg'),
+            <!--BMW 3-series -->
+            (59004380, 'Used BMW 3 Series [2012-2015]', true, 210000, 'car an a excellent condition non accidental
+            and with service history just like a new car for more details and test drive contact us....', 120000, 1,
+            5, 2, 7, 'C:\Tools\apache-tomcat-8.5.31\bin/images/BMW320d.jpeg'),
+            <!--Mercedes-Benz C-class -->
+            (54353, 'Used Mercedes-Benz C-Class [2014-2018]', true, 800000, 'Excellent Condition, Original Paint,
+            Non Accidental, Less Driven Single Owner', 75000, 1, 4, 1, 1,
+            'C:\Tools\apache-tomcat-8.5.31\bin/images/MercedesC-class.jpeg');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

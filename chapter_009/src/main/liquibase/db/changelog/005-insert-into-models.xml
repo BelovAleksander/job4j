@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"
+                   logicalFilePath="005-insert-into-models.xml" >
+    <changeSet id="005" author="whiterabbit">
+        <sql>
+            INSERT INTO models(name, brand_id) VALUES
+            ('C-class', 1), ('S-class', 1), ('C-class Coupe', 1), ('CLA', 1),
+            ('M140i', 2), ('230', 2), ('320', 2), ('328d', 2), ('340 Gran Turismo', 2),
+            ('A6', 3), ('A7', 3), ('A8 L', 3), ('Q7', 3), ('R6', 3),
+            ('Avalon', 4), ('Corolla', 4), ('Camry', 4), ('Yaris', 4), ('Tundra', 4),
+            ('model S', 5), ('model X', 5), ('model 3', 5), ('Roadster', 5);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

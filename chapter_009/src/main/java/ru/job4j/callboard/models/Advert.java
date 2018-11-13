@@ -127,18 +127,18 @@ public class Advert {
 
     @Override
     public String toString() {
-        return "Advert{" +
-                "vin=" + vin +
-                ", title='" + title + '\'' +
-                ", status=" + status +
-                ", price=" + price +
-                ", desc='" + description + '\'' +
-                ", mileage=" + mileage +
-                ", owner=" + owner +
-                ", color=" + color +
-                ", brand=" + brand +
-                ", model=" + model +
-                ", photo=" + photo +
-                '}';
+        return "Advert{"
+                + "vin=" + vin
+                + ", title='" + title + '\''
+                + ", status=" + status
+                + ", price=" + price
+                + ", desc='" + description + '\''
+                + ", mileage=" + mileage
+                + ", owner=" + owner
+                + ", color=" + color
+                + ", brand=" + brand
+                + ", model=" + model
+                + ", photo=" + photo
+                + '}';
     }
 }

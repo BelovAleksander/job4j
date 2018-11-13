@@ -74,27 +74,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>3.5.5</version>
-				<configuration>
-					<changeLogFile>
-						${basedir}/src/main/liquibase/master.xml
-					</changeLogFile>
-					<driver>org.postgresql.Driver</driver>
-					<url>jdbc:postgresql://${postgresql.host}:${postgresql.port}/${postgresql.db}</url>
-					<username>postgres</username>
-					<password>password</password>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.postgresql</groupId>
-						<artifactId>postgresql</artifactId>
-						<version>9.3-1100-jdbc41</version>
-					</dependency>
-				</dependencies>
-			</plugin>
         </plugins>
     </build>
 	<dependencies>
@@ -170,11 +149,6 @@
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-maven-plugin</artifactId>
-			<version>3.6.2</version>
 		</dependency>
 	</dependencies>
 </project>
