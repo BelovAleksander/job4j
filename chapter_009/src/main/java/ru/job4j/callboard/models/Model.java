@@ -70,12 +70,4 @@ public class Model {
         return this.adverts.size();
     }
 
-    @Override
-    public String toString() {
-        return "Model{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", adverts=" + adverts
-                + '}';
-    }
 }

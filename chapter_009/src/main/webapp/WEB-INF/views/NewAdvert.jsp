@@ -32,6 +32,7 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", fillContent, false);
+        var fileSelected = false;
 
         function fillContent() {
             var brandsList = getList("getBrands", "");
@@ -115,6 +116,10 @@
         }
 
         function fileUpload() {
+            if (!fileSelected) {
+                addAdvert();
+                return;
+            }
             var data = new FormData();
             jQuery.each(jQuery('#input-file')[0].files, function(i, file) {
                 data.append('file-'+i, file);
@@ -134,6 +139,7 @@
         }
 
         function onFileSelected(event) {
+            fileSelected = true;
             var selectedFile = event.target.files[0];
             var reader = new FileReader();
 

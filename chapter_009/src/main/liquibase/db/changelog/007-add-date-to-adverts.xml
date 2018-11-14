@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"
+                   logicalFilePath="007-add-date-to-adverts.xml" >
+    <changeSet id="007" author="whiterabbit" runOnChange="true">
+        <sql>
+            ALTER TABLE adverts
+            ADD COLUMN created_date DATE;
+        </sql>
+        <sql>
+            UPDATE adverts
+            SET created_date = '2018-11-13'
+            WHERE vin = 123454564;
+        </sql>
+        <sql>
+            UPDATE adverts
+            SET created_date = '2018-11-13'
+            WHERE vin = 649800535;
+        </sql>
+        <sql>
+            UPDATE adverts
+            SET created_date = '2018-11-12'
+            WHERE vin = 59004380;
+        </sql>
+        <sql>
+            UPDATE adverts
+            SET created_date = '2018-11-10'
+            WHERE vin = 54353;
+        </sql>
+
+    </changeSet>
+</databaseChangeLog>

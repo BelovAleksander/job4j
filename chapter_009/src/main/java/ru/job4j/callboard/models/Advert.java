@@ -1,5 +1,9 @@
 package ru.job4j.callboard.models;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 15.10.2018
@@ -16,21 +20,14 @@ public class Advert {
     private Color color;
     private Brand brand;
     private Model model;
+    private Timestamp createdDate;
 
     public Advert() {
-
+        this.createdDate = new Timestamp(System.currentTimeMillis());
     }
 
     public Advert(final int vin) {
         this.vin = vin;
-    }
-
-    public Advert(final int vin, final String title, final int price, final String desc, final int mileage) {
-        this.vin = vin;
-        this.title = title;
-        this.price = price;
-        this.description = desc;
-        this.mileage = mileage;
     }
 
     public int getVin() {
@@ -77,6 +74,10 @@ public class Advert {
         return photo;
     }
 
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
     public void setVin(final int vin) {
         this.vin = vin;
     }
@@ -121,24 +122,11 @@ public class Advert {
         this.photo = photo;
     }
 
-    public void changeStatus() {
-        this.status = !this.status;
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
     }
 
-    @Override
-    public String toString() {
-        return "Advert{"
-                + "vin=" + vin
-                + ", title='" + title + '\''
-                + ", status=" + status
-                + ", price=" + price
-                + ", desc='" + description + '\''
-                + ", mileage=" + mileage
-                + ", owner=" + owner
-                + ", color=" + color
-                + ", brand=" + brand
-                + ", model=" + model
-                + ", photo=" + photo
-                + '}';
+    public void changeStatus() {
+        this.status = !this.status;
     }
 }

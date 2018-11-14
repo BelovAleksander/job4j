@@ -15,5 +15,6 @@
                      class="ru.job4j.callboard.models.Brand" not-null="true"/>
         <many-to-one name="model" column="model_id" lazy="false"
                      class="ru.job4j.callboard.models.Model" not-null="true"/>
+        <property name="createdDate" type="java.util.Date" column="created_date"/>
     </class>
 </hibernate-mapping>
