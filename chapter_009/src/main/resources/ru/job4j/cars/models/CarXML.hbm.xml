@@ -5,10 +5,10 @@
         </id>
         <property name="name" column="name" unique="true"/>
         <many-to-one name="carcase" column="carcase" lazy="false"
-                     class="ru.job4j.cars.models.CarcaseXML" not-null="true"/>
+                     class="ru.job4j.cars.models.CarcaseXML" />
         <many-to-one name="engine" column="engine" lazy="false"
-                     class="ru.job4j.cars.models.EngineXML" not-null="true"/>
+                     class="ru.job4j.cars.models.EngineXML" />
         <many-to-one name="transmission" column="transmission" lazy="false"
-                     class="ru.job4j.cars.models.TransmissionXML" not-null="true"/>
+                     class="ru.job4j.cars.models.TransmissionXML" />
     </class>
 </hibernate-mapping>

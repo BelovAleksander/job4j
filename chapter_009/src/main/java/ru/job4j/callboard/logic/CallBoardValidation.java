@@ -68,7 +68,6 @@ public class CallBoardValidation {
             LOG.info("***validation | addAdvert***");
             try {
                 final Advert advert = CONVERTER.readValue(json, Advert.class);
-                LOG.info(advert.getColor().toString());
                 DAO.addOrUpdate(advert);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -120,13 +119,11 @@ public class CallBoardValidation {
     private Function<String, String> addUser() {
         return json -> {
             LOG.info("***validation | addUser***");
-            LOG.info(json);
             String id = null;
             try {
                 final User user = CONVERTER.readValue(json, User.class);
                 DAO.addOrUpdate(user);
                 id = user.getId() + "";
-                LOG.info("return id: " + id);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -137,7 +134,6 @@ public class CallBoardValidation {
     private Function<String, String> getUser() {
         return email -> {
             LOG.info("***validation | getUser***");
-            LOG.info(email);
             final List<User> users = DAO.getAll("from User");
             User result = null;
             if (email == null) {

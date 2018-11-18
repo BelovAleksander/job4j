@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:hsqldb:mem:items_db;shutdown=true";sql.enforce_size=false</property>
+        <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"></property>
+        <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+        <mapping resource="ru/job4j/items/models/Item.hbm.xml"/>
+
+        <mapping resource="ru/job4j/cars/models/CarcaseXML.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/models/EngineXML.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/models/TransmissionXML.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/models/CarXML.hbm.xml"/>
+
+        <mapping class="ru.job4j.cars.models.CarAnts"/>
+        <mapping class="ru.job4j.cars.models.TransmissionAnts"/>
+        <mapping class="ru.job4j.cars.models.EngineAnts"/>
+        <mapping class="ru.job4j.cars.models.CarcaseAnts"/>
+    </session-factory>
+</hibernate-configuration>

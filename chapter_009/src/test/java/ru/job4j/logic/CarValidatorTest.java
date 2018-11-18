@@ -2,11 +2,9 @@ package ru.job4j.logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.job4j.cars.logic.CarValidator;
-import ru.job4j.cars.logic.HibernateManager;
 import ru.job4j.cars.models.*;
 
 import java.util.HashMap;
@@ -17,20 +15,13 @@ import static org.junit.Assert.*;
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 07.10.18
  */
+
+@Ignore
 public class CarValidatorTest {
     private CarValidator validator = CarValidator.getInstance();
 
-    @Before
-    public void openFactory() {
-        HibernateManager.getInstance().openFactory();
-    }
 
-    @After
-    public void closeFactory() {
-        HibernateManager.getInstance().closeFactory();
-    }
-
-    private HashMap<String, String> getMap(String action, String value) {
+    private HashMap<String, String> createCommand(String action, String value) {
         HashMap<String, String> result = new HashMap<>();
         result.put("action", action);
         result.put("value", value);
@@ -40,19 +31,19 @@ public class CarValidatorTest {
     @Test
     public void whenAddCarcaseXML() {
         String carcase = validator.execute(
-                getMap("addCarcaseXML", "sedan"));
+                createCommand("addCarcaseXML", "sedan"));
         String carcases = validator.execute(
-                getMap("getCarcasesXML", ""));
+                createCommand("getCarcasesXML", ""));
 
-        assertThat(carcases.contains(carcase), is(true));
+        assertTrue(carcases.contains(carcase));
     }
 
     @Test
     public void whenAddCarcaseAnts() {
         String carcase = validator.execute(
-                getMap("addCarcase@", "sedan"));
+                createCommand("addCarcase@", "sedan"));
         String carcases = validator.execute(
-                getMap("getCarcases@", "")
+                createCommand("getCarcases@", "")
         );
 
         assertThat(carcases.contains(carcase), is(true));
@@ -61,10 +52,10 @@ public class CarValidatorTest {
     @Test
     public void whenAddEngineXML() {
         String engine = validator.execute(
-                getMap("addEngineXML", "electric")
+                createCommand("addEngineXML", "electric")
         );
         String engines = validator.execute(
-                getMap("getEnginesXML", "")
+                createCommand("getEnginesXML", "")
         );
 
         assertThat(engines.contains(engine), is(true));
@@ -73,10 +64,10 @@ public class CarValidatorTest {
     @Test
     public void whenAddEngineAnts() {
         String engine = validator.execute(
-                getMap("addEngine@", "diesel")
+                createCommand("addEngine@", "diesel")
         );
         String engines = validator.execute(
-                getMap("getEngines@", "")
+                createCommand("getEngines@", "")
         );
 
         assertThat(engines.contains(engine), is(true));
@@ -85,10 +76,10 @@ public class CarValidatorTest {
     @Test
     public void whenAddTransmissionXML() {
         String transmission = validator.execute(
-                getMap("addTransmissionXML", "mechanic")
+                createCommand("addTransmissionXML", "mechanic")
         );
         String transmissions = validator.execute(
-                getMap("getTransmissionsXML", "")
+                createCommand("getTransmissionsXML", "")
         );
 
         assertThat(transmissions.contains(transmission), is(true));
@@ -97,10 +88,10 @@ public class CarValidatorTest {
     @Test
     public void whenAddTransmissionAnts() {
         String transmission = validator.execute(
-                getMap("addTransmission@", "robot")
+                createCommand("addTransmission@", "robot")
         );
         String transmissions = validator.execute(
-                getMap("getTransmissions@", "")
+                createCommand("getTransmissions@", "")
         );
 
         assertThat(transmissions.contains(transmission), is(true));
@@ -111,13 +102,13 @@ public class CarValidatorTest {
         ObjectMapper converter = new ObjectMapper();
 
         validator.execute(
-                getMap("addCarcaseXML", "sedan")
+                createCommand("addCarcaseXML", "sedan")
         );
         validator.execute(
-                getMap("addEngineXML", "electric")
+                createCommand("addEngineXML", "electric")
         );
         validator.execute(
-                getMap("addTransmissionXML", "none")
+                createCommand("addTransmissionXML", "none")
         );
 
         CarcaseXML carcase = new CarcaseXML("sedan");
@@ -130,10 +121,10 @@ public class CarValidatorTest {
 
         String carJSON = converter.writerWithDefaultPrettyPrinter().writeValueAsString(carXML);
         String car = validator.execute(
-                getMap("addCarXML", carJSON)
+                createCommand("addCarXML", carJSON)
         );
         String cars = validator.execute(
-                getMap("getCarsXML", "")
+                createCommand("getCarsXML", "")
         );
 
         assertThat(car.equals(""), is(false));
@@ -145,13 +136,13 @@ public class CarValidatorTest {
         ObjectMapper converter = new ObjectMapper();
 
         validator.execute(
-                getMap("addCarcase@", "sedan")
+                createCommand("addCarcase@", "sedan")
         );
         validator.execute(
-                getMap("addEngine@", "electric")
+                createCommand("addEngine@", "electric")
         );
         validator.execute(
-                getMap("addTransmission@", "none")
+                createCommand("addTransmission@", "none")
         );
 
         CarcaseAnts carcase = new CarcaseAnts("sedan");
@@ -164,10 +155,10 @@ public class CarValidatorTest {
 
         String carJSON = converter.writerWithDefaultPrettyPrinter().writeValueAsString(carAnts);
         String car = validator.execute(
-                getMap("addCar@", carJSON)
+                createCommand("addCar@", carJSON)
         );
         String cars = validator.execute(
-                getMap("getCars@", "")
+                createCommand("getCars@", "")
         );
 
         assertThat(car.equals(""), is(false));
@@ -180,15 +171,9 @@ public class CarValidatorTest {
         carcaseXML.setId(1);
         String carcaseJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(carcaseXML);
 
-        String oldValue = validator.execute(
-                getMap("addCarcaseXML", "sedan")
-        );
-        String updatedValue = validator.execute(
-                getMap("updateCarcaseXML", carcaseJSON)
-        );
-        String carcases = validator.execute(
-                getMap("getCarcasesXML", "")
-        );
+        String oldValue = validator.execute(createCommand("addCarcaseXML", "sedan"));
+        String updatedValue = validator.execute(createCommand("updateCarcaseXML", carcaseJSON));
+        String carcases = validator.execute(createCommand("getCarcasesXML", ""));
 
         assertThat(carcases.contains(updatedValue), is(true));
         assertThat(carcases.contains(oldValue), is(false));
@@ -201,13 +186,13 @@ public class CarValidatorTest {
         String carcaseJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(carcaseAnts);
 
         String oldValue = validator.execute(
-                getMap("addCarcase@", "sedan")
+                createCommand("addCarcase@", "sedan")
         );
         String updatedValue = validator.execute(
-                getMap("updateCarcase@", carcaseJSON)
+                createCommand("updateCarcase@", carcaseJSON)
         );
         String carcases = validator.execute(
-                getMap("getCarcases@", "")
+                createCommand("getCarcases@", "")
         );
 
         assertThat(carcases.contains(updatedValue), is(true));
@@ -221,13 +206,13 @@ public class CarValidatorTest {
         String engineJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(engineXML);
 
         String oldValue = validator.execute(
-                getMap("addEngineXML", "diesel")
+                createCommand("addEngineXML", "diesel")
         );
         String updatedValue = validator.execute(
-                getMap("updateEngineXML", engineJSON)
+                createCommand("updateEngineXML", engineJSON)
         );
         String engines = validator.execute(
-                getMap("getEnginesXML", "")
+                createCommand("getEnginesXML", "")
         );
 
         assertThat(engines.contains(updatedValue), is(true));
@@ -241,13 +226,13 @@ public class CarValidatorTest {
         String engineJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(engineAnts);
 
         String oldValue = validator.execute(
-                getMap("addEngine@", "diesel")
+                createCommand("addEngine@", "diesel")
         );
         String updatedValue = validator.execute(
-                getMap("updateEngine@", engineJSON)
+                createCommand("updateEngine@", engineJSON)
         );
         String engines = validator.execute(
-                getMap("getEngines@", "")
+                createCommand("getEngines@", "")
         );
 
         assertThat(engines.contains(updatedValue), is(true));
@@ -261,13 +246,13 @@ public class CarValidatorTest {
         String transmissionJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(transmissionXML);
 
         String oldValue = validator.execute(
-                getMap("addTransmissionXML", "mechanic")
+                createCommand("addTransmissionXML", "mechanic")
         );
         String updatedValue = validator.execute(
-                getMap("updateTransmissionXML", transmissionJSON)
+                createCommand("updateTransmissionXML", transmissionJSON)
         );
         String transmissions = validator.execute(
-                getMap("getTransmissionsXML", "")
+                createCommand("getTransmissionsXML", "")
         );
 
         assertThat(transmissions.contains(updatedValue), is(true));
@@ -281,13 +266,13 @@ public class CarValidatorTest {
         String transmissionJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(transmission);
 
         String oldValue = validator.execute(
-                getMap("addTransmission@", "mechanic")
+                createCommand("addTransmission@", "mechanic")
         );
         String updatedValue = validator.execute(
-                getMap("updateTransmission@", transmissionJSON)
+                createCommand("updateTransmission@", transmissionJSON)
         );
         String transmissions = validator.execute(
-                getMap("getTransmissions@", "")
+                createCommand("getTransmissions@", "")
         );
 
         assertThat(transmissions.contains(updatedValue), is(true));
@@ -306,21 +291,21 @@ public class CarValidatorTest {
         String carJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(carXML);
 
         validator.execute(
-                getMap("addCarcaseXML", "sedan")
+                createCommand("addCarcaseXML", "sedan")
         );
         validator.execute(
-                getMap("addEngineXML", "electric")
+                createCommand("addEngineXML", "electric")
         );
         validator.execute(
-                getMap("addTransmissionXML", "none")
+                createCommand("addTransmissionXML", "none")
         );
         String oldCar = validator.execute(
-                getMap("addCarXML", carJSON)
+                createCommand("addCarXML", carJSON)
         );
         carcase = new CarcaseXML("crossover");
         carcase.setId(2);
         validator.execute(
-                getMap("addCarcaseXML", "crossover")
+                createCommand("addCarcaseXML", "crossover")
         );
 
         carXML = new CarXML("tesla model x", carcase, engine, transmission);
@@ -328,10 +313,10 @@ public class CarValidatorTest {
         carJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(carXML);
 
         String newCar = validator.execute(
-                getMap("addCarXML", carJSON)
+                createCommand("addCarXML", carJSON)
         );
         String cars = validator.execute(
-                getMap("getCarsXML", "")
+                createCommand("getCarsXML", "")
         );
 
         assertThat(cars.contains(newCar), is(true));
@@ -350,32 +335,32 @@ public class CarValidatorTest {
         String carJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(carAnts);
 
         validator.execute(
-                getMap("addCarcase@", "sedan")
+                createCommand("addCarcase@", "sedan")
         );
         validator.execute(
-                getMap("addEngine@", "electric")
+                createCommand("addEngine@", "electric")
         );
         validator.execute(
-                getMap("addTransmission@", "none")
+                createCommand("addTransmission@", "none")
         );
         String oldCar = validator.execute(
-                getMap("addCar@", carJSON)
+                createCommand("addCar@", carJSON)
         );
 
         carcase = new CarcaseAnts("crossover");
         carcase.setId(2);
         validator.execute(
-                getMap("addCarcase@", "crossover")
+                createCommand("addCarcase@", "crossover")
         );
         carAnts = new CarAnts("tesla model x", carcase, engine, transmission);
         carAnts.setId(1);
         carJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(carAnts);
 
         String newCar = validator.execute(
-                getMap("addCar@", carJSON)
+                createCommand("addCar@", carJSON)
         );
         String cars = validator.execute(
-                getMap("getCars@", "")
+                createCommand("getCars@", "")
         );
 
         assertThat(cars.contains(newCar), is(true));
@@ -385,16 +370,16 @@ public class CarValidatorTest {
     @Test
     public void whenDeleteCarcaseXML() {
         String first = validator.execute(
-                getMap("addCarcaseXML", "sedan")
+                createCommand("addCarcaseXML", "sedan")
         );
         String second =  validator.execute(
-                getMap("addCarcaseXML", "universal")
+                createCommand("addCarcaseXML", "universal")
         );
         validator.execute(
-                getMap("deleteCarcaseXML", "1")
+                createCommand("deleteCarcaseXML", "1")
         );
         String carcases = validator.execute(
-                getMap("getCarcasesXML", "")
+                createCommand("getCarcasesXML", "")
         );
 
         assertThat(carcases.contains(second) && !carcases.contains(first), is(true));
@@ -403,16 +388,16 @@ public class CarValidatorTest {
     @Test
     public void whenDeleteCarcaseAnts() {
         String first = validator.execute(
-                getMap("addCarcase@", "sedan")
+                createCommand("addCarcase@", "sedan")
         );
         String second = validator.execute(
-                getMap("addCarcase@", "universal")
+                createCommand("addCarcase@", "universal")
         );
         validator.execute(
-                getMap("deleteCarcase@", "2")
+                createCommand("deleteCarcase@", "2")
         );
         String carcases = validator.execute(
-                getMap("getCarcases@", "")
+                createCommand("getCarcases@", "")
         );
         assertThat(carcases.contains(first) && !carcases.contains(second), is(true));
     }
@@ -420,16 +405,16 @@ public class CarValidatorTest {
     @Test
     public void whenDeleteEngineXML() {
         String first = validator.execute(
-                getMap("addEngineXML", "diesel")
+                createCommand("addEngineXML", "diesel")
         );
         String second = validator.execute(
-                getMap("addEngineXML", "electric")
+                createCommand("addEngineXML", "electric")
         );
         validator.execute(
-                getMap("deleteEngineXML", "1")
+                createCommand("deleteEngineXML", "1")
         );
         String engines = validator.execute(
-                getMap("getEnginesXML", "")
+                createCommand("getEnginesXML", "")
         );
         assertThat(engines.contains(second) && !engines.contains(first), is(true));
     }
@@ -437,16 +422,16 @@ public class CarValidatorTest {
     @Test
     public void whenDeleteEngineAnts() {
         String first = validator.execute(
-                getMap("addEngine@", "diesel")
+                createCommand("addEngine@", "diesel")
         );
         String second = validator.execute(
-                getMap("addEngine@", "electric")
+                createCommand("addEngine@", "electric")
         );
         validator.execute(
-                getMap("deleteEngine@", "1")
+                createCommand("deleteEngine@", "1")
         );
         String engines = validator.execute(
-                getMap("getEngines@", "")
+                createCommand("getEngines@", "")
         );
         assertThat(engines.contains(second) && !engines.contains(first), is(true));
     }
@@ -454,16 +439,16 @@ public class CarValidatorTest {
     @Test
     public void whenDeleteTransmissionXML() {
         String first = validator.execute(
-                getMap("addTransmissionXML", "mechanic")
+                createCommand("addTransmissionXML", "mechanic")
         );
         String second = validator.execute(
-                getMap("addTransmissionXML", "robot")
+                createCommand("addTransmissionXML", "robot")
         );
         validator.execute(
-                getMap("deleteTransmissionXML", "1")
+                createCommand("deleteTransmissionXML", "1")
         );
         String transmissions = validator.execute(
-                getMap("getTransmissionsXML", "")
+                createCommand("getTransmissionsXML", "")
         );
         assertThat(transmissions.contains(second) && !transmissions.contains(first), is(true));
     }
@@ -471,16 +456,16 @@ public class CarValidatorTest {
     @Test
     public void whenDeleteTransmissionAnts() {
         String first = validator.execute(
-                getMap("addTransmission@", "mechanic")
+                createCommand("addTransmission@", "mechanic")
         );
         String second = validator.execute(
-                getMap("addTransmission@", "robot")
+                createCommand("addTransmission@", "robot")
         );
         validator.execute(
-                getMap("deleteTransmission@", "1")
+                createCommand("deleteTransmission@", "1")
         );
         String transmissions = validator.execute(
-                getMap("getTransmissions@", "")
+                createCommand("getTransmissions@", "")
         );
         assertThat(transmissions.contains(second) && !transmissions.contains(first), is(true));
     }
@@ -497,28 +482,28 @@ public class CarValidatorTest {
         String carJSON = new ObjectMapper().writeValueAsString(carXML);
 
         validator.execute(
-                getMap("addCarcaseXML", "sedan")
+                createCommand("addCarcaseXML", "sedan")
         );
         validator.execute(
-                getMap("addEngineXML", "electric")
+                createCommand("addEngineXML", "electric")
         );
         validator.execute(
-                getMap("addTransmissionXML", "none")
+                createCommand("addTransmissionXML", "none")
         );
         String first = validator.execute(
-                getMap("addCarXML", carJSON)
+                createCommand("addCarXML", carJSON)
         );
         carXML = new CarXML("bmw", carcase, engine, transmission);
         carJSON = new ObjectMapper().writeValueAsString(carXML);
 
         String second = validator.execute(
-                getMap("addCarXML", carJSON)
+                createCommand("addCarXML", carJSON)
         );
         validator.execute(
-                getMap("deleteCarXML", "1")
+                createCommand("deleteCarXML", "1")
         );
         String cars = validator.execute(
-                getMap("getCarsXML", "")
+                createCommand("getCarsXML", "")
         );
         assertThat(cars.contains(second) && !cars.contains(first), is(true));
     }
@@ -535,28 +520,28 @@ public class CarValidatorTest {
         String carJSON = new ObjectMapper().writeValueAsString(carAnts);
 
         validator.execute(
-                getMap("addCarcase@", "sedan")
+                createCommand("addCarcase@", "sedan")
         );
         validator.execute(
-                getMap("addEngine@", "electric")
+                createCommand("addEngine@", "electric")
         );
         validator.execute(
-                getMap("addTransmission@", "none")
+                createCommand("addTransmission@", "none")
         );
         String first = validator.execute(
-                getMap("addCar@", carJSON)
+                createCommand("addCar@", carJSON)
         );
         carAnts = new CarAnts("bmw", carcase, engine, transmission);
         carJSON = new ObjectMapper().writeValueAsString(carAnts);
 
         String second = validator.execute(
-                getMap("addCar@", carJSON)
+                createCommand("addCar@", carJSON)
         );
         validator.execute(
-                getMap("deleteCar@", "1")
+                createCommand("deleteCar@", "1")
         );
         String cars = validator.execute(
-                getMap("getCars@", "")
+                createCommand("getCars@", "")
         );
         assertThat(cars.contains(second) && !cars.contains(first), is(true));
     }

@@ -13,7 +13,7 @@ public class EngineAnts implements Entity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
     public EngineAnts() {

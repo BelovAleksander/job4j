@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class CarStoreDAO {
     private static final CarStoreDAO INSTANCE = new CarStoreDAO();
-    private static final HibernateManager FACTORY = HibernateManager.getInstance();
+    private static final HibernateManager FACTORY = HibernateManager.getInstance("hibernate.cfg.xml");
 
     private CarStoreDAO() {
 

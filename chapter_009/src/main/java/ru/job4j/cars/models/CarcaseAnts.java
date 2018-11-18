@@ -14,7 +14,7 @@ public class CarcaseAnts implements ru.job4j.cars.models.Entity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
     public CarcaseAnts() {

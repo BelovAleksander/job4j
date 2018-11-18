@@ -8,13 +8,13 @@
         <property name="mileage" type="java.lang.Integer" column="mileage"/>
         <property name="photo" type="java.lang.String" column="photo"/>
         <many-to-one name="owner" column="user_id" lazy="false"
-                     class="ru.job4j.callboard.models.User" not-null="true"/>
+                     class="ru.job4j.callboard.models.User" />
         <many-to-one name="color" column="color_id" lazy="false"
-                     class="ru.job4j.callboard.models.Color" not-null="true"/>
+                     class="ru.job4j.callboard.models.Color" />
         <many-to-one name="brand" column="brand_id" lazy="false"
-                     class="ru.job4j.callboard.models.Brand" not-null="true"/>
+                     class="ru.job4j.callboard.models.Brand" />
         <many-to-one name="model" column="model_id" lazy="false"
-                     class="ru.job4j.callboard.models.Model" not-null="true"/>
+                     class="ru.job4j.callboard.models.Model" />
         <property name="createdDate" type="java.util.Date" column="created_date"/>
     </class>
 </hibernate-mapping>
