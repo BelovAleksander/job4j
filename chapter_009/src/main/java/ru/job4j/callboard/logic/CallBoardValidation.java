@@ -92,9 +92,17 @@ public class CallBoardValidation {
     }
 
     private Function<String, String> getAllAdverts() {
-        return str -> {
+        return value -> {
+            HashMap<String, HashMap<String, Integer>> filters = null;
+            if (value != null && !value.equals("")) {
+                try {
+                    filters = CONVERTER.readValue(value, HashMap.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             LOG.info("***validation | getAllAdverts***");
-            return convertToJson(DAO.getAll("from Advert"));
+            return convertToJson(DAO.getAdverts(filters));
         };
     }
 

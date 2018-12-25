@@ -1,13 +1,12 @@
 package ru.job4j.callboard.models;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
  * @since 15.10.2018
  */
+
 public class Advert {
     private int vin;
     private String title;
@@ -129,4 +128,5 @@ public class Advert {
     public void changeStatus() {
         this.status = !this.status;
     }
+
 }

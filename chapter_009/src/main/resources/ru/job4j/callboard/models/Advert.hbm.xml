@@ -16,5 +16,16 @@
         <many-to-one name="model" column="model_id" lazy="false"
                      class="ru.job4j.callboard.models.Model" />
         <property name="createdDate" type="java.util.Date" column="created_date"/>
+
+        <filter name="limitByBrand" condition=":currentBrandId = brand_id"/>
+        <filter name="limitByDate" condition="current_date = created_date"/>
+        <filter name="limitByPhoto" condition="photo is not null"/>
     </class>
+        <filter-def name="limitByBrand">
+            <filter-param name="currentBrandId" type="int"/>
+        </filter-def>
+        <filter-def name="limitByDate">
+        </filter-def>
+        <filter-def name="limitByPhoto">
+        </filter-def>
 </hibernate-mapping>

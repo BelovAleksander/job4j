@@ -34,16 +34,30 @@
 
         document.addEventListener('DOMContentLoaded', getAdverts, false);
 
-        var cars;
         var url = getBaseUrl();
 
         function getAdverts() {
-            document.getElementById("select-brand").style.visibility = 'hidden';
-            document.getElementById("select-model").style.visibility = 'hidden';
 
+            /*document.getElementById("select-model").style.visibility = 'hidden';*/
+
+            var value = {};
+            if (document.querySelector("input[name=show-with-photo]").checked) {
+                value['limitByPhoto'] = null;
+            }
+            if (document.querySelector("input[name=show-today-adverts]").checked) {
+                value['limitByDate'] = null;
+            }
+            if (document.querySelector("input[name=show-spec-type]").checked && $('#select-brand').val() != undefined) {
+
+                value['limitByBrand'] = {'currentBrandId' : $('#select-brand').val()};
+            } else if (document.querySelector("input[name=show-spec-type]").checked && $('#select-brand').val() == undefined) {
+                showBrands();
+            } else if (!document.querySelector("input[name=show-spec-type]").checked) {
+                document.getElementById("select-brand").style.visibility = 'hidden';
+            }
             var param = {
                 "action" : "getAdverts",
-                "value" : ""
+                "value" : JSON.stringify(value)
             };
             $.ajax({
                 url: "./controller",
@@ -51,8 +65,8 @@
                 data: param,
                 async: false,
                 complete: function (data) {
-                    cars = JSON.parse(data.responseText);
-                    showCars();
+                    var cars = JSON.parse(data.responseText);
+                    showCars(cars);
                 }
             });
         }
@@ -83,14 +97,14 @@
             });
             return url;
         }
-
+/*
         function showModels() {
-            var brand = $("#select-brand").val();m
+            var brand = $("#select-brand").val();
             var selectModel = document.getElementById("select-model");
             selectModel.addEventListener("change", showCars(), false);
             selectModel.innerHTML = contentForList(getList("getModels", brand));
             selectModel.style.visibility = 'visible';
-        }
+        }*/
 
         function contentForList(list) {
             var content = "<option selected disabled>select</option>";
@@ -119,7 +133,26 @@
             return list;
         }
 
-        function showCars() {
+        function showBrands() {
+            var brands = contentForList(getList("getBrands", ""));
+            document.getElementById("select-brand").innerHTML = brands;
+            document.getElementById("select-brand").style.visibility = "visible";
+            document.getElementById("select-brand").addEventListener("change", getAdverts, false);
+        }
+
+        function showCars(cars) {
+            var content = "";
+            for (index in cars) {
+                var car = cars[index];
+                content += contentForCar(car);
+            }
+            if (content == "") {
+                content += "no such advert :(";
+            }
+            document.getElementById("cars-table-body").innerHTML = content;
+        }
+
+        /*function showCars() {
             var content = "";
             var filteredList = [];
             if ($("#select-brand").val() == null) {
@@ -165,7 +198,7 @@
                 document.getElementById("select-model").style.visibility = "hidden";
             }
             return result;
-        }
+        }*/
     </script>
 </head>
 <body>
@@ -194,15 +227,16 @@
 
     </select>
 </div>
-<div>
+<%--<div>
     <select id="select-model">
 
     </select>
-</div>
+</div>--%>
 <script>
-    document.querySelector("input[name=show-spec-type]").addEventListener("change", showCars, false);
-    document.querySelector("input[name=show-with-photo]").addEventListener("change", showCars, false);
-    document.querySelector("input[name=show-today-adverts]").addEventListener("change", showCars, false);
+    document.querySelector("input[name=show-spec-type]").addEventListener("change", getAdverts, false);
+    document.querySelector("input[name=show-with-photo]").addEventListener("change", getAdverts, false);
+    document.querySelector("input[name=show-today-adverts]").addEventListener("change", getAdverts, false);
+    document.getElementById("select-brand").style.visibility = 'hidden';
 </script>
 <table id="cars-table">
     <tbody id="cars-table-body">

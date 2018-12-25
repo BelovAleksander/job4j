@@ -1,10 +1,14 @@
 package ru.job4j.cars.logic;
 
+import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
+import java.util.HashMap;
 import java.util.function.Function;
 /**
  * @author Alexander Belov (whiterabbit.nsk@gmail.com)
@@ -13,7 +17,7 @@ import java.util.function.Function;
 public class HibernateManager {
     private static SessionFactory factory;
     private static final HibernateManager INSTANCE = new HibernateManager();
-    private static String config = "hibernate.cfg.xml";
+    private static String config;
 
     private HibernateManager() {
 
@@ -21,6 +25,7 @@ public class HibernateManager {
 
 
     public static HibernateManager getInstance() {
+        config = "hibernate.cfg.xml";
         openFactory();
         return INSTANCE;
     }
@@ -43,6 +48,10 @@ public class HibernateManager {
             transaction.commit();
             session.close();
         }
+    }
+
+    public Session getSession() {
+        return factory.openSession();
     }
 
     public static void closeFactory() {

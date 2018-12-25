@@ -5,9 +5,15 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+import ru.job4j.callboard.logic.CallBoardDAO;
 import ru.job4j.callboard.logic.CallBoardValidation;
+import ru.job4j.callboard.models.Advert;
+import ru.job4j.callboard.models.Brand;
 import ru.job4j.callboard.models.User;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -64,6 +70,7 @@ public class Controller extends HttpServlet {
         writer.append(response);
         writer.flush();
     }
+
 
     @Override
     protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws IOException, ServletException {
