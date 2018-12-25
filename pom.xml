@@ -26,7 +26,8 @@
         <module>chapter_008</module>
         <module>other</module>
         <module>chapter_009</module>
-    </modules>
+		<module>chapter_010</module>
+	</modules>
     <build>
         <plugins>
             <plugin>
