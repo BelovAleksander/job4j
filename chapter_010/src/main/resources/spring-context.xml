@@ -13,4 +13,11 @@
         <constructor-arg name="alfa" ref="factory-constructed-bean"/>
     </bean>
     <!--<context:component-scan base-package="ru.job4j.autowired"/>-->
+    <bean id="jdbc-storage" class="ru.job4j.storages.JdbcStorage">
+        <constructor-arg name="path" value="db.properties"/>
+    </bean>
+    <bean id="memory-storage" class="ru.job4j.storages.MemoryStorage"/>
+    <bean id="import-user" class="ru.job4j.storages.ImportUser">
+        <constructor-arg name="storage" ref="memory-storage"/>
+    </bean>
 </beans>
